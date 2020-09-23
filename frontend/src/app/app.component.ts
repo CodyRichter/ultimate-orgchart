@@ -10,12 +10,16 @@ export class AppComponent {
   title = 'org-chart';
 
   constructor(private httpClient: HttpClient) {
-    this.getUsers();
+    this.getUsers()
   }
 
-  async getUsers() {
+  async getUsers(): Promise<void> {
     const result = await this.httpClient.get('http://localhost:3000/user').toPromise();
     console.log(result);
+  }
+
+  async postUsers(): Promise<void> {
+    // Todo
   }
 
 }

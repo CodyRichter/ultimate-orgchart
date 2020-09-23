@@ -46,3 +46,20 @@
   top: 256px;
   left: 400px;
 }
+
+.button2 {
+  position: absolute;
+  top: 256px;
+  left: 800px
+}
+
+.example-card {
+  position: absolute;
+  top: 350px;
+  left: 400px;
+  max-width: 300px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
