@@ -125,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "org-chart"
+  "defaultProject": "org-chart",
+  "cli": {
+    "analytics": false
+  }
 }
