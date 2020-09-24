@@ -43,14 +43,18 @@
 
 .button {
   position: absolute;
-  top: 256px;
+  top: 156px;
   left: 400px;
+  color:white;
+  background-color:#008264;
 }
 
 .button2 {
   position: absolute;
-  top: 256px;
-  left: 800px
+  top: 156px;
+  left: 550px;
+  color:white;
+  background-color: #008264;
 }
 
 .example-card {
