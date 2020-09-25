@@ -7,12 +7,12 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Get('all')
-  async getCats(): Promise<Employee[] | null> {
+  async getAllEmployees(): Promise<Employee[] | null> {
     return await this.employeeService.findAllEmployees();
   }
 
   @Post()
-  async create(@Body() newEmployee: Employee): Promise<Employee> {
+  async createEmployee(@Body() newEmployee: Employee): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
 }
