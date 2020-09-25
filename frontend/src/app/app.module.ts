@@ -14,14 +14,19 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 
+import { RouterModule} from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
+import { ChartsComponent } from './pages/charts/charts.component';
+import {ReactiveFormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    ChartsComponent
   ],
   imports: [
-    MatCardModule,
     BrowserModule,
-    MatCardModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -31,7 +36,24 @@ import { MatCardModule } from '@angular/material/card';
     MatCheckboxModule,
     MatButtonModule,
     MatListModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+      },
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'charts',
+        component: ChartsComponent
+      }
+    ]),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,69 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+}
+
+.example-button-row {
+    display: table-cell;
+    width: 490px;
+}
+
+.example-button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+}
+
+.mat-drawer-container {
+    position: absolute;
+    top: 64px;
+    width: 100%;
+    bottom: 0;
+}
+
+.sidenav-container {
+    z-index: -1 !important;
+}
+
+.button {
+    position: absolute;
+    top: 156px;
+    left: 400px;
+    color:white;
+    background-color:#008264;
+}
+
+.button2 {
+    position: absolute;
+    top: 156px;
+    left: 550px;
+    color:white;
+    background-color: #008264;
+}
+
+.example-card {
+    position: absolute;
+    top: 350px;
+    left: 400px;
+    max-width: 300px;
+}
+
+.example-header-image {
+    background-size: cover;
+}
