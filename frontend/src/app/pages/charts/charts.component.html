@@ -1,0 +1,50 @@
+<div>
+    <mat-toolbar color="primary" class="mat-elevation-z6">
+        <button mat-icon-button color="accent" (click)="sidebar.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span><img class = "logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
+        <span class="spacer"></span>
+        <button mat-icon-button color="accent">
+            <mat-icon>help</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" style="margin-left: 1em;">
+            <mat-icon>question_answer</mat-icon>
+        </button>
+        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+            <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
+        </button>
+    </mat-toolbar>
+</div>
+
+<div>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>login</mat-icon>Log out
+        </button>
+    </mat-menu>
+</div>
+
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidebar class="mat-elevation-z4" opened="true" mode="side" style="width: 18em;">
+        <mat-list>
+            <mat-list-item>
+                <mat-icon style="color: grey">account_tree</mat-icon><span style="margin-left: 1em">Org Chart</span>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon style="color: grey">edit</mat-icon><span style="margin-left: 1em">Edit</span>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon style="color: grey">supervisor_account</mat-icon><span style="margin-left: 1em">Supervisor</span>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon style="color: grey">notifications</mat-icon><span style="margin-left: 1em">Notifications</span>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon style="color: grey">settings</mat-icon><span style="margin-left: 1em">Settings</span>
+            </mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+</mat-sidenav-container>
+

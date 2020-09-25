@@ -1,0 +1,33 @@
+<img class="logo" src="assets/logo/logo-large.png" alt="ultimate software">
+
+<div class="header">
+    <p class="mat-title">Welcome</p>
+</div>
+
+<div class="input">
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" (keydown.enter)="pwd.focus()" autocomplete="off">
+        <button mat-icon-button matSuffix disabled style="color: black">
+            <mat-icon>email</mat-icon>
+        </button>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput #pwd id="password" [type]="hide ? 'password' : 'text'" (keydown.enter)="authenticate()" autocomplete="off">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
+
+<div class="button">
+    <mat-checkbox class="mat-checkbox" color="primary">
+        Remember me
+    </mat-checkbox>
+    <button mat-flat-button color="primary" (click)="authenticate()">
+        <span>Next</span>
+    </button>
+</div>
+
