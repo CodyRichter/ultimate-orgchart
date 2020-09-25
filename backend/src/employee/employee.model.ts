@@ -5,7 +5,6 @@ import { DocumentType, ModelOptions, prop } from "@typegoose/typegoose";
         toJSON: {
             transform: (doc: DocumentType<Employee>, ret) => {
                 delete ret.__v;
-                ret.databaseId = ret._id;
                 delete ret._id;
             }
         }
@@ -13,7 +12,7 @@ import { DocumentType, ModelOptions, prop } from "@typegoose/typegoose";
 })
 export class Employee {
 
-    @prop({ required: true, index: true, })
+    @prop({ required: true, index: true, unique: true, })
     employeeId: number;
 
     @prop({ required: true,  })
