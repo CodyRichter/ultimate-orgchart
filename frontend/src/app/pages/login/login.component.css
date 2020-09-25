@@ -61,6 +61,10 @@
     transform: translateY(-50%);
 }
 
+.mat-icon {
+    color: gray;
+}
+
 ::ng-deep .mat-form-field-outline {
     background-color: white;
 }

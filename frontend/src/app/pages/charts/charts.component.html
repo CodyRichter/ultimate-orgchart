@@ -3,7 +3,7 @@
         <button mat-icon-button color="accent" (click)="sidebar.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <span><img class = "logo" style="margin-left: 1em; width: 5.5em;" src="/src/assets/logo/logo-small.png" alt="logo"></span>
+        <span><img class = "logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
         <span class="spacer"></span>
         <button mat-icon-button color="accent">
             <mat-icon>help</mat-icon>
@@ -11,9 +11,18 @@
         <button mat-icon-button color="accent" style="margin-left: 1em;">
             <mat-icon>question_answer</mat-icon>
         </button>
-        <button mat-fab class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+            <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
         </button>
     </mat-toolbar>
+</div>
+
+<div>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>login</mat-icon>Log out
+        </button>
+    </mat-menu>
 </div>
 
 

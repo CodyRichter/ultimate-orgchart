@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,27 +9,25 @@ import { ErrorStateMatcher } from '@angular/material/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements AfterViewInit {
+  hide: any;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef, private router: Router) {
   }
-
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-
-  matcher = new MyErrorStateMatcher();
-  hide: any = true;
 
   ngAfterViewInit(): void {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#F9F9F9';
   }
 
-}
+  authenticate(): boolean {
+    const emailInput: any = document.getElementById('email') as HTMLInputElement;
+    const passwordInput: any = document.getElementById('password') as HTMLInputElement;
 
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    if (email === 'admin' && password === 'admin') {
+      this.router.navigateByUrl('/charts').then();
+    }
+    return false;
   }
+
 }
