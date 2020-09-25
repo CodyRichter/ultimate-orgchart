@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ManagerModule } from './manager/manager.module';
 import { ProjectModule } from './project/project.module';
-import { UserModule } from './user/user.module';
+import { EmployeeModule } from './employee/employee.module';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URL),
+    TypegooseModule.forRoot(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    }),
     ManagerModule, 
     ProjectModule, 
-    UserModule
+    EmployeeModule, AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
