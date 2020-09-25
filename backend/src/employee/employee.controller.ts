@@ -6,7 +6,7 @@ import { Employee } from './employee.model';
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
-  @Get()
+  @Get('all')
   async getCats(): Promise<Employee[] | null> {
     return await this.employeeService.findAllEmployees();
   }
