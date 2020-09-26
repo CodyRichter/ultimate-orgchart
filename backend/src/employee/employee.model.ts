@@ -36,7 +36,7 @@ export class Employee {
     @prop({ required: false,  })
     managerId: number;
 
-    @prop({ required: true,  })
+    @prop({ required: true, index:true,unique:true })
     email: string;
 
     @prop({ required: true,  })

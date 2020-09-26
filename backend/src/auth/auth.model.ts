@@ -12,10 +12,12 @@ import { DocumentType, ModelOptions, prop } from "@typegoose/typegoose";
 })
 export class EmployeeAuth {
 
+    
     @prop({ required: true, index: true, unique: true, })
     employeeId: number;
 
-    @prop({ required: true,  })
+    
+    @prop({ required: true,index:true,unique:true,  })
     email: string;
 
     @prop({ required: true,  })
