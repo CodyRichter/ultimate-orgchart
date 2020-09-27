@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -9,25 +9,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements AfterViewInit {
+
   hide: any;
 
-  constructor(private elementRef: ElementRef, private router: Router) {
+  constructor(private elementRef: ElementRef, private router: Router, private httpClient: HttpClient) {
+    this.hide = true;
   }
 
   ngAfterViewInit(): void {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#F9F9F9';
   }
 
-  authenticate(): boolean {
-    const emailInput: any = document.getElementById('email') as HTMLInputElement;
-    const passwordInput: any = document.getElementById('password') as HTMLInputElement;
-
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    if (email === 'admin' && password === 'admin') {
-      this.router.navigateByUrl('/charts').then();
-    }
-    return false;
+  login(): void {
+    this.httpClient.post('http://localhost:3000/auth/signin', {
+      email: (document.getElementById('email') as HTMLInputElement).value,
+      password: (document.getElementById('password') as HTMLInputElement).value
+    }).toPromise()
+      .then()
+      .catch();
   }
 
 }

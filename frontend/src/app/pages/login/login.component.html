@@ -15,7 +15,7 @@
     <br>
     <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input matInput #pwd id="password" [type]="hide ? 'password' : 'text'" (keydown.enter)="authenticate()" autocomplete="off">
+        <input matInput #pwd id="password" [type]="hide ? 'password' : 'text'" (keydown.enter)="login()" autocomplete="off">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
@@ -26,7 +26,7 @@
     <mat-checkbox class="mat-checkbox" color="primary">
         Remember me
     </mat-checkbox>
-    <button mat-flat-button color="primary" (click)="authenticate()">
+    <button mat-flat-button color="primary" (click)="login()">
         <span>Next</span>
     </button>
 </div>
