@@ -7,18 +7,29 @@
 <div class="input">
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput id="email" (keydown.enter)="pwd.focus()" autocomplete="off">
+        <input matInput id="email"
+               (keydown.enter)="pwd.focus()"
+               [formControl]="controller"
+               autocomplete="off">
         <button mat-icon-button matSuffix disabled style="color: black">
             <mat-icon>email</mat-icon>
         </button>
+        <mat-error *ngIf="controller.hasError('incorrect')"></mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input matInput #pwd id="password" [type]="hide ? 'password' : 'text'" (keydown.enter)="login()" autocomplete="off">
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <input matInput #pwd id="password"
+               [type]="hide ? 'password' : 'text'"
+               [formControl]="controller"
+               (keydown.enter)="login()"
+               autocomplete="off">
+        <button mat-icon-button matSuffix (click)="hide = !hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+        <mat-error *ngIf="controller.hasError('incorrect')">
+            The email or password is <strong>incorrect</strong>.
+        </mat-error>
     </mat-form-field>
 </div>
 

@@ -11,9 +11,11 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent implements AfterViewInit {
 
   hide: any;
+  controller: FormControl;
 
   constructor(private elementRef: ElementRef, private router: Router, private httpClient: HttpClient) {
     this.hide = true;
+    this.controller = new FormControl();
   }
 
   ngAfterViewInit(): void {
@@ -26,7 +28,13 @@ export class LoginComponent implements AfterViewInit {
       password: (document.getElementById('password') as HTMLInputElement).value
     }).toPromise()
       .then()
-      .catch();
+      .catch(error => this.errorHandler(error));
+  }
+
+  errorHandler(error): void{
+    if (error.status === 401) {
+      this.controller.setErrors({incorrect: true});
+    }
   }
 
 }
