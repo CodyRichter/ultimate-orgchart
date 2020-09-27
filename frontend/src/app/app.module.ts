@@ -16,10 +16,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { RouterModule} from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
-import { ChartsComponent } from './pages/charts/charts.component';
+import { LoginComponent } from './components/login/login.component';
+import { ChartsComponent } from './components/charts/charts.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
