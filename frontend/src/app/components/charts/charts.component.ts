@@ -16,6 +16,7 @@ export class ChartsComponent implements OnInit {
   }
 
   logout(): void {
+    localStorage.removeItem('id_token');
     this.router.navigateByUrl('/login').then();
   }
 
