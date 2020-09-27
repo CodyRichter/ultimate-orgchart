@@ -27,8 +27,13 @@ export class LoginComponent implements AfterViewInit {
       email: (document.getElementById('email') as HTMLInputElement).value,
       password: (document.getElementById('password') as HTMLInputElement).value
     }).toPromise()
-      .then()
+      .then(token => this.tokenHandler(token))
       .catch(error => this.errorHandler(error));
+  }
+
+  tokenHandler(token): void {
+    localStorage.setItem('id_token', token.accessToken);
+    this.router.navigateByUrl('/charts').then();
   }
 
   errorHandler(error): void{
