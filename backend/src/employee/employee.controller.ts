@@ -12,7 +12,7 @@ export class EmployeeController {
   }
 
   @Post()
-  async createEmployee(@Body() newEmployee: Employee): Promise<Employee> {
+  async createEmployee(@Body() newEmployee: Employee): Promise<void> {
     return await this.employeeService.createEmployee(newEmployee);
   }
 }

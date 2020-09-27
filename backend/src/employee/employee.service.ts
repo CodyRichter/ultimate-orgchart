@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "./employee.model";
 import { ReturnModelType } from "@typegoose/typegoose";
@@ -12,14 +12,26 @@ export class EmployeeService {
 
   ) {}
 
-  async createEmployee(newEmployee: Employee): Promise<Employee> {
+  async createEmployee(newEmployee: Employee): Promise<void> {
     const createdEmployee = new this.employeeModel(newEmployee);
     const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
     
     const hashedPassword=await bcrypt.hash(createdEmployeeAuth.password,10);
     createdEmployeeAuth.password=hashedPassword;
-    createdEmployeeAuth.save();
-    return await createdEmployee.save();
+    try
+    {
+     await createdEmployeeAuth.save();
+
+     await createdEmployee.save();
+    }catch(error)
+    {
+        if(error.code===11000)
+        {
+          throw new ConflictException("Employee already exists");
+        }
+
+        throw error;
+    }
   }
 
   async findAllEmployees(): Promise<Employee[] | null> {
