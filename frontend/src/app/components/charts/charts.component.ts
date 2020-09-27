@@ -21,7 +21,7 @@ export class ChartsComponent implements OnInit {
   }
 
   get(): void {
-    console.log(this.httpClient.get('http://localhost:3000/employee/all').toPromise());
+    console.log(this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
   }
 
 }
