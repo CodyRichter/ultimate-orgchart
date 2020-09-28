@@ -1,0 +1,12 @@
+<button mat-button color="primary" (click)="onClick()">
+    <mat-icon>file_upload</mat-icon>
+    Choose File
+</button>
+<input type="file" style="display: none" #fileInput (change)="onFileSelected()" />
+<p *ngIf="!file; else fileName">No File Selected</p>
+<ng-template #fileName>
+  <p class="file-name">{{ file?.name }}</p>
+</ng-template>
+<button mat-raised-button color="primary" (click)="uploadFile()">
+    Upload
+</button>
