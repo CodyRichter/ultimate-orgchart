@@ -19,7 +19,16 @@ export class EmployeeController {
     return await this.employeeService.createEmployee(newEmployee);
   }
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file',{
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, './uploads');
+        },
+        filename: (req, file, cb) => {
+            cb(null, 'josn');
+        },
+    }),
+}))
   uploadSingleFileWithPost(@UploadedFile() file, @Body() body) {
     console.log(file);
     console.log(body.firstName);
