@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, UploadedFile ,UseInterceptors, Param, Res } from '@nestjs/common';
+
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Body,UseGuards,Request, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { fileURLToPath } from 'url';
-import multer = require('multer');
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+//this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
+@UseGuards(JwtAuthGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
@@ -15,7 +17,7 @@ export class EmployeeController {
   }
 
   @Post()
-  async createEmployee(@Body() newEmployee: Employee): Promise<Employee> {
+  async createEmployee(@Body() newEmployee: Employee): Promise<void> {
     return await this.employeeService.createEmployee(newEmployee);
   }
   @Post('upload')
@@ -34,10 +36,5 @@ export class EmployeeController {
     console.log(body.firstName);
     console.log(body.favoriteColor);
     return file;
-  }
-
-  @Get(':filepath')
-  seeUploadedFile(@Param('filepath') file, @Res() res){
-    return res.sendFile
   }
 }

@@ -12,11 +12,16 @@ export class ChartsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private httpClient: HttpClient) {
   }
 
   logout(): void {
+    localStorage.removeItem('id_token');
     this.router.navigateByUrl('/login').then();
+  }
+
+  get(): void {
+    console.log(this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
   }
 
 }
