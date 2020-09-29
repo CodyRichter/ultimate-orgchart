@@ -1,6 +1,6 @@
 
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body,UseGuards,Request, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
