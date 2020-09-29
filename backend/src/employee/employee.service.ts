@@ -59,6 +59,8 @@ export class EmployeeService {
     return await this.employeeModel.find().exec();
   }
 
-
+  async findEmployeeById(employeeId: number): Promise<Employee | null> {
+    return await this.employeeModel.findOne({employeeId}).exec();
+  }
   
 }

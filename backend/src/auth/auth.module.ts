@@ -8,11 +8,13 @@ import {ConfigModule} from '@nestjs/config';
 import { EmployeeAuth } from './auth.model';
 import {JwtStrategy} from './strategies/jwt-auth.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { EmployeeModule } from 'src/employee/employee.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypegooseModule.forFeature([EmployeeAuth]),
     PassportModule,
+    EmployeeModule,
     JwtModule.register(
       {
         secret:process.env.JWT_SECRET,

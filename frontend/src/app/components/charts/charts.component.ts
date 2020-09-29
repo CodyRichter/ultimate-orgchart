@@ -20,8 +20,8 @@ export class ChartsComponent implements OnInit {
     this.router.navigateByUrl('/login').then();
   }
 
-  get(): void {
-    console.log(this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
+  async get(): Promise<void> {
+    console.log(await this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
   }
 
 }
