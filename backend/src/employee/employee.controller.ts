@@ -1,15 +1,15 @@
 
-import { FileInterceptor, MulterModuleOptions } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Controller, Get, Post, Body,UseGuards,Request, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
+import { EmployeeAuth } from '../auth/auth.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
-import { EmployeeAuth } from 'src/auth/auth.model';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
