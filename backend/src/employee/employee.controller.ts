@@ -1,13 +1,15 @@
 
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, MulterModuleOptions } from '@nestjs/platform-express';
 import { Controller, Get, Post, Body,UseGuards,Request, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import * as multer from 'multer';
+import { EmployeeAuth } from 'src/auth/auth.model';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
@@ -16,25 +18,22 @@ export class EmployeeController {
     return await this.employeeService.findAllEmployees();
   }
 
-  @Post()
-  async createEmployee(@Body() newEmployee: Employee): Promise<void> {
+  @Post('create')
+  async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file',{
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, './uploads');
-        },
-        filename: (req, file, cb) => {
-            cb(null, 'josn');
-        },
-    }),
+
+  @Post('create/multiple')
+  async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
+    return await this.employeeService.createEmployees(newEmployees);
+  }
+
+  @Post('uploadJSON')
+  @UseInterceptors(FileInterceptor('file', {
+    storage: multer.memoryStorage()
 }))
-  uploadSingleFileWithPost(@UploadedFile() file, @Body() body) {
-    console.log(file);
-    console.log(body.firstName);
-    console.log(body.favoriteColor);
-    return file;
+  async uploadSingleFileWithPost(@UploadedFile() file): Promise<Employee[]> {
+    const data = JSON.parse(file.buffer);
+    return await this.employeeService.createEmployees(data);
   }
 }
