@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'file-upload',
@@ -35,11 +35,9 @@ export class FileUploadComponent implements OnInit {
 
   async uploadFile() {
     if (this.file != null) {
-      const headers = new HttpHeaders();
-      headers.append('Access-Control-Allow-Origin', '*');
       const formData = new FormData();
       formData.append('file', this.file);
-      console.log(await this.httpClient.post('localhost:3000/employee/uploadJSON', formData, {headers}).toPromise());
+      console.log(await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise());
     }
   }
 

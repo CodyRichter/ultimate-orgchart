@@ -21,8 +21,12 @@ export class ChartsComponent implements OnInit {
     this.router.navigateByUrl('/login').then();
   }
 
-  async get(): Promise<void> {
+  async getUser(): Promise<void> {
     console.log(await this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
+  }
+
+  async getEmployees(): Promise<void> {
+    console.log(await this.httpClient.get('http://localhost:3000/employee/all').toPromise());
   }
 
   openJSONUploadDialog() {
