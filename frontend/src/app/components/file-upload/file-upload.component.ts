@@ -12,23 +12,32 @@ export class FileUploadComponent implements OnInit {
   fileInput;
 
   file: File = null;
+  fileMsg: string = 'No File Selected'
 
   constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {}
 
   onClick(): void {
+    this.file = null;
+    this.fileMsg = 'No File Selected'
     this.fileInput.nativeElement.click();
   }
 
   onFileSelected(): void {
     const files: { [key: string]: File } = this.fileInput.nativeElement.files;
-    this.file = files[0];
+    if (files == null || files[0].type == 'application/json') {
+      this.file = files[0];
+    } else {
+      this.fileMsg = 'Invalid File Type!'
+    }
   }
 
-  uploadFile() {
+  async uploadFile() {
     if (this.file != null) {
-      // TODO
+      const formData = new FormData();
+      formData.append('file', this.file)
+      console.log(await this.httpClient.post('localhost:3000/employee/uploadJSON', formData));
     }
   }
 

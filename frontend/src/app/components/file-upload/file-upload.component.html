@@ -3,7 +3,7 @@
     Choose File
 </button>
 <input type="file" style="display: none" #fileInput (change)="onFileSelected()" />
-<p *ngIf="!file; else fileName">No File Selected</p>
+<p *ngIf="!file; else fileName">{{ fileMsg }}</p>
 <ng-template #fileName>
   <p class="file-name">{{ file?.name }}</p>
 </ng-template>
