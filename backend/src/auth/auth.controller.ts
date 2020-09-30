@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
-import { EmployeeAuth } from './auth.model';
+import { Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
@@ -19,15 +18,12 @@ export class AuthController
             return this.authService.signIn(req.user);
     }
 
-
-    //protected route
     @UseGuards(JwtAuthGuard)
     @Get('profile')
-    getProfile(@Request() req)
+    async getUser(@Request() req)
     {
-        return req.user;
+            return req.user;
     }
-
 }
 
 
