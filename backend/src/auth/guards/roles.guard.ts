@@ -22,17 +22,23 @@ export class RolesGuard implements CanActivate {
 
     if(user.isAdmin===true)
     {
-        userRole='admin';
+      //admin should able to access to all the endpoint 
+        return true;
     }
 
     else if(user.isManager===true)
     {
-        userRole='manager'
+      //manager should able to access to employee endpoint
+        if(roles[0]='employee')
+        {
+          return true;
+        }
+        userRole='manager';
     }
 
     else
     {
-        userRole='employee'
+        userRole='employee';
     }
 
     if(roles[0]!==userRole)
