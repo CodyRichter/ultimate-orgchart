@@ -8,7 +8,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-
+import {Role} from 'src/enum';
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
 @UseGuards(JwtAuthGuard,RolesGuard)
@@ -23,19 +23,19 @@ export class EmployeeController {
   }
 
   @Post('create')
-  @Roles('manager','admin')
+  @Roles(Role.ADMIN,Role.MANAGER)
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
 
   @Post('create/multiple')
-  @Roles('manager','admin')
+  @Roles(Role.ADMIN,Role.MANAGER)
   async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
     return await this.employeeService.createEmployees(newEmployees);
   }
 
   @Post('uploadJSON')
-  @Roles('admin')
+  @Roles(Role.ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: multer.memoryStorage()
 }))
