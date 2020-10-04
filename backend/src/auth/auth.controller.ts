@@ -24,7 +24,6 @@ export class AuthController
     //Otherwise RoleGuard will not receive the request from jwt
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Get('profile')
-    @Roles('admin')
     async getUser(@Request() req)
     {
             return req.user;
