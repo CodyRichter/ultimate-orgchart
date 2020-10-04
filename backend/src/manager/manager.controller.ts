@@ -4,7 +4,7 @@ import { Employee } from '../employee/employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
-import { Manager } from './manager.model';  // doesn't exist??
+//import { Manager } from './manager.model';  // doesn't exist??
 import { ManagerService } from './manager.service';
 
 @Controller('manager')

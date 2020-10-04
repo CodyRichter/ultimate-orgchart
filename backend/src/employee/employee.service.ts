@@ -60,13 +60,16 @@ export class EmployeeService {
   }
 
   // returns employee data by id
-  async findEmployeeById(employeeId: number): Promise<Employee | null> {
+  async findEmployeeById(employeeId: number): Promise<Employee> {
     return await this.employeeModel.findOne({employeeId}).exec();
   }
 
+  /*
+    NEW PROCESSES
+  */
+
   // updates a single field of an employee model found
-  async updateEmployeeData(requester: Employee & EmployeeAuth, employeeId: number,
-                           field: string, value: string): Promise<Employee | null>{
+  async updateEmployeeData(employeeId: any, employee: Employee): Promise<Employee | null>{
     return null;
   }
 

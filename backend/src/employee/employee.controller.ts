@@ -1,5 +1,5 @@
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
@@ -49,17 +49,16 @@ export class EmployeeController {
   */
   // Returns the information of a single employee
   // No guard
-  @Get('info/employee')
-  async viewEmployeeData(@Body() id: number): Promise<Employee | null> {  // needs the id of employee to view as 'id'
-    return this.employeeService.findEmployeeById(id);
+  @Get(':employeeId')
+  async viewEmployeeData(@Param() employeeId: any): Promise<Employee> {  // needs the id of employee to view as 'id'
+    return await this.employeeService.findEmployeeById(employeeId);
   }
 
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
-  @Patch("info/employee")
-  async updateEmployee(@Body() requester: Employee & EmployeeAuth, id: number,
-                       field: string, value: string): Promise<Employee | null> {
-    return this.employeeService.updateEmployeeData(requester, id, field, value);
+  @Patch(":employeeId")
+  async updateEmployee(@Param() employeeId: any, @Body() employee: Employee): Promise<Employee | null> {
+    return await this.employeeService.updateEmployeeData(employeeId, employee);
   }
 
   // Deletes a single employee
