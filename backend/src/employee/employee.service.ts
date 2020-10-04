@@ -59,8 +59,21 @@ export class EmployeeService {
     return await this.employeeModel.find().exec();
   }
 
+  // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee | null> {
     return await this.employeeModel.findOne({employeeId}).exec();
   }
+
+  // updates a single field of an employee model found
+  async updateEmployeeData(requester: Employee & EmployeeAuth, employeeId: number,
+                           field: string, value: string): Promise<Employee | null>{
+    return null;
+  }
+
+  async deleteEmployee(requester: EmployeeAuth, employeeId: number): Promise<boolean> {
+    // returns true if successful, false otherwise
+    return null;
+  }
+
   
 }
