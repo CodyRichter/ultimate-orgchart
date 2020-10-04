@@ -6,29 +6,36 @@ import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
+import { Roles } from 'src/auth/guards/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard,RolesGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
+  //not need to specify the role 
+  //since all types of user have access to it 
   @Get('all')
   async getAllEmployees(): Promise<Employee[] | null> {
     return await this.employeeService.findAllEmployees();
   }
 
   @Post('create')
+  @Roles('manager','admin')
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
 
   @Post('create/multiple')
+  @Roles('manager','admin')
   async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
     return await this.employeeService.createEmployees(newEmployees);
   }
 
   @Post('uploadJSON')
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('file', {
     storage: multer.memoryStorage()
 }))
