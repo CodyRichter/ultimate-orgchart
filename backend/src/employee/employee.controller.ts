@@ -50,16 +50,21 @@ export class EmployeeController {
     const data = JSON.parse(file.buffer);
     return await this.employeeService.createEmployees(data);
   }
-
-  /*
-    NEW ENDPOINTS
-  */
+  
   // Returns the information of a single employee
   // No guard
   @Get(':employeeId')
-  async viewEmployeeData(@Param() employeeId: any): Promise<Employee> {  // needs the id of employee to view as 'id'
+  async viewEmployeeData(@Param('employeeId') employeeId: any): Promise<Employee> {  // needs the id of employee to view as 'id'
     return await this.employeeService.findEmployeeById(employeeId);
   }
+
+
+
+
+  
+  /*
+    UNFINISHED ENDPOINTS
+  */
 
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
@@ -70,6 +75,7 @@ export class EmployeeController {
 
   // Deletes a single employee
   @Delete("delete")
+  @Roles('manager', 'admin')
   async deleteEmployee(@Body() requester: EmployeeAuth, id: number): Promise<boolean>{
     return await this.employeeService.deleteEmployee(requester, id);
   }

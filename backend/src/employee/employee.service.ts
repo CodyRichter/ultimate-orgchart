@@ -70,9 +70,13 @@ export class EmployeeService {
 
   // updates a single field of an employee model found
   async updateEmployeeData(employeeId: any, employee: Employee): Promise<Employee | null>{
+    // typegoose default operations
+    //                   this.employeeModel.findOneAndUpdate(employee);
+    //
+    
     return null;
   }
-
+  
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
   async deleteEmployee(requester: EmployeeAuth, employeeId: number): Promise<boolean> {
@@ -80,7 +84,6 @@ export class EmployeeService {
     if(false){
       return false;  
     } 
-
     // delete employee from db
     return null;
   }
