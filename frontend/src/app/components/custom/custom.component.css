@@ -1,0 +1,9 @@
+.example-card {
+    width: 200px;
+}
+
+div.inline { float:left; }
+
+.mat-card-header {
+    background-color: red;
+}

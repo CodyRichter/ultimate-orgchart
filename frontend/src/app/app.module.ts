@@ -21,8 +21,10 @@ import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
+import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { CustomComponent } from './components/custom/custom.component';
+import {OrgchartModule} from '@dabeng/ng-orgchart';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     NotFoundComponent,
     FileUploadComponent,
     JSONUploadDialog,
+    CustomComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,10 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
         component: ChartsComponent
       },
       {
+        path: 'custom-node',
+        component: CustomComponent
+      },
+      {
         path: '**',
         redirectTo: '/404',
       },
@@ -71,7 +78,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
         component: NotFoundComponent
       }
     ]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    OrgchartModule
   ],
   providers: [
     {
