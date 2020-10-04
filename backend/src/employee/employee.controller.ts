@@ -5,14 +5,18 @@ import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
+import { Roles } from 'src/auth/guards/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard,RolesGuard)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   // Returns all employees
+  //not need to specify the role 
+  //since all types of user have access to it 
   @Get('all')
   async getAllEmployees(): Promise<Employee[] | null> {
     return await this.employeeService.findAllEmployees();
@@ -22,6 +26,7 @@ export class EmployeeController {
   // shouldn't this need requester id to make sure managers don't willy nilly add employees?
   // Guard admin/manager
   @Post('create')
+  @Roles('manager','admin')
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
@@ -29,6 +34,7 @@ export class EmployeeController {
   // Creates multiple employees in the db - used only by upload JSON function
   // Guard admin
   @Post('create/multiple')
+  @Roles('manager','admin')
   async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
     return await this.employeeService.createEmployees(newEmployees);
   }
@@ -36,6 +42,7 @@ export class EmployeeController {
   // Posts a JSON to the backend to be uploaded into the db
   // Guard admin
   @Post('uploadJSON')
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('file', {
     storage: multer.memoryStorage()
   }))
