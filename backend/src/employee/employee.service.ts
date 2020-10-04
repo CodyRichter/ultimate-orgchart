@@ -70,8 +70,20 @@ export class EmployeeService {
     return null;
   }
 
+  // removes a single employee from db if request is valid
+  // returns true if successful, false otherwise
   async deleteEmployee(requester: EmployeeAuth, employeeId: number): Promise<boolean> {
-    // returns true if successful, false otherwise
+    // check if requester is parent of employeeId
+    if(false){
+      return false;  
+    } 
+
+    // delete employee from db
+    return null;
+  }
+
+  // collects raw db status (w/o confidentials like pswd), creates JSON file
+  async getJSON(): Promise<File | null>{
     return null;
   }
 

@@ -68,4 +68,10 @@ export class EmployeeController {
     return await this.employeeService.deleteEmployee(requester, id);
   }
 
+  // returns a single JSON file of the current db status
+  @Get("json")
+  async getJSON(): Promise<File | null>{
+    return await this.employeeService.getJSON();
+  }
+
 }
