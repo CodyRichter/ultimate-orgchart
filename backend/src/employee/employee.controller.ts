@@ -15,20 +15,21 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
+  //not need to specify the role 
+  //since all types of user have access to it 
   @Get('all')
-  @Roles('employee')
   async getAllEmployees(): Promise<Employee[] | null> {
     return await this.employeeService.findAllEmployees();
   }
 
   @Post('create')
-  @Roles('manager')
+  @Roles('manager','admin')
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     return await this.employeeService.createEmployee(newEmployee);
   }
 
   @Post('create/multiple')
-  @Roles('manager')
+  @Roles('manager','admin')
   async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
     return await this.employeeService.createEmployees(newEmployees);
   }

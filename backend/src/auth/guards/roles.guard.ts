@@ -9,44 +9,26 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    
+    //if not role specified in the decorator
+    //all the role can access
     if (!roles) 
     {
-      return false;
+      return true;
     }
     //this request is coming from jwtGuard which is what jwt return to us
     const request = context.switchToHttp().getRequest();
     //we get the instance of that request.user
     const user = request.user;
     
-    let userRole:string=null;
 
-    if(user.isAdmin===true)
-    {
-      //admin should able to access to all the endpoint 
-        return true;
-    }
+    if(roles.includes('admin')&&user.isAdmin){ return true;}
 
-    else if(user.isManager===true)
-    {
-      //manager should able to access to employee endpoint
-        if(roles[0]='employee')
-        {
-          return true;
-        }
-        userRole='manager';
-    }
+    if(roles.includes('manager')&&user.isManager){return true;}
 
-    else
-    {
-        userRole='employee';
-    }
-
-    if(roles[0]!==userRole)
-    {
-        throw new UnauthorizedException();
-    }
-
-    return true;
+    //not those types of role above, return false
+    else {return false;}
+    
   }
 
 
