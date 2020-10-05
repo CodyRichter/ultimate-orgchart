@@ -68,6 +68,7 @@ export class EmployeeService {
     NEW PROCESSES
   */
 
+  // Aman
   // updates a single field of an employee model found
   async updateEmployeeData(employeeId: any, employee: Employee): Promise<Employee | null>{
     // typegoose default operations
@@ -76,7 +77,8 @@ export class EmployeeService {
     
     return null;
   }
-  
+
+  // Aman
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
   async deleteEmployee(requester: EmployeeAuth, employeeId: number): Promise<boolean> {
@@ -88,6 +90,7 @@ export class EmployeeService {
     return null;
   }
 
+  // Jerry
   // collects raw db status (w/o confidentials like pswd), creates JSON file
   async getJSON(): Promise<File | null>{
     return null;

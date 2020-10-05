@@ -61,7 +61,7 @@ export class EmployeeController {
 
 
 
-  
+
   /*
     UNFINISHED ENDPOINTS
   */
@@ -81,7 +81,7 @@ export class EmployeeController {
   }
 
   // returns a single JSON file of the current db status
-  @Get("json")
+  @Get("JSON")
   async getJSON(): Promise<File | null>{
     return await this.employeeService.getJSON();
   }
