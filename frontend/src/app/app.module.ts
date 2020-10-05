@@ -15,7 +15,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { CommonModule } from '@angular/common';
+import { NgxOrgChartModule } from 'ngx-org-chart';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
@@ -35,6 +36,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    NgxOrgChartModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
