@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-charts',
@@ -13,16 +14,19 @@ export class ChartsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(private router: Router, private httpClient: HttpClient, public dialog: MatDialog) {
+  constructor(private router: Router,
+              private httpClient: HttpClient,
+              public dialog: MatDialog,
+              private readonly authService: AuthService) {
   }
 
-  logout(): void {
-    localStorage.removeItem('id_token');
+  async logout(): Promise<void> {
+    this.authService.logout();
     this.router.navigateByUrl('/login').then();
   }
 
   async getUser(): Promise<void> {
-    console.log(await this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
+    console.log(this.authService.profile);
   }
 
   async getEmployees(): Promise<void> {
