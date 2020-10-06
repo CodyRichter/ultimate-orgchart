@@ -30,8 +30,11 @@ export class Employee {
     @prop({ required: true,  })
     companyName: string;
 
-    @prop({ required: true,  })
+    @prop({ required: true, default: false })
     isManager: boolean;
+
+    @prop({ required: true, default: false })
+    isAdmin: boolean;
 
     @prop({ required: false,  })
     managerId: number;

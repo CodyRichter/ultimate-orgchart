@@ -16,11 +16,12 @@ import {JwtModule} from '@nestjs/jwt';
     JwtModule.register(
       {
         secret:process.env.JWT_SECRET,
-        signOptions:{expiresIn:'60s'},
+        signOptions:{expiresIn:'1h'},
       }
     ),
   ],
   providers: [EmployeeService,JwtStrategy],
-  controllers: [EmployeeController]
+  controllers: [EmployeeController],
+  exports: [EmployeeService],
 })
 export class EmployeeModule {}
