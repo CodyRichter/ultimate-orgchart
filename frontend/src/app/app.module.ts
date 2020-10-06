@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { OrgchartModule } from '@dabeng/ng-orgchart';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    OrgchartModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
