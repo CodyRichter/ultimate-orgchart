@@ -70,12 +70,12 @@ export class EmployeeController {
   // No guard, but requires edit to match requester
   @Patch(":employeeId")
   async updateEmployee(@Param() employeeId: any, @Body() employee: Employee): Promise<Employee | null> {
-    return await this.employeeService.updateEmployeeData(employeeId, employee);
+        return await this.employeeService.updateEmployeeData(employeeId, employee);
   }
 
   // Deletes a single employee
   @Delete("delete")
-  @Roles('manager', 'admin')
+  @Roles(Role.ADMIN,Role.MANAGER)
   async deleteEmployee(@Body() requester: EmployeeAuth, id: number): Promise<boolean>{
     return await this.employeeService.deleteEmployee(requester, id);
   }
