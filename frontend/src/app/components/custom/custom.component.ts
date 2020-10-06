@@ -7,6 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomComponent implements OnInit {
 
+  dssdfsf = {
+    id: '1',
+    name: 'Adrienne Hawkins',
+    title: 'CEO',
+    children: [
+      { id: '2', name: 'Bernadine Richard', title: 'Engineering Manager',
+        children: [
+          { id: '16', name: 'Cleveland Jensen', title: 'Engineering Manager' }
+        ]},
+      {
+        id: '3',
+        name: 'Janelle Melendez',
+        title: 'Engineering Manager',
+      }
+    ]
+  };
+
   ds = {
     id: '1',
     name: 'Lao Lao',
