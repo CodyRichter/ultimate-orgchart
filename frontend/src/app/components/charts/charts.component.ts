@@ -26,6 +26,7 @@ export class ChartsComponent implements OnInit {
         id: '3',
         name: 'Su Miao',
         title: 'department manager',
+        cssClass: 'ngx-org-head',
         children: [
           { id: '4', name: 'Tie Hua', title: 'senior engineer' },
           {

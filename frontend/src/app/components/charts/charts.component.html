@@ -49,14 +49,7 @@
 </mat-sidenav-container>
 
 
-<organization-chart chartClass="myChart" [datasource]="ds" [nodeTemplate]="myNodeTemplate" >
+<organization-chart chartClass="myChart" [datasource]="ds">
 </organization-chart>
-
-<ng-template #myNodeTemplate let-nodeData="datasource">
-	<div (click)="selectNode(nodeData)">
-		<div class="position">{{nodeData.title}}</div>
-		<div class="fullname">{{nodeData.name}}</div>
-	</div>
-</ng-template>
 
 
