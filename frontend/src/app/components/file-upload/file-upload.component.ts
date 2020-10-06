@@ -12,7 +12,7 @@ export class FileUploadComponent implements OnInit {
   fileInput;
 
   file: File = null;
-  fileMsg: string = 'No File Selected'
+  fileMsg = 'No File Selected';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -20,16 +20,16 @@ export class FileUploadComponent implements OnInit {
 
   onClick(): void {
     this.file = null;
-    this.fileMsg = 'No File Selected'
+    this.fileMsg = 'No File Selected';
     this.fileInput.nativeElement.click();
   }
 
   onFileSelected(): void {
     const files: { [key: string]: File } = this.fileInput.nativeElement.files;
-    if (files == null || files[0].type == 'application/json') {
+    if (files == null || files[0].type === 'application/json') {
       this.file = files[0];
     } else {
-      this.fileMsg = 'Invalid File Type!'
+      this.fileMsg = 'Invalid File Type!';
     }
   }
 
