@@ -69,20 +69,17 @@ export class EmployeeController {
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
   @Patch(":employeeId")
-  async updateEmployee(@Param() employeeId: any, @Body() update: any): Promise<Employee | null> {
+  async updateEmployee(@Param("employeeId") employeeId: any, @Body() update: any): Promise<Employee | null> {
     // requires frontend to send update in the form { field: value } to work - how to enforce??? TODO
     // takes in an any value for employeeId, but must be able to be casted into a number to work
     return await this.employeeService.updateEmployeeData(employeeId, update);
   }
 
   // Deletes a single employee
-  @Delete("delete")
+  @Delete(":employeeId")
   @Roles(Role.ADMIN,Role.MANAGER)
-  // async deleteEmployee(@Body() requester: EmployeeAuth, employee: Employee): Promise<boolean>{
-  //   return await this.employeeService.deleteEmployee(requester, employee);
-  // }
-  async deleteEmployee(@Body() employee: Employee): Promise<boolean>{
-    return await this.employeeService.deleteEmployee(employee);
+  async deleteEmployee(@Param("employeeId") employeeId: any): Promise<Employee>{
+    return await this.employeeService.deleteEmployee(employeeId);
   }
 
   // returns a single JSON file of the current db status

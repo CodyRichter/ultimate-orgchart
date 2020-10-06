@@ -69,31 +69,26 @@ export class EmployeeService {
   */
 
   // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: any, update: any): Promise<Employee | null>{
+  async updateEmployeeData(id: number, update: any): Promise<Employee | null>{
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 
-    const filter = { id: Number(employeeId) };
-    //return await this.employeeModel.findOneAndReplace(filter, employee, {new: true}).exec();
-    return await this.employeeModel.findOneAndUpdate(filter, update, {new: true});  // return the updated employee
+    const filter = { employeeId: id };
+    return await this.employeeModel.findOneAndUpdate(filter, update, {new: true}).exec();  // return the updated employee
   }
 
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
   //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
-  async deleteEmployee(employee: Employee): Promise<boolean> {
+  async deleteEmployee(id: number): Promise<Employee> {
     // check if requester is parent of employeeId TODO
-    if(false){
-      return false;  
-    } 
-    // delete employee from db
-    const returnDoc = this.employeeModel.findOneAndDelete(employee);
-    if(returnDoc){
-      //console.log(returnDoc);
-      return true;  // return true if there is a return type, which indicates that object is found
-    } 
+    // if(false){
+    //   return false;  // UNIMPLEMENTED
+    // } 
 
-    return false;  // no returnDoc means it wasn't found, and it wasn't deleted - return failed op
+    // delete employee from db
+    const returnDoc = await this.employeeModel.findOneAndDelete( {employeeId: id} ).exec();
+    return returnDoc;
   }
 
   // collects raw db status (w/o confidentials like pswd), creates JSON file
