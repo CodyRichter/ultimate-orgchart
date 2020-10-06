@@ -1,6 +1,21 @@
 version: '3'
 services:
 
+  database:
+    image: mongo
+    container_name: 'test'
+    volumes:
+      - "./database/dbinfo:/data/db"
+    ports:
+      - "27017:27017"
+
+  mongo-seed:
+    image: mongo
+    network_mode: service:database
+    command: mongoimport --host database --db testd --collection testc --type json --file /data/db/init.json --jsonArray
+    volumes:
+      - "./database/dbinfo:/data/db"
+
   backend:
     build: backend
     command: npm start

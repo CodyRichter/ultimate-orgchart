@@ -1,0 +1,14 @@
+[
+  {
+    "firstName": "Miquel",
+    "lastName": "Pineda",
+    "companyId": 1,
+    "password": "pinedami",
+    "positionTitle": "CEO",
+    "companyName": "Cyclone Aviation",
+    "isManager": true,
+    "employeeId": 1,
+    "email": "Miquel_Pineda@cycloneaviation.com",
+    "startDate": "2016-05-04"
+  }
+]
