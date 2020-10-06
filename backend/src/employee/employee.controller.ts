@@ -71,6 +71,7 @@ export class EmployeeController {
   @Patch(":employeeId")
   async updateEmployee(@Param() employeeId: any, @Body() update: any): Promise<Employee | null> {
     // requires frontend to send update in the form { field: value } to work - how to enforce??? TODO
+    // takes in an any value for employeeId, but must be able to be casted into a number to work
     return await this.employeeService.updateEmployeeData(employeeId, update);
   }
 
