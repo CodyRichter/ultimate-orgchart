@@ -80,7 +80,8 @@ export class EmployeeService {
 
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
-  async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
+  //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
+  async deleteEmployee(employee: Employee): Promise<boolean> {
     // check if requester is parent of employeeId TODO
     if(false){
       return false;  
@@ -88,6 +89,7 @@ export class EmployeeService {
     // delete employee from db
     const returnDoc = this.employeeModel.findOneAndDelete(employee);
     if(returnDoc){
+      //console.log(returnDoc);
       return true;  // return true if there is a return type, which indicates that object is found
     } 
 
@@ -107,7 +109,6 @@ export class EmployeeService {
       console.log("Done write")
     });
     return fs;
-  }
   }
 
   

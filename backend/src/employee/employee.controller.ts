@@ -78,8 +78,11 @@ export class EmployeeController {
   // Deletes a single employee
   @Delete("delete")
   @Roles(Role.ADMIN,Role.MANAGER)
-  async deleteEmployee(@Body() requester: EmployeeAuth, employee: Employee): Promise<boolean>{
-    return await this.employeeService.deleteEmployee(requester, employee);
+  // async deleteEmployee(@Body() requester: EmployeeAuth, employee: Employee): Promise<boolean>{
+  //   return await this.employeeService.deleteEmployee(requester, employee);
+  // }
+  async deleteEmployee(@Body() employee: Employee): Promise<boolean>{
+    return await this.employeeService.deleteEmployee(employee);
   }
 
   // returns a single JSON file of the current db status
