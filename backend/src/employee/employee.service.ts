@@ -70,13 +70,14 @@ export class EmployeeService {
 
   // Aman
   // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: any, employee: Employee): Promise<Employee | null>{
+  async updateEmployeeData(employeeId: any, update: any): Promise<Employee | null>{
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 
     returnDoc: Employee;
     const filter = { id: Number(employeeId) };
-    return await this.employeeModel.findOneAndReplace(filter, employee, {new: true}).exec();
+    //return await this.employeeModel.findOneAndReplace(filter, employee, {new: true}).exec();
+    return await this.employeeModel.findOneAndUpdate(filter, update, {new: true});
   }
 
   // Aman

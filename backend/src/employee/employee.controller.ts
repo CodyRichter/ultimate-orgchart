@@ -63,21 +63,22 @@ export class EmployeeController {
 
 
   /*
-    UNFINISHED ENDPOINTS
+    NEW ENDPOINTS
   */
 
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
   @Patch(":employeeId")
-  async updateEmployee(@Param() employeeId: any, @Body() employee: Employee): Promise<Employee | null> {
-        return await this.employeeService.updateEmployeeData(employeeId, employee);
+  async updateEmployee(@Param() employeeId: any, @Body() update: any): Promise<Employee | null> {
+    // requires frontend to send update in the form { field: value } to work - how to enforce??? TODO
+    return await this.employeeService.updateEmployeeData(employeeId, update);
   }
 
   // Deletes a single employee
   @Delete("delete")
   @Roles(Role.ADMIN,Role.MANAGER)
-  async deleteEmployee(@Body() requester: EmployeeAuth, id: number): Promise<boolean>{
-    return await this.employeeService.deleteEmployee(requester, id);
+  async deleteEmployee(@Body() requester: EmployeeAuth, employee: Employee): Promise<boolean>{
+    return await this.employeeService.deleteEmployee(requester, employee);
   }
 
   // returns a single JSON file of the current db status
