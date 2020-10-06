@@ -74,7 +74,6 @@ export class EmployeeService {
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 
-
     returnDoc: Employee;
     const filter = { id: Number(employeeId) };
     return await this.employeeModel.findOneAndReplace(filter, employee, {new: true}).exec();
@@ -83,13 +82,18 @@ export class EmployeeService {
   // Aman
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
-  async deleteEmployee(requester: EmployeeAuth, employeeId: number): Promise<boolean> {
+  async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
     // check if requester is parent of employeeId
     if(false){
       return false;  
     } 
     // delete employee from db
-    return null;
+    const returnDoc = this.employeeModel.findOneAndDelete(employee);
+    if(returnDoc){
+      return true;  // return true if there is a return type, which indicates that object is found
+    } 
+
+    return false;
   }
 
   // Jerry
