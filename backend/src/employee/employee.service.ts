@@ -91,20 +91,7 @@ export class EmployeeService {
     return returnDoc;
   }
 
-  // collects raw db status (w/o confidentials like pswd), creates JSON file
-  async getJSON(): Promise<File | null>{
-    var employees;
-    const fs = require("fs");
-    const employees_list = require("./employees_list");
-    for(employees in this.findAllEmployees()){
-      employees_list.push(this.findAllEmployees()[employees]);
-    }
-    fs.writeFile("employees-list.json",JSON.stringify(employees_list),(err: any)=>{
-      if (err) throw err;
-      console.log("Done write")
-    });
-    return fs;
-  }
+
 
   
 }

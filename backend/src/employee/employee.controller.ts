@@ -1,5 +1,5 @@
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param, Response } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
@@ -51,6 +51,20 @@ export class EmployeeController {
     return await this.employeeService.createEmployees(data);
   }
   
+  // returns a single JSON file of the current db status
+  @Get("JSON")
+  async getJSON(@Response() res): Promise<any>{
+    const data = await this.employeeService.findAllEmployees();
+    const date = new Date().toUTCString();
+    
+    res.set({
+      'Content-Disposition': `attachment; filename="employee_data_${date}.json"`,
+      'Content-Type': 'application/json',
+    });
+    res.send(data);
+    res.end();
+  }
+
   // Returns the information of a single employee
   // No guard
   @Get(':employeeId')
@@ -82,10 +96,6 @@ export class EmployeeController {
     return await this.employeeService.deleteEmployee(employeeId);
   }
 
-  // returns a single JSON file of the current db status
-  @Get("JSON")
-  async getJSON(): Promise<File | null>{
-    return await this.employeeService.getJSON();
-  }
+
 
 }
