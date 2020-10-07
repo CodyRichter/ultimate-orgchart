@@ -40,7 +40,8 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "typegoose": "^5.9.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

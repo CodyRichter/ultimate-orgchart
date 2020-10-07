@@ -59,8 +59,39 @@ export class EmployeeService {
     return await this.employeeModel.find().exec();
   }
 
-  async findEmployeeById(employeeId: number): Promise<Employee | null> {
+  // returns employee data by id
+  async findEmployeeById(employeeId: number): Promise<Employee> {
     return await this.employeeModel.findOne({employeeId}).exec();
   }
+
+  /*
+    NEW PROCESSES
+  */
+
+  // updates a single field of an employee model found
+  async updateEmployeeData(id: number, update: any): Promise<Employee | null>{
+    // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
+    // modified fields already in place, so the service simply replaces the db entry
+
+    const filter = { employeeId: id };
+    return await this.employeeModel.findOneAndUpdate(filter, update, {new: true}).exec();  // return the updated employee
+  }
+
+  // removes a single employee from db if request is valid
+  // returns true if successful, false otherwise
+  //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
+  async deleteEmployee(id: number): Promise<Employee> {
+    // check if requester is parent of employeeId TODO
+    // if(false){
+    //   return false;  // UNIMPLEMENTED
+    // } 
+
+    // delete employee from db
+    const returnDoc = await this.employeeModel.findOneAndDelete( {employeeId: id} ).exec();
+    return returnDoc;
+  }
+
+
+
   
 }
