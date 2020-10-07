@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'file-upload',
@@ -14,7 +15,7 @@ export class FileUploadComponent implements OnInit {
   file: File = null;
   fileMsg = 'No File Selected';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private readonly employeeService: EmployeeService) { }
 
   ngOnInit() {}
 
@@ -33,11 +34,9 @@ export class FileUploadComponent implements OnInit {
     }
   }
 
-  async uploadFile() {
+  async uploadFile(): Promise<void> {
     if (this.file != null) {
-      const formData = new FormData();
-      formData.append('file', this.file);
-      console.log(await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise());
+      console.log(await this.employeeService.uploadJSON(this.file));
     }
   }
 

@@ -60,6 +60,7 @@ export class EmployeeController {
     res.set({
       'Content-Disposition': `attachment; filename="employee_data_${date}.json"`,
       'Content-Type': 'application/json',
+      'Access-Control-Expose-Headers': 'Content-Disposition',
     });
     res.send(data);
     res.end();
@@ -83,7 +84,7 @@ export class EmployeeController {
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
   @Patch(":employeeId")
-  async updateEmployee(@Param("employeeId") employeeId: any, @Body() update: any): Promise<Employee | null> {
+  async updateEmployee(@Param("employeeId") employeeId: any, @Body() update: any): Promise<Employee> {
     // requires frontend to send update in the form { field: value } to work - how to enforce??? TODO
     // takes in an any value for employeeId, but must be able to be casted into a number to work
     return await this.employeeService.updateEmployeeData(employeeId, update);

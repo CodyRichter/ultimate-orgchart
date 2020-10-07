@@ -8,7 +8,7 @@ export class AuthService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  authToken: string;
+  private authToken: string;
   profile: any;
 
   public async login(email: string, password: string): Promise<any> {
@@ -24,7 +24,15 @@ export class AuthService {
     this.profile = undefined;
   }
 
+  public getAuthToken(): string {
+    if (!this.authToken) {
+      this.authToken = localStorage.getItem('id_token');
+    }
+    return this.authToken;
+  }
+
   private async getProfile(): Promise<any> {
+    this.getAuthToken();
     this.profile = await this.httpClient.get('http://localhost:3000/auth/profile').toPromise();
     return this.profile;
   }
