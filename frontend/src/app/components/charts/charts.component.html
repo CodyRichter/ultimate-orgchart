@@ -48,10 +48,48 @@
     </mat-sidenav>
 </mat-sidenav-container>
 
+<div>
+    <button mat-raised-button (click)="getUser()" class="button">
+        Get User
+    </button>
+    <button mat-raised-button (click)="getAllEmployees()" class="button">
+        Get All Employees
+    </button>
+    <button mat-raised-button (click)="openJSONUploadDialog()" class="button">
+        Upload JSON
+    </button>
 
-<organization-chart chartClass="myChart" [datasource]="ds">
-</organization-chart>
+    <br>
 
+    <button mat-raised-button (click)="(createEmployee())" class="button">
+        Create Employee 2501
+    </button>
+
+    <button mat-raised-button (click)="getSingleEmployee()" class="button">
+        Get Employee 2501
+    </button>
+
+    <br>
+
+    <button mat-raised-button (click)="(updateEmployee())" class="button">
+        Update Employee 2501
+    </button>
+
+    <button mat-raised-button (click)="(deleteEmployee())" class="button">
+        Delete Employee 2501
+    </button>
+
+    <br>
+
+    <button mat-raised-button (click)="(downloadJSON())" class="button">
+        Download JSON
+    </button>
+</div>
+
+<div class="orgchart-container">
+    <organization-chart chartClass="myChart" [datasource]="ds">
+    </organization-chart>
+</div>
 
 
 

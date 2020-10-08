@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-charts',
@@ -10,71 +11,122 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ChartsComponent implements OnInit {
 
-  ngOnInit(): void {
-  }
-
-  constructor(private router: Router, private httpClient: HttpClient, public dialog: MatDialog) {
+  constructor(private router: Router,
+              public dialog: MatDialog,
+              private readonly authService: AuthService,
+              private readonly employeeService: EmployeeService) {
   }
 
   ds = {
     id: '1',
-    name: 'Lao Lao',
-    title: 'general manager',
+    name: 'Adrienne Hawkins',
+    title: 'CEO',
     children: [
-      { id: '2', name: 'Bo Miao', title: 'department manager' },
+      { id: '2', name: 'Bernadine Richard', title: 'Engineering Manager' },
       {
         id: '3',
-        name: 'Su Miao',
-        title: 'department manager',
+        name: 'Cleveland Jensen',
+        title: 'Engineering Manager',
         cssClass: 'ngx-org-head',
         children: [
-          { id: '4', name: 'Tie Hua', title: 'senior engineer' },
+          { id: '4', name: 'Thanh Page', title: 'Senior Software Engineer' },
           {
             id: '5',
-            name: 'Hei Hei',
-            title: 'senior engineer',
+            name: 'Patti Robles',
+            title: 'Engineering Manager',
             children: [
-              { id: '6', name: 'Dan Zai', title: 'engineer' },
-              { id: '7', name: 'Dan Dan', title: 'engineer' },
-              { id: '8', name: 'Xiang Xiang', title: 'engineer' },
-              { id: '9', name: 'Ke Xin', title: 'engineer' },
-              { id: '10', name: 'Xiao Dan', title: 'engineer' },
-              { id: '11', name: 'Dan Dan Zai', title: 'engineer' }
+              { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
+              { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
+              { id: '8', name: 'Jayne York', title: 'Software Engineer II' },
+              { id: '9', name: 'Randi Vang', title: 'Software Engineer II' },
+              { id: '10', name: 'Maryanne Bell', title: 'Software Engineer II' },
+              { id: '11', name: 'Adolph Mccarty', title: 'Software Engineer II' }
             ]
           },
-          { id: '12', name: 'Pang Pang', title: 'senior engineer' },
-          { id: '13', name: 'Er Pang', title: 'senior engineer' },
-          { id: '14', name: 'San Pang', title: 'senior engineer' },
-          { id: '15', name: 'Si Pang', title: 'senior engineer' }
+          { id: '12', name: 'Oren Marsh', title: 'Software Architect' },
+          { id: '13', name: 'Quinton Travis', title: 'Software Architect' },
+          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
+          { id: '15', name: 'Josue Stuart', title: 'Senior Software Engineer' }
         ]
       },
-      { id: '16', name: 'Hong Miao', title: 'department manager' },
-      { id: '17', name: 'Chun Miao', title: 'department manager' },
-      { id: '18', name: 'Yu Li', title: 'department manager' },
-      { id: '19', name: 'Yu Jie', title: 'department manager' },
-      { id: '20', name: 'Yu Wei', title: 'department manager' },
-      { id: '21', name: 'Yu Tie', title: 'department manager' }
+      { id: '16', name: 'Adan Larsen', title: 'Software Engineer I' },
+      { id: '17', name: 'Raleigh Robbins', title: 'Software Engineer I' },
+      { id: '18', name: 'Josue Stuart', title: 'Tech Lead' },
+      { id: '19', name: 'Thanh Page', title: 'Tech Lead' },
+      { id: '20', name: 'Jerald Cuevas', title: 'Software Architect' },
+      { id: '21', name: 'Denis Matthews', title: 'Software Engineer II' }
     ]
   };
 
-  selectNode(nodeData: {name: string, title: string}) {
+  ngOnInit(): void {
+  }
+
+  selectNode(nodeData: {name: string, title: string}): void {
     alert(`Hi All. I'm ${nodeData.name}. I'm a ${nodeData.title}.`);
   }
 
-  logout(): void {
-    localStorage.removeItem('id_token');
+  async logout(): Promise<void> {
+    this.authService.logout();
     this.router.navigateByUrl('/login').then();
   }
 
   async getUser(): Promise<void> {
-    console.log(await this.httpClient.get('http://localhost:3000/auth/profile').toPromise());
+    console.log(this.authService.profile);
   }
 
-  async getEmployees(): Promise<void> {
-    console.log(await this.httpClient.get('http://localhost:3000/employee/all').toPromise());
+  async getAllEmployees(): Promise<void> {
+    console.log(await this.employeeService.getAllEmployees());
   }
 
-  openJSONUploadDialog() {
+  async getSingleEmployee(): Promise<void> {
+    console.log(await this.employeeService.getEmployeeById(2501));
+  }
+
+  async deleteEmployee(): Promise<void> {
+    console.log(await this.employeeService.deleteEmployeeById(2501));
+  }
+
+  async updateEmployee(): Promise<void> {
+    const newEmployee = {
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Some',
+      lastName: 'Person',
+      companyId: 1,
+      positionTitle: 'Senior bug finder',
+      companyName: 'Cyclone Aviation',
+      employeeId: 2501,
+      managerId: null,
+      email: 'testemail@email.com',
+      password: 'password',
+      startDate: new Date(),
+    };
+    console.log(await this.employeeService.updateEmployee(newEmployee));
+  }
+
+  async createEmployee(): Promise<void> {
+    const newEmployee = {
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Testing',
+      lastName: 'Dummy',
+      companyId: 1,
+      positionTitle: 'Senior bug finder',
+      companyName: 'Cyclone Aviation',
+      employeeId: 2501,
+      managerId: null,
+      email: 'testemail@email.com',
+      password: 'password',
+      startDate: new Date(),
+    };
+    console.log(await this.employeeService.createEmployee(newEmployee));
+  }
+
+  async downloadJSON(): Promise<void> {
+    await this.employeeService.downloadJSON();
+  }
+
+  openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
 
     dialogRef.afterClosed().subscribe(result => {
