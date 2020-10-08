@@ -40,9 +40,9 @@ export class EmployeeService {
   }
 
   downloadJSON(): any {
-     this.httpClient.get('http://localhost:3000/employee/JSON', {responseType: 'blob', observe: 'response',}).subscribe(
+     this.httpClient.get('http://localhost:3000/employee/JSON', {responseType: 'blob', observe: 'response'}).subscribe(
        response => {
-        const blob = new Blob([response], {type: 'application/json'});
+        const blob = new Blob([response.body], {type: response.headers.get('Content-Type')});
         const fileName = response.headers.get('Content-Disposition').split('filename="')[1].split('"')[0];
         saveAs(blob, fileName);
        }, err => {
