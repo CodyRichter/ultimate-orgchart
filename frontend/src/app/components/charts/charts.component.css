@@ -79,7 +79,12 @@
     width: 200px;
 }
 
-
+.orgchart-container {
+    position: absolute;
+    right: 1px;
+    top:64px;
+    width: 60%;
+}
 
   
 
