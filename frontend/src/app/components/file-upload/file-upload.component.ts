@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'file-upload',
@@ -12,32 +13,30 @@ export class FileUploadComponent implements OnInit {
   fileInput;
 
   file: File = null;
-  fileMsg: string = 'No File Selected'
+  fileMsg = 'No File Selected';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private readonly employeeService: EmployeeService) { }
 
   ngOnInit() {}
 
   onClick(): void {
     this.file = null;
-    this.fileMsg = 'No File Selected'
+    this.fileMsg = 'No File Selected';
     this.fileInput.nativeElement.click();
   }
 
   onFileSelected(): void {
     const files: { [key: string]: File } = this.fileInput.nativeElement.files;
-    if (files == null || files[0].type == 'application/json') {
+    if (files == null || files[0].type === 'application/json') {
       this.file = files[0];
     } else {
-      this.fileMsg = 'Invalid File Type!'
+      this.fileMsg = 'Invalid File Type!';
     }
   }
 
-  async uploadFile() {
+  async uploadFile(): Promise<void> {
     if (this.file != null) {
-      const formData = new FormData();
-      formData.append('file', this.file);
-      console.log(await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise());
+      console.log(await this.employeeService.uploadJSON(this.file));
     }
   }
 
