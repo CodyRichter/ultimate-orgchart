@@ -83,6 +83,28 @@
     z-index: 9999;
 }
   
+.org{
+    width:60%;
+    
+}
+
+.button{
+    margin-right:10px;
+}
+
+.flex-container{
+    display:flex;
+    flex-wrap: nowrap;
+    position:relative;
+    left:300px;
+    padding:20px;
+}
+
+#orgchart-container{
+    width:60%;
+    position: relative;
+    left: 400px;
+}
 
 
 

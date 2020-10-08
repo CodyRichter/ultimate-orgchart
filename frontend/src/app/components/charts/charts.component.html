@@ -48,7 +48,8 @@
     </mat-sidenav>
 </mat-sidenav-container>
 
-<div class="bunch_of_buttons">
+<div class = "flex-container">
+    
     <button mat-raised-button (click)="getUser()" class="button">
         Get User
     </button>
@@ -87,10 +88,10 @@
     <button mat-raised-button (click)="(updateEmployee())" class="button">
         Update Employee 2501
     </button>
-
+ 
     <br>
     <br>
-
+   
     <button mat-raised-button (click)="(deleteEmployee())" class="button">
         Delete Employee 2501
     </button>
@@ -101,12 +102,15 @@
     <button mat-raised-button (click)="(downloadJSON())" class="button">
         Download JSON
     </button>
+ 
+ 
 </div>
 
-<div class = "orgchart-container">
-    <organization-chart chartClass="myChart" [datasource]="ds">
+<section id = "orgchart-container">
+ <organization-chart chartClass="myChart" class = "org" [datasource]="ds" style="width: 60%;">
     </organization-chart>
-</div>
+</section>
+
 
 
 
