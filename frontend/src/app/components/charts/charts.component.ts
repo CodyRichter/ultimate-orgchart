@@ -11,12 +11,6 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class ChartsComponent implements OnInit {
 
-  constructor(private router: Router,
-              public dialog: MatDialog,
-              private readonly authService: AuthService,
-              private readonly employeeService: EmployeeService) {
-  }
-
   ds = {
     id: '1',
     name: 'Adrienne Hawkins',
@@ -27,7 +21,6 @@ export class ChartsComponent implements OnInit {
         id: '3',
         name: 'Cleveland Jensen',
         title: 'Engineering Manager',
-        cssClass: 'ngx-org-head',
         children: [
           { id: '4', name: 'Thanh Page', title: 'Senior Software Engineer' },
           {
@@ -60,6 +53,12 @@ export class ChartsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  constructor(private router: Router,
+    public dialog: MatDialog,
+    private readonly authService: AuthService,
+    private readonly employeeService: EmployeeService) {
+}
 
   selectNode(nodeData: {name: string, title: string}): void {
     alert(`Hi All. I'm ${nodeData.name}. I'm a ${nodeData.title}.`);
