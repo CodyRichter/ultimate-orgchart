@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-charts',
@@ -15,9 +15,9 @@ export class ChartsComponent implements OnInit {
   }
 
   constructor(private router: Router,
-              private httpClient: HttpClient,
               public dialog: MatDialog,
-              private readonly authService: AuthService) {
+              private readonly authService: AuthService,
+              private readonly employeeService: EmployeeService) {
   }
 
   async logout(): Promise<void> {
@@ -29,11 +29,59 @@ export class ChartsComponent implements OnInit {
     console.log(this.authService.profile);
   }
 
-  async getEmployees(): Promise<void> {
-    console.log(await this.httpClient.get('http://localhost:3000/employee/all').toPromise());
+  async getAllEmployees(): Promise<void> {
+    console.log(await this.employeeService.getAllEmployees());
   }
 
-  openJSONUploadDialog() {
+  async getSingleEmployee(): Promise<void> {
+    console.log(await this.employeeService.getEmployeeById(2501));
+  }
+
+  async deleteEmployee(): Promise<void> {
+    console.log(await this.employeeService.deleteEmployeeById(2501));
+  }
+
+  async updateEmployee(): Promise<void> {
+    const newEmployee = {
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Some',
+      lastName: 'Person',
+      companyId: 1,
+      positionTitle: 'Senior bug finder',
+      companyName: 'Cyclone Aviation',
+      employeeId: 2501,
+      managerId: null,
+      email: 'testemail@email.com',
+      password: 'password',
+      startDate: new Date(),
+    };
+    console.log(await this.employeeService.updateEmployee(newEmployee));
+  }
+
+  async createEmployee(): Promise<void> {
+    const newEmployee = {
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Testing',
+      lastName: 'Dummy',
+      companyId: 1,
+      positionTitle: 'Senior bug finder',
+      companyName: 'Cyclone Aviation',
+      employeeId: 2501,
+      managerId: null,
+      email: 'testemail@email.com',
+      password: 'password',
+      startDate: new Date(),
+    };
+    console.log(await this.employeeService.createEmployee(newEmployee));
+  }
+
+  async downloadJSON(): Promise<void> {
+    await this.employeeService.downloadJSON();
+  }
+
+  openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
 
     dialogRef.afterClosed().subscribe(result => {

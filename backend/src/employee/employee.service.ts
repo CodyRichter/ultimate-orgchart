@@ -87,6 +87,7 @@ export class EmployeeService {
     // } 
 
     // delete employee from db
+    await this.employeeAuthModel.findOneAndDelete( {employeeId: id} ).exec();
     const returnDoc = await this.employeeModel.findOneAndDelete( {employeeId: id} ).exec();
     return returnDoc;
   }
