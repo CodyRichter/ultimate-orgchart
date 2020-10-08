@@ -42,18 +42,8 @@
 }
 
 .button {
-    top: 156px;
-    left: 400px;
     color:white;
     background-color:#008264;
-}
-
-.button2 {
-    position: absolute;
-    top: 156px;
-    left: 550px;
-    color:white;
-    background-color: #008264;
 }
 
 .example-card {
@@ -86,6 +76,12 @@
     width: 60%;
 }
 
+.bunch_of_buttons {
+    position: relative;
+    top:160px;
+    left: 260px;
+    z-index: 9999;
+}
   
 
 
