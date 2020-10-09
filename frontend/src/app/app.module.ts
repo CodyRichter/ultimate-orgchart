@@ -21,8 +21,11 @@ import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
+import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+
+import { OrgchartModule } from './modules/orgchart/orgchart.module';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     NotFoundComponent,
     FileUploadComponent,
     JSONUploadDialog,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,11 +52,16 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
+    OrgchartModule,
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/test',
         pathMatch: 'full'
+      },
+      {
+        path: 'test',
+        component: TestComponent
       },
       {
         path: 'login',
