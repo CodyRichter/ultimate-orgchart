@@ -4,6 +4,8 @@ import { ChartContainerComponent } from './chart-container/chart-container.compo
 import { ChartNodeComponent } from './chart-node/chart-node.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NodeSelectService } from './shared/services/node-select.service';
+import { MatCardModule } from '@angular/material/card';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [ChartContainerComponent, ChartNodeComponent],
@@ -13,7 +15,9 @@ import { NodeSelectService } from './shared/services/node-select.service';
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    DragDropModule
   ],
   providers: [NodeSelectService]
 })

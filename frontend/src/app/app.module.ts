@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
@@ -53,10 +54,11 @@ import { TestComponent } from './components/test/test.component';
     MatMenuModule,
     MatDialogModule,
     OrgchartModule,
+    DragDropModule,
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: '/test',
+        redirectTo: '/login',
         pathMatch: 'full'
       },
       {

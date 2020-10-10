@@ -79,4 +79,39 @@
     width: 200px;
 }
 
+.orgchart {
+    position: absolute;
+    left: 500px;
+}
+
+.search-bar {
+    height: 50px;
+    margin-left: 64px;
+    width: 800px;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+}
+
+.search-bar-icon {
+    position: absolute;
+    color: grey;
+    margin-left: 16px;
+    margin-top: 12px;
+    margin-right: 8px;
+}
+
+.search-bar-more {
+    position: absolute;
+    color: grey;
+    margin-left: 755px;
+    margin-top: 3px;
+}
+
+.search-bar-input {
+    position: absolute;
+    color: grey;
+    margin-left: 50px;
+    font-weight: normal;
+    margin-top: 6px;
+}
 
