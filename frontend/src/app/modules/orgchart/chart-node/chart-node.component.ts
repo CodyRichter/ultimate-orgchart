@@ -9,6 +9,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import {CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragExit} from "@angular/cdk/drag-drop";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -119,5 +120,21 @@ export class ChartNodeComponent implements OnInit {
 
   onNodeClick(e): void {
     this.nodeClick.emit(e);
+  }
+
+  getColor(pos): string {
+    const color =
+    {
+      'Engineering Manager': '#FFBA00',
+      CEO: '#3C9329',
+      'Software Engineer II': '#0093FF',
+      'Tech Lead': '#019592',
+      'Software Engineer I': '#7F39FB'
+    };
+    return 'background: linear-gradient(0deg, white 80%,' + color[pos] +  ' 20%);';
+  }
+
+  onDragEnded(event: CdkDragEnd): void {
+    event.source._dragRef.reset();
   }
 }
