@@ -31,8 +31,8 @@ export class ManagerRequest
         toManagerId:number;
 
         //I think we don't need to enforce client send the status
-        //we can set it when the request created
-        @prop({required:true})
+        //we can set it when the request created in the service
+        @prop({required:false})
         status:string;
 
         @prop({required:false})
