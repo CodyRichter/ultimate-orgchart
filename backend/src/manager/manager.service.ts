@@ -103,12 +103,46 @@ export class ManagerService {
 
     }
 
+    //jimmy:10/11
+    //find all the requests under the given manager ID in the fromManagerId field 
+    async findAllRequestsFrom(fromManagerId: number): Promise<ManagerRequest[] | null> {
+        let result: ManagerRequest[];
+        try {
+            result = await this.managerRequestModel.find({ fromManagerId }).exec();
+        } catch (error) {
+            throw new NotFoundException('The request does not exist');
+        }
+        return result;
+
+    }
+
+    //jimmy:10/11
+    //find all the requests undert the given manager Id  in the  toManagerId Field
+    async findAllRequestsTo(toManagerId: number): Promise<ManagerRequest[] | null> {
+        let result: ManagerRequest[];
+        try {
+            result = await this.managerRequestModel.find({ toManagerId }).exec();
+        } catch (error) {
+            throw new NotFoundException('The request does not exist');
+        }
+        return result;
+
+    }
+
+    //jimmy:10/11
+    //find all requests in the database
+    async findAllRequest(): Promise<ManagerRequest[] | null> {
+        return await this.managerRequestModel.find().exec();
+    }
+
+
+
     //Jimmy:10/10
     //find the request by requestId
     //return the entire request
     async findRequestById(requestId: number): Promise<ManagerRequest> {
 
-        let result;
+        let result: ManagerRequest;
         try {
             result = await this.managerRequestModel.findOne({ requestId }).exec();
         } catch (error) {

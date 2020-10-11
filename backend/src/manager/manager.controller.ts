@@ -1,5 +1,5 @@
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param } from '@nestjs/common';
 import { Employee } from '../employee/employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
 //import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -44,6 +44,39 @@ export class ManagerController {
         async rejectRequest(@Body() request: ManagerRequest): Promise<ManagerRequest> {
 
                 return await this.managerService.rejectedRequest(request.requestId);
+        }
+
+
+        //get all request from the  fromManagerId field
+        //Param: the FromManager Id
+        //Return: the lists of request that he has
+        @Get("all/from/:managerId")
+        async getAllRequestFrom(@Param('managerId') managerId: number) {
+                return await this.managerService.findAllRequestsFrom(managerId);
+        }
+
+        //get all request  by the toManagerId field
+        //Param: the toManagerId
+        //Return: the list of request  that given manager Id 
+        @Get("all/to/:managerId")
+        async getAllRequestTo(@Param('managerId') managerId: number) {
+                return await this.managerService.findAllRequestsTo(managerId);
+        }
+
+        //get all request in the database
+        //could be used for testing purpose
+        @Get('All')
+        async getAllRequest()
+        {
+                return await this.managerService.findAllRequest();
+        }
+
+        //get single request 
+        //Param: the request id
+        //return: the single request
+        @Get("/:requestId")
+        async getOneRequest(@Param('requestId') requestId: number) {
+                return await this.managerService.findRequestById(requestId);
         }
 
 }
