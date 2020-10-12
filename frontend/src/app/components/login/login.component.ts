@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,9 @@ export class LoginComponent implements AfterViewInit {
   hide: any;
   controller: FormControl;
 
-  constructor(private elementRef: ElementRef, private router: Router, private httpClient: HttpClient) {
+  constructor(private readonly elementRef: ElementRef,
+              private readonly router: Router,
+              private readonly authService: AuthService) {
     this.hide = true;
     this.controller = new FormControl();
   }
@@ -22,18 +25,15 @@ export class LoginComponent implements AfterViewInit {
     this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#F9F9F9';
   }
 
-  login(): void {
-    this.httpClient.post('http://localhost:3000/auth/signin', {
-      email: (document.getElementById('email') as HTMLInputElement).value,
-      password: (document.getElementById('password') as HTMLInputElement).value
-    }).toPromise()
-      .then(token => this.tokenHandler(token))
-      .catch(error => this.errorHandler(error));
-  }
-
-  tokenHandler(token): void {
-    localStorage.setItem('id_token', token.accessToken);
-    this.router.navigateByUrl('/charts').then();
+  async login(): Promise<void> {
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    try {
+      await this.authService.login(email, password);
+      this.router.navigateByUrl('/charts').then();
+    } catch (error) {
+      this.errorHandler(error);
+    }
   }
 
   errorHandler(error): void{
