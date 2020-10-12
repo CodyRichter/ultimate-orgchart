@@ -3,35 +3,35 @@ services:
 
   database:
     image: mongo
-    container_name: 'test'
-    volumes:
-      - "./database/dbinfo:/data/db"
+    # container_name: 'blah'
+    # volumes:
+    #   - "./database/dbinfo:/data/db"
     ports:
       - "27017:27017"
 
-  mongo-seed:
-    image: mongo
-    network_mode: service:database
-    command: mongoimport --host database --db testd --collection testc --type json --file /data/db/init.json --jsonArray
-    volumes:
-      - "./database/dbinfo:/data/db"
+  # mongo-seed:
+  #   image: mongo
+  #   network_mode: service:database
+  #   command: mongoimport --host database --db testd --collection testc --type json --file /data/db/init.json --jsonArray
+  #   volumes:
+  #     - "./database/dbinfo:/data/db"
 
-  backend:
-    build: backend
-    command: npm start
-    ports:
-      - 3000:3000
-    volumes:
-      - ./backend:/usr/src/app:rw
-      - /usr/src/app/node_modules
+  # backend:
+  #   build: backend
+  #   command: /bin/bash -c "npm rebuild bcrypt --build-from-source && npm start"
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./backend:/usr/src/app:rw
+  #     - /usr/src/app/node_modules
 
-  frontend:
-    build: frontend
-    command: npm start
-    depends_on:
-      - backend
-    ports:
-      - 4200:4200
-    volumes:
-      - ./frontend:/usr/src/app:rw
-      - /usr/src/app/node_modules
+  # frontend:
+  #   build: frontend
+  #   command: npm start
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - 4200:4200
+  #   volumes:
+  #     - ./frontend:/usr/src/app:rw
+  #     - /usr/src/app/node_modules
