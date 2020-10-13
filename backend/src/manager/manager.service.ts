@@ -6,7 +6,7 @@ import { EmployeeAuth } from "src/auth/auth.model";
 import { ManagerRequest } from './manager.model';
 import { RequestStatus } from '../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
-
+import {Document} from 'mongoose';
 @Injectable()
 export class ManagerService {
     constructor(
@@ -14,7 +14,7 @@ export class ManagerService {
         @InjectModel(EmployeeAuth) private readonly employeeAuthModel: ReturnModelType<typeof EmployeeAuth>,
         @InjectModel(ManagerRequest) private readonly managerRequestModel: ReturnModelType<typeof ManagerRequest>,
         private readonly employeeService: EmployeeService,
-    ) { }
+    ) {}
 
     // moves one employee to another in the db
     // async transfer(requester: Employee & EmployeeAuth, manager: Employee, 
@@ -27,6 +27,7 @@ export class ManagerService {
     //jimmy:10/09
     //create request 
     async createRequest(newRequest: ManagerRequest): Promise<ManagerRequest> {
+        
         const createdRequest = new this.managerRequestModel(newRequest);
         //we manually add the status rather than the front-end to
         // specifed the status
@@ -34,9 +35,9 @@ export class ManagerService {
 
         //save to database
         try {
-            return await createdRequest.save();
+            return await this.managerRequestModel.create(createdRequest);
         } catch (error) {
-
+           
             throw new HttpException
                 (
                     {
@@ -61,16 +62,15 @@ export class ManagerService {
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
-        if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
+        //if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
 
 
         //set the status to approved
         pendingRequest.status = RequestStatus.Approved;
-        //set the update time
-        pendingRequest.updatedDate = new Date();
+        
 
         //update to the database
-        this.updateRequest(pendingRequest.requestId, pendingRequest);
+        this.updateRequest(pendingRequest._id, pendingRequest);
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
@@ -90,15 +90,14 @@ export class ManagerService {
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
-        if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
+        //if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
 
         //set the status to rejected
         pendingRequest.status = RequestStatus.Rejcted;
-        //set the update time
-        pendingRequest.updatedDate = new Date();
+        
 
         //update to the database
-        return await this.updateRequest(pendingRequest.requestId, pendingRequest);
+        return await this.updateRequest(pendingRequest._id, pendingRequest);
 
 
     }
@@ -140,11 +139,11 @@ export class ManagerService {
     //Jimmy:10/10
     //find the request by requestId
     //return the entire request
-    async findRequestById(requestId: number): Promise<ManagerRequest> {
+    async findRequestById(_id: number): Promise<ManagerRequest> {
 
         let result: ManagerRequest;
         try {
-            result = await this.managerRequestModel.findOne({ requestId }).exec();
+            result = await this.managerRequestModel.findOne({ _id }).exec();
         } catch (error) {
             throw new NotFoundException('This request does not exist');
         }
@@ -166,7 +165,7 @@ export class ManagerService {
         // this takes a requestId parameter to find the request to change, and the request of type ManagerRequest is an object with the
         // modified fields already in place, so the service simply replaces the db entry
 
-        const filter = { requestId: requestId };
+        const filter = { _id: requestId };
         let result: ManagerRequest;
         try {
             result = await this.managerRequestModel.findOneAndUpdate(filter, update, { new: true, useFindAndModify: false }).exec();

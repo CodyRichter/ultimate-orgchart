@@ -6,6 +6,7 @@ import { EmployeeAuth } from '../auth/auth.model';
 import * as multer from 'multer';
 import { ManagerRequest } from './manager.model';
 import { ManagerService } from './manager.service';
+
 @Controller('manager')
 // TODO: setup JWT auth guard???
 export class ManagerController {
@@ -31,19 +32,19 @@ export class ManagerController {
         //approve the request
         //Param: the manager request
         //Return: the updated Employee Schema
-        @Patch('approve')
-        async approveRequest(@Body() request: ManagerRequest): Promise<Employee> {
+        @Patch('approve/:requestId')
+        async approveRequest(@Param('requestId')_id:number): Promise<Employee> {
 
-                return await this.managerService.approveRequest(request.requestId);
+                return await this.managerService.approveRequest(_id);
         }
 
         //reject the request
         //Param: the manager request
         //Return: the updated Request Schema
-        @Patch('reject')
-        async rejectRequest(@Body() request: ManagerRequest): Promise<ManagerRequest> {
+        @Patch('reject/:requestId')
+        async rejectRequest(@Param('requestId')_id:number): Promise<ManagerRequest> {
 
-                return await this.managerService.rejectedRequest(request.requestId);
+                return await this.managerService.rejectedRequest(_id);
         }
 
 
@@ -63,6 +64,9 @@ export class ManagerController {
                 return await this.managerService.findAllRequestsTo(managerId);
         }
 
+        //left: get request by employeeId 
+        
+
         //get all request in the database
         //could be used for testing purpose
         @Get('All')
@@ -75,7 +79,7 @@ export class ManagerController {
         //Param: the request id
         //return: the single request
         @Get("/:requestId")
-        async getOneRequest(@Param('requestId') requestId: number) {
+        async getOneRequest(@Param('_id') requestId: number) {
                 return await this.managerService.findRequestById(requestId);
         }
 
