@@ -1,15 +1,15 @@
 FROM node:12-alpine
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# # Create app directory
+# RUN mkdir -p /usr/src/app
+# WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json /usr/src/app
-RUN npm install --verbose
+# # Install app dependencies
+# COPY package.json /usr/src/app
+# RUN npm install --verbose
 
-# Bundle app source
-COPY . /usr/src/app
+# # Bundle app source
+# COPY . /usr/src/app
 
-EXPOSE 4200
-CMD ["npm", "start"]
+# EXPOSE 4200
+# CMD ["npm", "start"]
