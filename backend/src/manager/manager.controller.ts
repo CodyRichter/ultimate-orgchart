@@ -33,7 +33,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Employee Schema
         @Patch('approve/:requestId')
-        async approveRequest(@Param('requestId')_id:number): Promise<Employee> {
+        async approveRequest(@Param('requestId') _id: number): Promise<Employee> {
 
                 return await this.managerService.approveRequest(_id);
         }
@@ -42,8 +42,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Request Schema
         @Patch('reject/:requestId')
-        async rejectRequest(@Param('requestId')_id:number): Promise<ManagerRequest> {
-
+        async rejectRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
                 return await this.managerService.rejectedRequest(_id);
         }
 
@@ -65,13 +64,12 @@ export class ManagerController {
         }
 
         //left: get request by employeeId 
-        
+
 
         //get all request in the database
         //could be used for testing purpose
         @Get('All')
-        async getAllRequest()
-        {
+        async getAllRequest() {
                 return await this.managerService.findAllRequest();
         }
 

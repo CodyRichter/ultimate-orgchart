@@ -23,7 +23,6 @@ export class ManagerService {
     //     return null;
     // }
 
-
     //jimmy:10/09
     //create request 
     async createRequest(newRequest: ManagerRequest): Promise<ManagerRequest> {
@@ -45,9 +44,7 @@ export class ManagerService {
                         error: "The request existed",
                     }, HttpStatus.CONFLICT);
         }
-
     }
-
 
     //Jimmy:10/10
     //approve request
@@ -64,11 +61,9 @@ export class ManagerService {
         //we throw exception
         //if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
 
-
         //set the status to approved
         pendingRequest.status = RequestStatus.Approved;
         
-
         //update to the database
         this.updateRequest(pendingRequest._id, pendingRequest);
 
@@ -76,10 +71,6 @@ export class ManagerService {
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
         const managerId = { managerId: pendingRequest.toManagerId };
         return await this.employeeService.updateEmployeeData(pendingRequest.employeeId, managerId);
-
-
-
-
     }
 
     //Jimmy:10/10
@@ -94,12 +85,9 @@ export class ManagerService {
 
         //set the status to rejected
         pendingRequest.status = RequestStatus.Rejcted;
-        
 
         //update to the database
         return await this.updateRequest(pendingRequest._id, pendingRequest);
-
-
     }
 
     //jimmy:10/11
@@ -112,11 +100,10 @@ export class ManagerService {
             throw new NotFoundException('The request does not exist');
         }
         return result;
-
     }
 
     //jimmy:10/11
-    //find all the requests undert the given manager Id  in the  toManagerId Field
+    //find all the requests undert the given manager Id in the toManagerId Field
     async findAllRequestsTo(toManagerId: number): Promise<ManagerRequest[] | null> {
         let result: ManagerRequest[];
         try {
@@ -125,7 +112,6 @@ export class ManagerService {
             throw new NotFoundException('The request does not exist');
         }
         return result;
-
     }
 
     //jimmy:10/11
@@ -135,12 +121,10 @@ export class ManagerService {
     }
 
 
-
     //Jimmy:10/10
     //find the request by requestId
     //return the entire request
     async findRequestById(_id: number): Promise<ManagerRequest> {
-
         let result: ManagerRequest;
         try {
             result = await this.managerRequestModel.findOne({ _id }).exec();
@@ -151,9 +135,7 @@ export class ManagerService {
         if (!result) {
             throw new NotFoundException('This request does not exist');
         }
-
         return result;
-
     }
 
 
@@ -174,10 +156,6 @@ export class ManagerService {
 
             throw new NotFoundException('the request does not exist');
         }
-
-
         return result;
-
     }
-
 }
