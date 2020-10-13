@@ -69,42 +69,44 @@
     width: 200px;
 }
 
-.orgchart-container {
+.orgchart {
     position: absolute;
-    right: 1px;
-    top:64px;
-    width: 60%;
+    left: 500px;
 }
 
-.bunch_of_buttons {
-    position: relative;
-    top:160px;
-    left: 300px;
-    z-index: 9999;
-}
-  
-.org{
-    width:60%;
-    
+.search-bar {
+    height: 40px;
+    margin-left: 64px;
+    width: 500px;
+    border-radius: 3px;
+    background-color: #FFFFFF;
 }
 
-.button{
-    margin-right:10px;
+.search-bar-icon {
+    position: absolute;
+    color: grey;
+    margin-left: 16px;
+    margin-top: 12px;
+    margin-right: 8px;
 }
 
-.flex-container{
-    display:flex;
-    flex-wrap: nowrap;
+.search-bar-more {
+    position: absolute;
+    color: grey;
+    margin-left: 755px;
+    margin-top: 3px;
+}
+
+.search-bar-input {
+    position: absolute;
+    color: grey;
+    margin-left: 50px;
+    font-weight: normal;
+    margin-top: 6px;
+}
+
+#chart-container{
     position:relative;
-    left:300px;
-    padding:20px;
+    right:150px;
 }
-
-#orgchart-container{
-    width:60%;
-    position: relative;
-    left: 400px;
-}
-
-
 

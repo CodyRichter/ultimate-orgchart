@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { OrgchartModule } from '@dabeng/ng-orgchart';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,14 +14,18 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
+import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+
+import { OrgchartModule } from './modules/orgchart/orgchart.module';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     NotFoundComponent,
     FileUploadComponent,
     JSONUploadDialog,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,11 +53,17 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
+    OrgchartModule,
+    DragDropModule,
     RouterModule.forRoot([
       {
         path: '',
         redirectTo: '/login',
         pathMatch: 'full'
+      },
+      {
+        path: 'test',
+        component: TestComponent
       },
       {
         path: 'login',

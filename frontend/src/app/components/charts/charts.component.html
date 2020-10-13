@@ -3,7 +3,16 @@
         <button mat-icon-button color="accent" (click)="sidebar.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <span><img class = "logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
+        <span><img class = "logo" style="margin-left: 24px; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
+
+        <div class="search-bar" [class.mat-elevation-z2]="true">
+            <mat-icon class="search-bar-icon">search</mat-icon>
+            <div class="search-bar-input">Search</div>
+            <button mat-icon-button class="search-bar-more">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>
+
         <span class="spacer"></span>
         <button mat-icon-button color="accent">
             <mat-icon>help</mat-icon>
@@ -48,70 +57,7 @@
     </mat-sidenav>
 </mat-sidenav-container>
 
-<div class = "flex-container">
-    
-    <button mat-raised-button (click)="getUser()" class="button">
-        Get User
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="getAllEmployees()" class="button">
-        Get All Employees
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="openJSONUploadDialog()" class="button">
-        Upload JSON
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="(createEmployee())" class="button">
-        Create Employee 2501
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="getSingleEmployee()" class="button">
-        Get Employee 2501
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="(updateEmployee())" class="button">
-        Update Employee 2501
-    </button>
- 
-    <br>
-    <br>
-   
-    <button mat-raised-button (click)="(deleteEmployee())" class="button">
-        Delete Employee 2501
-    </button>
-
-    <br>
-    <br>
-
-    <button mat-raised-button (click)="(downloadJSON())" class="button">
-        Download JSON
-    </button>
- 
- 
-</div>
-
-<section id = "orgchart-container">
- <organization-chart chartClass="myChart" class = "org" [datasource]="ds" style="width: 60%;">
+<section id="chart-container">
+    <organization-chart chartClass="myChart" [datasource]="ds" class="orgchart">
     </organization-chart>
 </section>
-
-
-
-
-
