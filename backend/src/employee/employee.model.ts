@@ -1,16 +1,8 @@
-import { DocumentType, ModelOptions, prop } from "@typegoose/typegoose";
+import { prop } from "@typegoose/typegoose";
 
-@ModelOptions({
-    schemaOptions : {
-        toJSON: {
-            transform: (doc: DocumentType<Employee>, ret) => {
-                delete ret.__v;
-                delete ret._id;
-            }
-        }
-    }
-})
 export class Employee {
+    @prop({ required: true, index: true, unique: true, })
+    _id: number;
 
     @prop({ required: true, index: true, unique: true, })
     employeeId: number;
