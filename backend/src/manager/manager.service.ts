@@ -62,7 +62,7 @@ export class ManagerService {
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
-        //if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
+        if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
 
 
         //set the status to approved
@@ -90,7 +90,7 @@ export class ManagerService {
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
-        //if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
+        if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
 
         //set the status to rejected
         pendingRequest.status = RequestStatus.Rejcted;
