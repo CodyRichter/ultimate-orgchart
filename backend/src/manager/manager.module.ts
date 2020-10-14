@@ -4,13 +4,14 @@ import { ManagerService } from './manager.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { EmployeeAuth } from 'src/auth/auth.model';
 import { Employee } from 'src/employee/employee.model';
-
+import { ManagerRequest } from './manager.model';
+import {EmployeeService} from'../employee/employee.service';
 
 @Module({
   controllers: [ManagerController],
-  providers: [ManagerService],
+  providers: [ManagerService,EmployeeService],
   imports: [
-    TypegooseModule.forFeature([Employee, EmployeeAuth]),
+    TypegooseModule.forFeature([Employee, EmployeeAuth,ManagerRequest]),
 
   ]
 })
