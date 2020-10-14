@@ -17,6 +17,9 @@ export class EmployeeService {
     newEmployee._id = newEmployee.employeeId;
     newEmployee.password = await bcrypt.hash(newEmployee.password,10);
 
+    const child = await this.findEmployeeById(2);
+    newEmployee.children = [child];
+
     try
     {
      await this.employeeAuthModel.create(newEmployee)

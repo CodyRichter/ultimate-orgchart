@@ -1,4 +1,4 @@
-import { prop } from "@typegoose/typegoose";
+import { prop, Ref } from "@typegoose/typegoose";
 
 export class Employee {
     @prop({ required: true, index: true, unique: true, })
@@ -29,11 +29,14 @@ export class Employee {
     isAdmin: boolean;
 
     @prop({ required: false,  })
-    managerId: number;
+    managerId?: number;
 
     @prop({ required: true, index:true,unique:true })
     email: string;
 
     @prop({ required: true,  })
     startDate: Date;
+
+    @prop({ ref: Employee })
+    children?: Ref<Employee>[];
 }
