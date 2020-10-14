@@ -8,6 +8,17 @@
     align-items: center;
 }
 
+.orgchart > :host > .oc-node::after {
+    content: "";
+    box-sizing: border-box;
+
+    left: 590px;
+    height: 64px;
+    width: 2px;
+    position: absolute;
+    background-color: #707070;
+}
+
 .orgchart > :host > .oc-node.oc-is-collapsed::after {
     height: 64px;
     top: 64px;

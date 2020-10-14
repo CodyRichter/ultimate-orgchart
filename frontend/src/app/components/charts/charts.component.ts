@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-charts',
@@ -41,7 +42,8 @@ export class ChartsComponent implements OnInit {
   constructor(private router: Router,
     public dialog: MatDialog,
     private readonly authService: AuthService,
-    private readonly employeeService: EmployeeService) {
+    private readonly employeeService: EmployeeService,
+    private _snackBar: MatSnackBar) {
 }
 
   selectNode(nodeData: {name: string, title: string}): void {
@@ -109,8 +111,42 @@ export class ChartsComponent implements OnInit {
     await this.employeeService.downloadJSON();
   }
 
+  isAdmin(): boolean {
+    try {
+      return this.authService.profile.isAdmin;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
+  isManager(): boolean {
+    try {
+      return this.authService.profile.isManager;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
   openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  onClickHandler(): void {
+
+  }
+
+  onItem1Click(): void {
+    console.log('item1');
+  }
+
+  onNodeClick(): void {
+    const dialogRef = this.dialog.open(NodeDetailDialog);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -120,7 +156,14 @@ export class ChartsComponent implements OnInit {
 }
 
 @Component({
+  selector: 'node-detail-dialog',
+  templateUrl: 'node-detail-dialog.html',
+})
+export class NodeDetailDialog {}
+
+@Component({
   selector: 'json-upload-dialog',
   templateUrl: 'json-upload-dialog.html',
 })
 export class JSONUploadDialog {}
+

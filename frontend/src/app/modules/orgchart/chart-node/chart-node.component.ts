@@ -9,7 +9,9 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import {CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragExit} from "@angular/cdk/drag-drop";
+import {CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragExit, CdkDragStart} from '@angular/cdk/drag-drop';
+import {NodeDetailDialog} from '../../../components/charts/charts.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -54,7 +56,9 @@ export class ChartNodeComponent implements OnInit {
   isSelected: boolean;
   subscription: Subscription;
 
-  constructor(private nodeSelectService: NodeSelectService) {
+  dragging = false;
+
+  constructor(private nodeSelectService: NodeSelectService, public dialog: MatDialog) {
     // subscribe to node selection status
     this.subscription = this.nodeSelectService.getSelect().subscribe(selection => {
       if (selection && selection.id) {
@@ -110,6 +114,10 @@ export class ChartNodeComponent implements OnInit {
   }
 
   onClickNode(e): void {
+    if (this.dragging) {
+      this.dragging = false;
+      return;
+    }
     this.nodeClick.emit(this.datasource);
     if (this.select === 'single') {
       this.nodeSelectService.sendSelect(this.datasource.id);
@@ -137,4 +145,22 @@ export class ChartNodeComponent implements OnInit {
   onDragEnded(event: CdkDragEnd): void {
     event.source._dragRef.reset();
   }
+
+  onDragStart(event: CdkDragStart): void {
+    this.dragging = true;
+  }
+
+  onDragRelease(): void {
+    const dialogRef = this.dialog.open(ConfirmDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
+
+@Component({
+  selector: 'confirm-dialog',
+  templateUrl: 'confirm-dialog.html',
+})
+export class ConfirmDialog {}

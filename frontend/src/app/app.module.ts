@@ -15,10 +15,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatRipple } from '@angular/material/core';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
+import { ChartsComponent, JSONUploadDialog, NodeDetailDialog } from './components/charts/charts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
@@ -26,6 +27,15 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { TestComponent } from './components/test/test.component';
+import { NodeDetailComponent } from './components/node-detail/node-detail.component';
+import { TransferRequestComponent } from './components/transfer-request/transfer-request.component';
+
+import { TransferRequestDialog } from './components/node-detail/node-detail.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TransferConfirmComponent } from './components/transfer-confirm/transfer-confirm.component';
+
+import { ConfirmDialog } from './modules/orgchart/chart-node/chart-node.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +45,13 @@ import { TestComponent } from './components/test/test.component';
     NotFoundComponent,
     FileUploadComponent,
     JSONUploadDialog,
+    NodeDetailDialog,
+    TransferRequestDialog,
+    ConfirmDialog,
     TestComponent,
+    NodeDetailComponent,
+    TransferRequestComponent,
+    TransferConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +71,8 @@ import { TestComponent } from './components/test/test.component';
     MatDialogModule,
     OrgchartModule,
     DragDropModule,
+    MatAutocompleteModule,
+    MatSnackBarModule,
     RouterModule.forRoot([
       {
         path: '',

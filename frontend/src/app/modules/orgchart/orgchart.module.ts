@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NodeSelectService } from './shared/services/node-select.service';
 import { MatCardModule } from '@angular/material/card';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [ChartContainerComponent, ChartNodeComponent],
@@ -13,12 +14,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ChartContainerComponent,
     ChartNodeComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    DragDropModule
-  ],
+    imports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        DragDropModule,
+        MatRippleModule
+    ],
   providers: [NodeSelectService]
 })
 export class OrgchartModule { }

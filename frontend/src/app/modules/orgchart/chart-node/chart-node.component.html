@@ -1,4 +1,4 @@
-<div class="oc-node" [id]="datasource.id" [class.oc-is-selected]="isSelected" (click)="onClickNode($event)">
+<div class="oc-node" [id]="datasource.id" [class.oc-is-selected]="isSelected" (click)="onClickNode($event)" cdkDrag>
     <ng-container
             *ngTemplateOutlet="nodeTemplate ? nodeTemplate : defaultNodeTemplate; context:{ datasource:datasource,nodeHeading: nodeHeading, nodeContent: nodeContent }">
     </ng-container>
@@ -20,8 +20,11 @@
 
 <ng-template #defaultNodeTemplate let-nodeData="datasource" let-heading="nodeHeading" let-content="nodeContent">
     <div class="container">
-        <mat-card class="node-card" style={{getColor(nodeData.title)}} cdkDrag
-                  (cdkDragEnded)="onDragEnded($event)">
+        <mat-card matRipple class="node-card" style={{getColor(nodeData.title)}}
+                  (cdkDragStarted)="onDragStart($event)"
+                  (cdkDragEnded)="onDragEnded($event)"
+                  (cdkDragReleased)="onDragRelease()"
+                  cdkDrag>
             <mat-card-header class="header"></mat-card-header>
             <mat-card-content>
                 <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 48px; margin-left: 2px"></div>
