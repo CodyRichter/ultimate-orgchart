@@ -4,7 +4,6 @@ import { Employee } from "./employee.model";
 import { ReturnModelType } from "@typegoose/typegoose";
 import { EmployeeAuth } from "src/auth/auth.model";
 import * as bcrypt from 'bcrypt';
-import { Document } from "mongoose";
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -67,7 +66,7 @@ export class EmployeeService {
   */
 
   // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: number, update: Employee): Promise<Employee | null>{
+  async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null>{
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 

@@ -8,6 +8,8 @@ import * as multer from 'multer';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/enums/roles.enum';
+import {User} from '../auth/guards/user.decorator';
+
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
 @UseGuards(JwtAuthGuard,RolesGuard)
@@ -28,6 +30,7 @@ export class EmployeeController {
   @Post('create')
   @Roles(Role.ADMIN,Role.MANAGER)
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
+
     return await this.employeeService.createEmployee(newEmployee);
   }
 
