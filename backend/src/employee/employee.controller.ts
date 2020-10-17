@@ -77,10 +77,11 @@ export class EmployeeController {
   }
 
   //query
-  @Get('')
-  async getEmployeeByTitle(@Query('positionTitle') positionTitle):Promise<Employee[]>
+  @Get() //localhost:3000/employee/?positionTitile=xxx
+  async getEmployeeByTitle(@Query() query):Promise<Employee[]>
   {
-          return await this.employeeService.findEmployeeByTitle(positionTitle);
+          
+          return await this.employeeService.findEmployeeByType(query);
 
   }
 
