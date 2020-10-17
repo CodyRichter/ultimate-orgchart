@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
     //we get the instance of that request.user
     const user = request.user;
     
-
+  
     if(roles.includes(Role.ADMIN)&&user.isAdmin){ return true;}
 
     if(roles.includes(Role.MANAGER)&&user.isManager){return true;}

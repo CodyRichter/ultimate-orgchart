@@ -61,16 +61,16 @@ export class ChartsComponent implements OnInit {
 
   async createEmployee(): Promise<void> {
     const newEmployee = {
-      isManager: true,
-      isAdmin: true,
-      firstName: 'Testing',
-      lastName: 'Dummy',
+      isManager: false,
+      isAdmin: false,
+      firstName: 'Ben',
+      lastName: 'Test',
       companyId: 1,
       positionTitle: 'Senior bug finder',
       companyName: 'Cyclone Aviation',
       employeeId: 2501,
       managerId: null,
-      email: 'testemail@email.com',
+      email: 'ben@email.com',
       password: 'password',
       startDate: new Date(),
     };
@@ -81,11 +81,27 @@ export class ChartsComponent implements OnInit {
     await this.employeeService.downloadJSON();
   }
 
+  isAdmin(): boolean {
+    return this.authService.profile.isAdmin;
+  }
+
+  isManager(): boolean {
+    return this.authService.profile.isManager;
+  }
+
   openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      console.log(`JSON upload result: ${result}`);
+    });
+  }
+
+  openEmployeeTransferDialog(): void {
+    const dialogRef = this.dialog.open(EmployeeTransferDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Employee transfer result: ${result}`);
     });
   }
 
@@ -96,3 +112,9 @@ export class ChartsComponent implements OnInit {
   templateUrl: 'json-upload-dialog.html',
 })
 export class JSONUploadDialog {}
+
+@Component({
+  selector: 'employee-transfer-dialog',
+  templateUrl: 'employee-transfer-dialog.html',
+})
+export class EmployeeTransferDialog {}

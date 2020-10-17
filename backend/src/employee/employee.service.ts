@@ -94,9 +94,5 @@ export class EmployeeService {
     await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
     const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     return returnDoc;
-  }
-
-
-
-  
+  }  
 }

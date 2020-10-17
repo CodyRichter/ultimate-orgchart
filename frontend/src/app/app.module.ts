@@ -15,14 +15,17 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ChartsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/charts/charts.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     NotFoundComponent,
     FileUploadComponent,
     JSONUploadDialog,
+    EmployeeTransferDialog,
+    EmployeeTransferComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +53,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
+    MatSelectModule,
+    MatFormFieldModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -71,7 +78,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
         component: NotFoundComponent
       }
     ]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {
