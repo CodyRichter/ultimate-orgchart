@@ -1,5 +1,5 @@
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body,UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param, Response, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param, Response, Query } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { EmployeeAuth } from '../auth/auth.model';
@@ -8,27 +8,19 @@ import * as multer from 'multer';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/enums/roles.enum';
-import {User} from '../auth/guards/user.decorator';
+import { User } from '../auth/guards/user.decorator';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
 @Controller("employee")
-@UseGuards(JwtAuthGuard,RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
-
-  // Returns all employees
-  //not need to specify the role 
-  //since all types of user have access to it 
-  @Get('all')
-  async getAllEmployees(): Promise<Employee[] | null> {
-    return await this.employeeService.findAllEmployees();
-  }
+  constructor(private readonly employeeService: EmployeeService) { }
 
   // Creates a single employee in the db
   // shouldn't this need requester id to make sure managers don't willy nilly add employees?
   // Guard admin/manager
   @Post('create')
-  @Roles(Role.ADMIN,Role.MANAGER)
+  @Roles(Role.ADMIN, Role.MANAGER)
   async createEmployee(@Body() newEmployee: Employee & EmployeeAuth): Promise<Employee> {
 
     return await this.employeeService.createEmployee(newEmployee);
@@ -37,7 +29,7 @@ export class EmployeeController {
   // Creates multiple employees in the db - used only by upload JSON function
   // Guard admin
   @Post('create/multiple')
-  @Roles(Role.ADMIN,Role.MANAGER)
+  @Roles(Role.ADMIN, Role.MANAGER)
   async createEmployees(@Body() newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
     return await this.employeeService.createEmployees(newEmployees);
   }
@@ -53,13 +45,13 @@ export class EmployeeController {
     const data = JSON.parse(file.buffer);
     return await this.employeeService.createEmployees(data);
   }
-  
+
   // returns a single JSON file of the current db status
   @Get("JSON")
-  async getJSON(@Response() res): Promise<any>{
+  async getJSON(@Response() res): Promise<any> {
     const data = await this.employeeService.findAllEmployees();
     const date = new Date().toUTCString();
-    
+
     res.set({
       'Content-Disposition': `attachment; filename="employee_data_${date}.json"`,
       'Content-Type': 'application/json',
@@ -69,25 +61,22 @@ export class EmployeeController {
     res.end();
   }
 
+
+  //query endpoints
+  //it supports multiple query params
+  //if the query param is empty it will return all empolyees
+  //so we remove getAllEmployees endpoints
+  @Get()
+  async getEmployeeByFilter(@Query() query: any): Promise<Employee[]> {
+    return await this.employeeService.findEmployeeByFilter(query);
+  }
+
   // Returns the information of a single employee
   // No guard
   @Get(':employeeId')
   async viewEmployeeData(@Param('employeeId') employeeId: any): Promise<Employee> {  // needs the id of employee to view as 'id'
     return await this.employeeService.findEmployeeById(employeeId);
   }
-
-  //query
-  @Get() //localhost:3000/employee/?positionTitile=xxx
-  async getEmployeeByTitle(@Query() query):Promise<Employee[]>
-  {
-          
-          return await this.employeeService.findEmployeeByType(query);
-
-  }
-
-  
-
-
 
   /*
     NEW ENDPOINTS
@@ -104,8 +93,8 @@ export class EmployeeController {
 
   // Deletes a single employee
   @Delete(":employeeId")
-  @Roles(Role.ADMIN,Role.MANAGER)
-  async deleteEmployee(@Param("employeeId") employeeId: any): Promise<Employee>{
+  @Roles(Role.ADMIN, Role.MANAGER)
+  async deleteEmployee(@Param("employeeId") employeeId: any): Promise<Employee> {
     return await this.employeeService.deleteEmployee(employeeId);
   }
 

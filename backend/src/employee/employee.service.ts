@@ -53,7 +53,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findOne({ employeeId }).exec();
+    return await this.employeeModel.findById(employeeId);
   }
 
   /*
@@ -83,43 +83,15 @@ export class EmployeeService {
     return returnDoc;
   }
 
-  //find by position titile
-  async findEmployeeByTitle(employeeTitle: string): Promise<Employee[]> {
-    return await this.employeeModel.find({ lastName: employeeTitle });
+  async findEmployeeByFilter(query:any):Promise<Employee[]>
+  {
+    //if  query  is null return all employees
+      if(query===null)
+      {
+        return await this.employeeModel.find().exec();
+      }
+      //if the key is mismatching the field, then we will return empty array
+      return await this.employeeModel.find(query);
   }
 
-  async findEmployeeByType(query: any): Promise<Employee[]> {
-    //check if null
-    if (query === null) {
-      return null;
-    }
-    
-    if(query.hasOwnProperty('positionTitle'))
-    {  
-        return await this.employeeModel.find({positionTitle:query.positionTitle});
-    }
-
-    if(query.hasOwnProperty('firstName'))
-    {
-      return await this.employeeModel.find({firstName:query.firstName});
-    }
-
-    if(query.hasOwnProperty('lastName'))
-    {
-      return await this.employeeModel.find({lastName:query.lastName});
-    }
-
-    if(query.hasOwnProperty('email'))
-    {
-      return await this.employeeModel.find({email:query.email});
-    }
-
-    if(query.hasOwnProperty('isManager'))
-    {
-      return await this.employeeModel.find({isManager:query.isManager});
-    }
-
-    
-    
-  }
 }
