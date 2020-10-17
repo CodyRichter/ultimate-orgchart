@@ -17,13 +17,17 @@ export class EmployeeService {
     newEmployee._id = newEmployee.employeeId;
     newEmployee.password = await bcrypt.hash(newEmployee.password,10);
 
-    const child = await this.findEmployeeById(2);
-    newEmployee.children = [child];
+    const manager = await this.employeeModel.findById(newEmployee.managerId).exec();
 
     try
     {
-     await this.employeeAuthModel.create(newEmployee)
-     return await this.employeeModel.create(newEmployee)
+      await this.employeeAuthModel.create(newEmployee)
+      const savedEmployee = await this.employeeModel.create(newEmployee);
+      if (manager) {
+        manager.children.push(savedEmployee);
+        await manager.save();
+      }
+      return savedEmployee;
     }catch(error)
     {
         if(error.code===11000)

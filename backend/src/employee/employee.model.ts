@@ -1,5 +1,7 @@
-import { prop, Ref } from "@typegoose/typegoose";
+import { plugin, prop, Ref } from "@typegoose/typegoose";
+import * as autopopulate from 'mongoose-autopopulate';
 
+@plugin(autopopulate as any)
 export class Employee {
     @prop({ required: true, index: true, unique: true, })
     _id: number;
@@ -37,6 +39,6 @@ export class Employee {
     @prop({ required: true,  })
     startDate: Date;
 
-    @prop({ ref: Employee })
-    children?: Ref<Employee>[];
+    @prop({ autopopulate: { maxDepth: 1 }, ref: Employee })
+    children: Ref<Employee>[];
 }
