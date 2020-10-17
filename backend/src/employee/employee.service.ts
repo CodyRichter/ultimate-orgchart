@@ -58,7 +58,8 @@ export class EmployeeService {
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
-    return await this.employeeModel.findById(employeeId).exec();
+
+    return await this.employeeModel.findOne({employeeId}).exec();
   }
 
   /*
@@ -86,5 +87,11 @@ export class EmployeeService {
     await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
     const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     return returnDoc;
-  }  
+  }
+  
+  //find by position titile
+  async findEmployeeByTitle(employeeTitle:string):Promise<Employee[]>
+  {
+      return await this.employeeModel.find({positionTitle:employeeTitle});
+  } 
 }
