@@ -10,45 +10,39 @@ export class EmployeeService {
     @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>,
     @InjectModel(EmployeeAuth) private readonly employeeAuthModel: ReturnModelType<typeof EmployeeAuth>
 
-  ) {}
+  ) { }
 
   async createEmployee(newEmployee: Employee & EmployeeAuth): Promise<Employee> {
     newEmployee._id = newEmployee.employeeId;
-    newEmployee.password = await bcrypt.hash(newEmployee.password,10);
+    newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
 
-    try
-    {
-     await this.employeeAuthModel.create(newEmployee)
-     return await this.employeeModel.create(newEmployee)
-    }catch(error)
-    {
-        if(error.code===11000)
-        {
-          throw new ConflictException("Employee already exists");
-        }
+    try {
+      await this.employeeAuthModel.create(newEmployee)
+      return await this.employeeModel.create(newEmployee)
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new ConflictException("Employee already exists");
+      }
 
-        throw error;
+      throw error;
     }
   }
 
   async createEmployees(newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
-    const updatedEmployees = await Promise.all(newEmployees.map( 
-      async (employee) => { 
-        return {...employee, _id: employee.employeeId, password: await bcrypt.hash(employee.password,10)};
+    const updatedEmployees = await Promise.all(newEmployees.map(
+      async (employee) => {
+        return { ...employee, _id: employee.employeeId, password: await bcrypt.hash(employee.password, 10) };
       }));
 
-    try
-    {
+    try {
       await this.employeeAuthModel.insertMany(updatedEmployees);
       return await this.employeeModel.insertMany(updatedEmployees)
-    }catch(error)
-    {
-        if(error.code===11000)
-        {
-          throw new ConflictException("An Employee in the specified data already exists");
-        }
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new ConflictException("An Employee in the specified data already exists");
+      }
 
-        throw error;
+      throw error;
     }
   }
 
@@ -59,7 +53,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findOne({employeeId}).exec();
+    return await this.employeeModel.findOne({ employeeId }).exec();
   }
 
   /*
@@ -67,11 +61,11 @@ export class EmployeeService {
   */
 
   // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null>{
+  async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null> {
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 
-    return await this.employeeModel.findByIdAndUpdate(employeeId, update, {new: true}).exec();  // return the updated employee
+    return await this.employeeModel.findByIdAndUpdate(employeeId, update, { new: true }).exec();  // return the updated employee
   }
 
   // removes a single employee from db if request is valid
@@ -88,10 +82,44 @@ export class EmployeeService {
     const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     return returnDoc;
   }
-  
+
   //find by position titile
-  async findEmployeeByTitle(employeeTitle:string):Promise<Employee[]>
-  {
-      return await this.employeeModel.find({positionTitle:employeeTitle});
-  } 
+  async findEmployeeByTitle(employeeTitle: string): Promise<Employee[]> {
+    return await this.employeeModel.find({ lastName: employeeTitle });
+  }
+
+  async findEmployeeByType(query: any): Promise<Employee[]> {
+    //check if null
+    if (query === null) {
+      return null;
+    }
+    
+    if(query.hasOwnProperty('positionTitle'))
+    {  
+        return await this.employeeModel.find({positionTitle:query.positionTitle});
+    }
+
+    if(query.hasOwnProperty('firstName'))
+    {
+      return await this.employeeModel.find({firstName:query.firstName});
+    }
+
+    if(query.hasOwnProperty('lastName'))
+    {
+      return await this.employeeModel.find({lastName:query.lastName});
+    }
+
+    if(query.hasOwnProperty('email'))
+    {
+      return await this.employeeModel.find({email:query.email});
+    }
+
+    if(query.hasOwnProperty('isManager'))
+    {
+      return await this.employeeModel.find({isManager:query.isManager});
+    }
+
+    
+    
+  }
 }
