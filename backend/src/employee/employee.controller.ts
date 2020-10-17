@@ -84,12 +84,6 @@ export class EmployeeController {
 
   }
 
-
-
-  /*
-    NEW ENDPOINTS
-  */
-
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
   @Patch(":employeeId")
