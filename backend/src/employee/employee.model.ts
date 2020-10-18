@@ -1,4 +1,5 @@
-import { prop } from "@typegoose/typegoose";
+import { Ref, prop } from "@typegoose/typegoose";
+import { projectsEmployee } from "src/project/project.model";
 
 export class Employee {
     @prop({ required: true, index: true, unique: true, })
@@ -36,4 +37,7 @@ export class Employee {
 
     @prop({ required: true,  })
     startDate: Date;
+
+    @prop()
+    project: Ref<projectsEmployee>[]
 }
