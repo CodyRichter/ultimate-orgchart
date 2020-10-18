@@ -1,17 +1,15 @@
-import { ConflictException, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
 import { ReturnModelType } from "@typegoose/typegoose";
-import { EmployeeAuth } from "src/auth/auth.model";
 import { ManagerRequest } from './manager.model';
 import { RequestStatus } from '../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
-import {Document} from 'mongoose';
+
 @Injectable()
 export class ManagerService {
     constructor(
         @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>,
-        @InjectModel(EmployeeAuth) private readonly employeeAuthModel: ReturnModelType<typeof EmployeeAuth>,
         @InjectModel(ManagerRequest) private readonly managerRequestModel: ReturnModelType<typeof ManagerRequest>,
         private readonly employeeService: EmployeeService,
     ) {}
@@ -51,7 +49,7 @@ export class ManagerService {
     //front-end should sent the request in the body 
     //then we update the 'status' and 'updatedTime' and 'the managerId' that should be updated too.
     //also update the employee info where their managerId should be updated
-    async approveRequest(requestId: number): Promise<Employee | null> {
+    async approveRequest(requestId: number): Promise<ManagerRequest | null> {
 
         //find this request first
         //I set some error check in the findRequestById which help us catch the error
@@ -65,12 +63,22 @@ export class ManagerService {
         pendingRequest.status = RequestStatus.Approved;
         
         //update to the database
-        this.updateRequest(pendingRequest._id, pendingRequest);
+        const updatedRequest = this.updateRequest(pendingRequest._id, pendingRequest);
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-        const managerId = { managerId: pendingRequest.toManagerId };
-        return await this.employeeService.updateEmployeeData(pendingRequest.employeeId, managerId);
+        const employee = await this.employeeModel.findById(pendingRequest.employee).exec();
+        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).exec();
+        const toManager = await this.employeeModel.findById(pendingRequest.toManager).exec();
+
+        employee.managerId = toManager._id;
+        toManager.children.push(employee);
+        fromManager.children = fromManager.children.filter((emp: Employee) => emp._id !== employee._id)
+
+        await fromManager.save();
+        await toManager.save()
+        await employee.save();
+        return updatedRequest;
     }
 
     //Jimmy:10/10
@@ -92,10 +100,10 @@ export class ManagerService {
 
     //jimmy:10/11
     //find all the requests under the given manager ID in the fromManagerId field 
-    async findAllRequestsFrom(fromManagerId: number): Promise<ManagerRequest[] | null> {
+    async findAllRequestsFrom(fromManagerId: number): Promise<ManagerRequest[]> {
         let result: ManagerRequest[];
         try {
-            result = await this.managerRequestModel.find({ fromManagerId }).exec();
+            result = await this.managerRequestModel.find({ fromManager: fromManagerId }).exec();
         } catch (error) {
             throw new NotFoundException('The request does not exist');
         }
@@ -104,10 +112,10 @@ export class ManagerService {
 
     //jimmy:10/11
     //find all the requests undert the given manager Id in the toManagerId Field
-    async findAllRequestsTo(toManagerId: number): Promise<ManagerRequest[] | null> {
+    async findAllRequestsTo(toManagerId: number): Promise<ManagerRequest[]> {
         let result: ManagerRequest[];
         try {
-            result = await this.managerRequestModel.find({ toManagerId }).exec();
+            result = await this.managerRequestModel.find({ toManager: toManagerId }).exec();
         } catch (error) {
             throw new NotFoundException('The request does not exist');
         }
@@ -116,7 +124,7 @@ export class ManagerService {
 
     //jimmy:10/11
     //find all requests in the database
-    async findAllRequest(): Promise<ManagerRequest[] | null> {
+    async findAllRequest(): Promise<ManagerRequest[]> {
         return await this.managerRequestModel.find().exec();
     }
 
@@ -124,10 +132,10 @@ export class ManagerService {
     //Jimmy:10/10
     //find the request by requestId
     //return the entire request
-    async findRequestById(_id: number): Promise<ManagerRequest> {
+    async findRequestById(requestId: number): Promise<ManagerRequest> {
         let result: ManagerRequest;
         try {
-            result = await this.managerRequestModel.findOne({ _id }).exec();
+            result = await this.managerRequestModel.findById( requestId ).exec();
         } catch (error) {
             throw new NotFoundException('This request does not exist');
         }
@@ -143,19 +151,14 @@ export class ManagerService {
     //updates a single field of an managerRequest model found
     //if we want to use this function make sure we cal the findRequestById
     //to check the existence of the request
-    async updateRequest(requestId: number, update: any): Promise<ManagerRequest | null> {
+    async updateRequest(requestId: number, update: ManagerRequest): Promise<ManagerRequest> {
         // this takes a requestId parameter to find the request to change, and the request of type ManagerRequest is an object with the
         // modified fields already in place, so the service simply replaces the db entry
-
-        const filter = { _id: requestId };
-        let result: ManagerRequest;
         try {
-            result = await this.managerRequestModel.findOneAndUpdate(filter, update, { new: true, useFindAndModify: false }).exec();
-
+            return await this.managerRequestModel.findByIdAndUpdate(requestId, update, { new: true, useFindAndModify: false }).exec();
         } catch (error) {
 
             throw new NotFoundException('the request does not exist');
         }
-        return result;
     }
 }

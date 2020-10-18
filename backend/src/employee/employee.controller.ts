@@ -66,6 +66,11 @@ export class EmployeeController {
     res.end();
   }
 
+  @Get('getChildren/:managerId?')
+  async getChildren(@Param('managerId') managerId: number): Promise<Employee[]> {  // needs the id of employee to view as 'id'
+    return await this.employeeService.getChildren(managerId);
+  }
+
   // Returns the information of a single employee
   // No guard
   @Get(':employeeId')

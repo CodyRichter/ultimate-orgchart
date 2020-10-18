@@ -6,9 +6,6 @@ export class Employee {
     @prop({ required: true, index: true, unique: true, })
     _id: number;
 
-    @prop({ required: true, index: true, unique: true, })
-    employeeId: number;
-
     @prop({ required: true,  })
     firstName: string;
 
@@ -39,6 +36,6 @@ export class Employee {
     @prop({ required: true,  })
     startDate: Date;
 
-    @prop({ autopopulate: { maxDepth: 1 }, ref: Employee })
+    @prop({ autopopulate: { maxDepth: 100 }, ref: Employee })
     children: Ref<Employee>[];
 }

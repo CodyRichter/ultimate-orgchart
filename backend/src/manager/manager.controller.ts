@@ -33,7 +33,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Employee Schema
         @Patch('approve/:requestId')
-        async approveRequest(@Param('requestId') _id: number): Promise<Employee> {
+        async approveRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
 
                 return await this.managerService.approveRequest(_id);
         }

@@ -20,7 +20,6 @@ export class AuthController
                 positionTitle: "Software Engineer",
                 companyName: "404 Brain Not Found",
                 _id: 404123456789404,
-                employeeId: 404123456789404,
                 managerId: null,
                 children: [],
                 email: "admin@admin.com", 

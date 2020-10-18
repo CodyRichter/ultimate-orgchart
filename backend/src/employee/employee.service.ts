@@ -4,7 +4,7 @@ import { Employee } from "./employee.model";
 import { ReturnModelType } from "@typegoose/typegoose";
 import { EmployeeAuth } from "src/auth/auth.model";
 import * as bcrypt from 'bcrypt';
-import { Document } from "mongoose";
+
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -13,21 +13,24 @@ export class EmployeeService {
 
   ) {}
 
-  async createEmployee(newEmployee: Employee & EmployeeAuth): Promise<Employee> {
-    newEmployee._id = newEmployee.employeeId;
+  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
+    if (!newEmployee._id && newEmployee.employeeId) {
+      newEmployee._id = newEmployee.employeeId
+    }
     newEmployee.password = await bcrypt.hash(newEmployee.password,10);
 
+    const createdEmployee = new this.employeeModel(newEmployee);
+    const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
     const manager = await this.employeeModel.findById(newEmployee.managerId).exec();
 
     try
     {
-      await this.employeeAuthModel.create(newEmployee)
-      const savedEmployee = await this.employeeModel.create(newEmployee);
       if (manager) {
-        manager.children.push(savedEmployee);
+        manager.children.push(createdEmployee);
         await manager.save();
       }
-      return savedEmployee;
+      await this.employeeAuthModel.create(createdEmployeeAuth)
+      return await this.employeeModel.create(createdEmployee);
     }catch(error)
     {
         if(error.code===11000)
@@ -39,16 +42,46 @@ export class EmployeeService {
     }
   }
 
-  async createEmployees(newEmployees: (Employee & EmployeeAuth)[]): Promise<Employee[]> {
-    const updatedEmployees = await Promise.all(newEmployees.map( 
-      async (employee) => { 
-        return {...employee, _id: employee.employeeId, password: await bcrypt.hash(employee.password,10)};
-      }));
-
+  async createEmployees(newEmployees: (Employee & EmployeeAuth & {employeeId?: number})[]): Promise<Employee[]> {
     try
     {
+      // return await Promise.all(newEmployees.map(async emp => {
+      //   return await this.createEmployee(emp)
+      // }))
+      const updatedEmployees = await Promise.all(newEmployees.map( 
+        async (employee) => { 
+          return {...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password,10)};
+          // const createdEmployee = new this.employeeModel(newEmployee);
+          // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
+          // await this.employeeAuthModel.create(createdEmployeeAuth)
+          // await this.employeeModel.create(createdEmployee);
+          // return createdEmployee;
+        }));
       await this.employeeAuthModel.insertMany(updatedEmployees);
-      return await this.employeeModel.insertMany(updatedEmployees)
+      const savedEmployees = await this.employeeModel.insertMany(updatedEmployees);
+      const allEmployees = await this.employeeModel.find().exec();
+
+      // console.log(savedEmployees);
+      // console.log(allEmployees);
+
+      await Promise.all(savedEmployees.map(emp1 => {
+        if (emp1.managerId) {
+          const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
+          allEmployees[index].children.push(emp1);
+        }
+      }));
+
+      // console.log('here');
+
+      // console.log(allEmployees);
+
+      await Promise.all(allEmployees.map(async emp => {
+        // console.log(emp.children);
+        // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
+        await emp.save();
+      }));
+
+      return savedEmployees;
     }catch(error)
     {
         if(error.code===11000)
@@ -60,9 +93,17 @@ export class EmployeeService {
     }
   }
 
-  async findAllEmployees(): Promise<Employee[] | null> {
+  async findAllEmployees(): Promise<Employee[]> {
     return await this.employeeModel.find().exec();
   }
+
+  async getChildren(managerId: number): Promise<Employee[]> {
+    return await this.employeeModel.find({managerId}).populate({ path: 'children', options: { autopopulate: false } }).exec();
+  }
+
+  // async findEmployee(employee: Partial<Employee>): Promise<Employee> {
+  //   return await this.employeeModel.findOne(employee).exec();
+  // }
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
@@ -73,6 +114,7 @@ export class EmployeeService {
     NEW PROCESSES
   */
 
+  // updating a reference does not work using this method, do manually using .save();
   // updates a single field of an employee model found
   async updateEmployeeData(employeeId: number, update: Employee): Promise<Employee | null>{
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
@@ -90,9 +132,23 @@ export class EmployeeService {
     //   return false;  // UNIMPLEMENTED
     // } 
 
+
     // delete employee from db
-    await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
-    const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
-    return returnDoc;
-  }  
+
+    const employee = await this.employeeModel.findById(employeeId);
+    // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
+    if (employee) {
+      const manager = await this.employeeModel.findById(employee.managerId).exec();
+      manager.children = manager.children.filter((emp: Employee) => emp._id !== employee._id);
+      await manager.save();
+      employee.deleteOne();
+      await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
+    }
+    
+    return employee;
+  }
+
+
+
+  
 }
