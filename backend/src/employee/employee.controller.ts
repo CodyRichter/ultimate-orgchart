@@ -78,16 +78,6 @@ export class EmployeeController {
     return await this.employeeService.findEmployeeById(employeeId);
   }
 
-
-  //query
-  @Get()
-  async getEmployeeByType(@Query() query:any):Promise<Employee[]>
-  {
-          
-     return await this.employeeService.findEmployeeByFilter(query);
-
-  }
-
   // Edits a single field of an employee
   // No guard, but requires edit to match requester
   @Patch(":employeeId")

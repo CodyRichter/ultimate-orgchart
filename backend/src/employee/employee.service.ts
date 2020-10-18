@@ -53,7 +53,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findById(employeeId);
+    return await this.employeeModel.findById(employeeId).exec();
   }
 
   /*
@@ -86,12 +86,13 @@ export class EmployeeService {
   async findEmployeeByFilter(query:any):Promise<Employee[]>
   {
     //if  query  is null return all employees
+
       if(query===null)
       {
-        return await this.employeeModel.find().exec();
+        query = {};
       }
       //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query);
+      return await this.employeeModel.find(query).exec();
   }
 
 }
