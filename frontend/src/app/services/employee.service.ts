@@ -10,7 +10,7 @@ export class EmployeeService {
   constructor(private readonly httpClient: HttpClient) { }
 
   async getAllEmployees(): Promise<any> {
-    return await this.httpClient.get('http://localhost:3000/employee/all').toPromise();
+    return await this.httpClient.get('http://localhost:3000/employee').toPromise();
   }
 
   async getEmployeeById(employeeId: number): Promise<any> {
