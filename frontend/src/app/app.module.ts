@@ -26,6 +26,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
+import { TransferRequestComponent } from './dialogs/transfer-request/transfer-request.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     JSONUploadDialog,
     EmployeeTransferDialog,
     EmployeeTransferComponent,
+    TransferRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     MatDialogModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
     RouterModule.forRoot([
       {
         path: '',
