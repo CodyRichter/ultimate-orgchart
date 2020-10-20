@@ -77,7 +77,7 @@ export class ManagerController {
         //Param: the request id
         //return: the single request
         @Get("/:requestId")
-        async getOneRequest(@Param('_id') requestId: number) {
+        async getOneRequest(@Param('requestId') requestId: number) {
                 return await this.managerService.findRequestById(requestId);
         }
 

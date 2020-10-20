@@ -13,31 +13,75 @@ export class EmployeeService {
 
   ) { }
 
-  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId? : number}): Promise<Employee> {
-    newEmployee._id = newEmployee.employeeId;
-    newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
+  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
+    if (!newEmployee._id && newEmployee.employeeId) {
+      newEmployee._id = newEmployee.employeeId
+    }
+    newEmployee.password = await bcrypt.hash(newEmployee.password,10);
 
-    try {
-      await this.employeeAuthModel.create(newEmployee)
-      return await this.employeeModel.create(newEmployee)
-    } catch (error) {
-      if (error.code === 11000) {
-        throw new ConflictException("Employee already exists");
-      }
+    const createdEmployee = new this.employeeModel(newEmployee);
+    const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
+    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('children').exec();
 
-      throw error;
+    try
+    {
+      if (manager) {
+        manager.children.push(createdEmployee);
+        await manager.save();
+      } 
+      await this.employeeAuthModel.create(createdEmployeeAuth)
+      return await this.employeeModel.create(createdEmployee);
+    }catch(error)
+    {
+        if(error.code===11000)
+        {
+          throw new ConflictException("Employee already exists");
+        }
+
+        throw error;
     }
   }
 
   async createEmployees(newEmployees: (Employee & EmployeeAuth & {employeeId?: number})[]): Promise<Employee[]> {
-    const updatedEmployees = await Promise.all(newEmployees.map(
-      async (employee) => {
-        return { ...employee, _id: employee.employeeId, password: await bcrypt.hash(employee.password, 10) };
+    try
+    {
+      // return await Promise.all(newEmployees.map(async emp => {
+      //   return await this.createEmployee(emp)
+      // }))
+      const updatedEmployees = await Promise.all(newEmployees.map( 
+        async (employee) => { 
+          return {...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password,10)};
+          // const createdEmployee = new this.employeeModel(newEmployee);
+          // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
+          // await this.employeeAuthModel.create(createdEmployeeAuth)
+          // await this.employeeModel.create(createdEmployee);
+          // return createdEmployee;
+        }));
+      await this.employeeAuthModel.insertMany(updatedEmployees);
+      const savedEmployees = await this.employeeModel.insertMany(updatedEmployees);
+      const allEmployees = await this.employeeModel.find().populate('children').exec();
+
+      // console.log(savedEmployees);
+      // console.log(allEmployees);
+
+      await Promise.all(savedEmployees.map(emp1 => {
+        if (emp1.managerId) {
+          const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
+            allEmployees[index].children.push(emp1);
+        }
       }));
 
-    try {
-      await this.employeeAuthModel.insertMany(updatedEmployees);
-      return await this.employeeModel.insertMany(updatedEmployees)
+      // console.log('here');
+
+      // console.log(allEmployees);
+
+      await Promise.all(allEmployees.map(async emp => {
+        // console.log(emp.children);
+        // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
+        await emp.save();
+      }));
+
+      return savedEmployees;
     } catch (error) {
       if (error.code === 11000) {
         throw new ConflictException("An Employee in the specified data already exists");
@@ -53,13 +97,12 @@ export class EmployeeService {
 
   async getChildren(managerId: number, depth: number): Promise<any> {
 
-    let populate = { path: 'children' };
+    let populate = { path: '' };
 
-    for (let i = 0; i < depth - 1; i++) {
+    for (let i = 0; i < depth; ++i) {
       const temp = { path: 'children', populate: populate }
       populate = temp;
     }
-    console.log(populate)
     return await this.employeeModel.find({managerId}).populate(populate).exec();
   }
 
@@ -70,7 +113,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findById(employeeId).exec();
+    return await this.employeeModel.findById(employeeId).populate('children').exec();
   }
 
   /*
@@ -98,12 +141,14 @@ export class EmployeeService {
 
     // delete employee from db
 
-    const employee = await this.employeeModel.findById(employeeId);
+    const employee = await this.employeeModel.findById(employeeId).exec();
     // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     if (employee) {
-      const manager = await this.employeeModel.findById(employee.managerId).exec();
-      manager.children = manager.children.filter((emp: Employee) => emp._id !== employee._id);
-      await manager.save();
+      const manager = await this.employeeModel.findById(employee.managerId).populate('children').exec();
+      if (manager) {
+        manager.children = manager.children.filter((emp: Employee) => emp._id !== employee._id);
+        await manager.save();
+      }
       employee.deleteOne();
       await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
     }
@@ -120,7 +165,7 @@ export class EmployeeService {
         query = {};
       }
       //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query).exec();
+      return await this.employeeModel.find(query).populate('children').exec();
   }
 
 }

@@ -1,7 +1,7 @@
 import { ConflictException, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
-import { ReturnModelType } from "@typegoose/typegoose";
+import { DocumentType, ReturnModelType } from "@typegoose/typegoose";
 import { ManagerRequest } from './manager.model';
 import { RequestStatus } from '../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
@@ -23,18 +23,21 @@ export class ManagerService {
 
     //jimmy:10/09
     //create request 
-    async createRequest(newRequest: ManagerRequest): Promise<ManagerRequest> {
+    async createRequest(newRequest: ManagerRequest & {fromManagerId?: number, toManagerId?: number, employeeId?: number}): Promise<ManagerRequest> {
         
         const createdRequest = new this.managerRequestModel(newRequest);
         //we manually add the status rather than the front-end to
         // specifed the status
         createdRequest.status = RequestStatus.Pending;
-
+        createdRequest.fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).exec();
+        createdRequest.toManager = await this.employeeModel.findById(newRequest.toManagerId ? newRequest.toManagerId : newRequest.toManager).exec();
+        createdRequest.employee = await this.employeeModel.findById(newRequest.employeeId ? newRequest.employeeId : newRequest.employee).exec();
+        console.log(createdRequest);
         //save to database
         try {
             return await this.managerRequestModel.create(createdRequest);
         } catch (error) {
-           
+           console.log(error);
             throw new HttpException
                 (
                     {
@@ -49,11 +52,11 @@ export class ManagerService {
     //front-end should sent the request in the body 
     //then we update the 'status' and 'updatedTime' and 'the managerId' that should be updated too.
     //also update the employee info where their managerId should be updated
-    async approveRequest(requestId: number): Promise<ManagerRequest | null> {
+    async approveRequest(requestId: number): Promise<ManagerRequest> {
 
         //find this request first
         //I set some error check in the findRequestById which help us catch the error
-        const pendingRequest = await this.findRequestById(requestId);
+        const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').exec();
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
@@ -63,13 +66,14 @@ export class ManagerService {
         pendingRequest.status = RequestStatus.Approved;
         
         //update to the database
-        const updatedRequest = this.updateRequest(pendingRequest._id, pendingRequest);
+        await pendingRequest.save();
+        // const updatedRequest = this.updateRequest(pendingRequest._id, pendingRequest);
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-        const employee = await this.employeeModel.findById(pendingRequest.employee).exec();
-        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).exec();
-        const toManager = await this.employeeModel.findById(pendingRequest.toManager).exec();
+        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('children').exec();
+        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('children').exec();
+        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('children').exec();
 
         employee.managerId = toManager._id;
         toManager.children.push(employee);
@@ -78,14 +82,14 @@ export class ManagerService {
         await fromManager.save();
         await toManager.save()
         await employee.save();
-        return updatedRequest;
+        return pendingRequest;
     }
 
     //Jimmy:10/10
     //Reject the request
     //return the updatedRequest
     async rejectedRequest(requestId: number): Promise<ManagerRequest> {
-        const pendingRequest = await this.findRequestById(requestId);
+        const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').exec();
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
@@ -95,7 +99,8 @@ export class ManagerService {
         pendingRequest.status = RequestStatus.Rejcted;
 
         //update to the database
-        return await this.updateRequest(pendingRequest._id, pendingRequest);
+        await pendingRequest.save()
+        return pendingRequest;
     }
 
     //jimmy:10/11
@@ -103,7 +108,7 @@ export class ManagerService {
     async findAllRequestsFrom(fromManagerId: number): Promise<ManagerRequest[]> {
         let result: ManagerRequest[];
         try {
-            result = await this.managerRequestModel.find({ fromManager: fromManagerId }).exec();
+            result = await this.managerRequestModel.find({ fromManager: fromManagerId }).populate('fromManager').populate('toManager').populate('employee').exec();
         } catch (error) {
             throw new NotFoundException('The request does not exist');
         }
@@ -115,7 +120,7 @@ export class ManagerService {
     async findAllRequestsTo(toManagerId: number): Promise<ManagerRequest[]> {
         let result: ManagerRequest[];
         try {
-            result = await this.managerRequestModel.find({ toManager: toManagerId }).exec();
+            result = await this.managerRequestModel.find({ toManager: toManagerId }).populate('fromManager').populate('toManager').populate('employee').exec();
         } catch (error) {
             throw new NotFoundException('The request does not exist');
         }
@@ -125,7 +130,7 @@ export class ManagerService {
     //jimmy:10/11
     //find all requests in the database
     async findAllRequest(): Promise<ManagerRequest[]> {
-        return await this.managerRequestModel.find().exec();
+        return await this.managerRequestModel.find().populate('fromManager').populate('toManager').populate('employee').exec();
     }
 
 
@@ -133,9 +138,9 @@ export class ManagerService {
     //find the request by requestId
     //return the entire request
     async findRequestById(requestId: number): Promise<ManagerRequest> {
-        let result: ManagerRequest;
+        let result: DocumentType<ManagerRequest>;
         try {
-            result = await this.managerRequestModel.findById( requestId ).exec();
+            result = await this.managerRequestModel.findById( requestId ).populate('fromManager').populate('toManager').populate('employee').exec();
         } catch (error) {
             throw new NotFoundException('This request does not exist');
         }
@@ -143,7 +148,7 @@ export class ManagerService {
         if (!result) {
             throw new NotFoundException('This request does not exist');
         }
-        return result;
+        return result
     }
 
 
@@ -157,7 +162,7 @@ export class ManagerService {
         try {
             return await this.managerRequestModel.findByIdAndUpdate(requestId, update, { new: true, useFindAndModify: false }).exec();
         } catch (error) {
-
+            console.log(error);
             throw new NotFoundException('the request does not exist');
         }
     }
