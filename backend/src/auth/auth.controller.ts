@@ -1,8 +1,11 @@
 import { Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
+import { Employee } from 'src/employee/employee.model';
 import { EmployeeService } from 'src/employee/employee.service';
+import { EmployeeAuth } from './auth.model';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
+import {User} from './guards/user.decorator';
 @Controller('auth')
 export class AuthController 
 {
@@ -30,18 +33,18 @@ export class AuthController
    
     @UseGuards(LocalAuthGuard)
     @Post('signin')
-    async signIn(@Request() req)
-    {
+    async signIn(@User() user:EmployeeAuth)
+    {   
             //Caution: the request will store the info in User object
             //I was using req.employeeAuth to retrieve the data! 
-            return this.authService.signIn(req.user);
+            return this.authService.signIn(user);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('profile')
-    async getUser(@Request() req)
+    async getUser(@User() user:Employee)
     {
-            return req.user;
+            return user;
     }
 }
 

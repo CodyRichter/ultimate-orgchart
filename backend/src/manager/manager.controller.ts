@@ -6,7 +6,7 @@ import { EmployeeAuth } from '../auth/auth.model';
 import * as multer from 'multer';
 import { ManagerRequest } from './manager.model';
 import { ManagerService } from './manager.service';
-
+import {User} from'../auth/guards/user.decorator';
 @Controller('manager')
 // TODO: setup JWT auth guard???
 export class ManagerController {

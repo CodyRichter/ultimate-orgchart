@@ -30,7 +30,7 @@ export class AuthService
   async validateEmployee(email:string,password:string):Promise<EmployeeAuth>
   {
     
-    const employee=await this.employeeAuthModel.findOne({email});
+    const employee = await this.employeeAuthModel.findOne({email}).exec();
 
     if(!employee)
     {

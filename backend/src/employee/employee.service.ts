@@ -11,85 +11,39 @@ export class EmployeeService {
     @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>,
     @InjectModel(EmployeeAuth) private readonly employeeAuthModel: ReturnModelType<typeof EmployeeAuth>
 
-  ) {}
+  ) { }
 
-  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
-    if (!newEmployee._id && newEmployee.employeeId) {
-      newEmployee._id = newEmployee.employeeId
-    }
-    newEmployee.password = await bcrypt.hash(newEmployee.password,10);
+  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId? : number}): Promise<Employee> {
+    newEmployee._id = newEmployee.employeeId;
+    newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
 
-    const createdEmployee = new this.employeeModel(newEmployee);
-    const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-    const manager = await this.employeeModel.findById(newEmployee.managerId).exec();
+    try {
+      await this.employeeAuthModel.create(newEmployee)
+      return await this.employeeModel.create(newEmployee)
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new ConflictException("Employee already exists");
+      }
 
-    try
-    {
-      if (manager) {
-        manager.children.push(createdEmployee);
-        await manager.save();
-      } 
-      await this.employeeAuthModel.create(createdEmployeeAuth)
-      return await this.employeeModel.create(createdEmployee);
-    }catch(error)
-    {
-        if(error.code===11000)
-        {
-          throw new ConflictException("Employee already exists");
-        }
-
-        throw error;
+      throw error;
     }
   }
 
   async createEmployees(newEmployees: (Employee & EmployeeAuth & {employeeId?: number})[]): Promise<Employee[]> {
-    try
-    {
-      // return await Promise.all(newEmployees.map(async emp => {
-      //   return await this.createEmployee(emp)
-      // }))
-      const updatedEmployees = await Promise.all(newEmployees.map( 
-        async (employee) => { 
-          return {...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password,10)};
-          // const createdEmployee = new this.employeeModel(newEmployee);
-          // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-          // await this.employeeAuthModel.create(createdEmployeeAuth)
-          // await this.employeeModel.create(createdEmployee);
-          // return createdEmployee;
-        }));
+    const updatedEmployees = await Promise.all(newEmployees.map(
+      async (employee) => {
+        return { ...employee, _id: employee.employeeId, password: await bcrypt.hash(employee.password, 10) };
+      }));
+
+    try {
       await this.employeeAuthModel.insertMany(updatedEmployees);
-      const savedEmployees = await this.employeeModel.insertMany(updatedEmployees);
-      const allEmployees = await this.employeeModel.find().exec();
+      return await this.employeeModel.insertMany(updatedEmployees)
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new ConflictException("An Employee in the specified data already exists");
+      }
 
-      // console.log(savedEmployees);
-      // console.log(allEmployees);
-
-      await Promise.all(savedEmployees.map(emp1 => {
-        if (emp1.managerId) {
-          const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
-            allEmployees[index].children.push(emp1);
-        }
-      }));
-
-      // console.log('here');
-
-      // console.log(allEmployees);
-
-      await Promise.all(allEmployees.map(async emp => {
-        // console.log(emp.children);
-        // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
-        await emp.save();
-      }));
-
-      return savedEmployees;
-    }catch(error)
-    {
-        if(error.code===11000)
-        {
-          throw new ConflictException("An Employee in the specified data already exists");
-        }
-
-        throw error;
+      throw error;
     }
   }
 
@@ -115,6 +69,7 @@ export class EmployeeService {
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
+
     return await this.employeeModel.findById(employeeId).exec();
   }
 
@@ -124,11 +79,11 @@ export class EmployeeService {
 
   // updating a reference does not work using this method, do manually using .save();
   // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: number, update: Employee): Promise<Employee | null>{
+  async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null> {
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
 
-    return await this.employeeModel.findByIdAndUpdate(employeeId, update, {new: true}).exec();  // return the updated employee
+    return await this.employeeModel.findByIdAndUpdate(employeeId, update, { new: true }).exec();  // return the updated employee
   }
 
   // removes a single employee from db if request is valid
@@ -156,7 +111,16 @@ export class EmployeeService {
     return employee;
   }
 
+  async findEmployeeByFilter(query:any):Promise<Employee[]>
+  {
+    //if  query  is null return all employees
 
+      if(query===null)
+      {
+        query = {};
+      }
+      //if the key is mismatching the field, then we will return empty array
+      return await this.employeeModel.find(query).exec();
+  }
 
-  
 }
