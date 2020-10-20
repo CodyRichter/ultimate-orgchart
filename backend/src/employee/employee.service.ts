@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "./employee.model";
 import { ReturnModelType } from "@typegoose/typegoose";
@@ -28,7 +28,7 @@ export class EmployeeService {
       if (manager) {
         manager.children.push(createdEmployee);
         await manager.save();
-      }
+      } 
       await this.employeeAuthModel.create(createdEmployeeAuth)
       return await this.employeeModel.create(createdEmployee);
     }catch(error)
@@ -67,7 +67,7 @@ export class EmployeeService {
       await Promise.all(savedEmployees.map(emp1 => {
         if (emp1.managerId) {
           const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
-          allEmployees[index].children.push(emp1);
+            allEmployees[index].children.push(emp1);
         }
       }));
 
@@ -97,8 +97,16 @@ export class EmployeeService {
     return await this.employeeModel.find().exec();
   }
 
-  async getChildren(managerId: number): Promise<Employee[]> {
-    return await this.employeeModel.find({managerId}).populate({ path: 'children', options: { autopopulate: false } }).exec();
+  async getChildren(managerId: number, depth: number): Promise<any> {
+
+    let populate = { path: 'children' };
+
+    for (let i = 0; i < depth - 1; i++) {
+      const temp = { path: 'children', populate: populate }
+      populate = temp;
+    }
+    console.log(populate)
+    return await this.employeeModel.find({managerId}).populate(populate).exec();
   }
 
   // async findEmployee(employee: Partial<Employee>): Promise<Employee> {

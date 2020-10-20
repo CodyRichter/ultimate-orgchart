@@ -66,9 +66,12 @@ export class EmployeeController {
     res.end();
   }
 
-  @Get('getChildren/:managerId?')
-  async getChildren(@Param('managerId') managerId: number): Promise<Employee[]> {  // needs the id of employee to view as 'id'
-    return await this.employeeService.getChildren(managerId);
+  @Get('getChildren/:managerId')
+  async getChildren(@Param('managerId') managerId: number, @Param('depth') depth: number): Promise<Employee[]> {  // needs the id of employee to view as 'id'
+    if (!depth) {
+      depth = 1
+    }
+    return await this.employeeService.getChildren(managerId, depth);
   }
 
   // Returns the information of a single employee
