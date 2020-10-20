@@ -1,5 +1,9 @@
 import { Ref, prop } from "@typegoose/typegoose";
 import { projectsEmployee } from "src/project/project.model";
+import { plugin } from 'typegoose';
+import { AutoIncrementID } from "@typegoose/auto-increment";
+
+@plugin(AutoIncrementID, {})
 
 export class Employee {
     @prop({ required: true, index: true, unique: true, })
@@ -39,5 +43,8 @@ export class Employee {
     startDate: Date;
 
     @prop()
-    project: Ref<projectsEmployee>[]
+    projects: Ref<projectsEmployee>[]
+    
+    @prop({ required: true })
+    managesProject: Ref<projectsEmployee>[];
 }
