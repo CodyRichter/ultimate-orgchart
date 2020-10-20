@@ -1,17 +1,16 @@
 <div>
     <mat-toolbar color="primary" class="mat-elevation-z6">
-        <button mat-icon-button color="accent" (click)="sidebar.toggle()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <span><img class = "logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
+        <span><img class="logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png"
+                alt="logo"></span>
         <span class="spacer"></span>
-        <button mat-icon-button color="accent">
-            <mat-icon>help</mat-icon>
+        <button mat-button color="accent">
+            <mat-icon>help</mat-icon><span class="button-text">Help</span>
         </button>
-        <button mat-icon-button color="accent" style="margin-left: 1em;">
-            <mat-icon>question_answer</mat-icon>
+        <button mat-button color="accent" (click)="notifications.toggle()">
+            <mat-icon>notifications</mat-icon><span class="button-text">Notifications</span>
         </button>
-        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2"
+            style="width: 3em; height: 3em; margin-left: 1em">
             <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
         </button>
     </mat-toolbar>
@@ -19,74 +18,22 @@
 
 <div>
     <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openSettingsDialog()">
+            <mat-icon>settings</mat-icon>Settings
+        </button>
         <button mat-menu-item (click)="logout()">
             <mat-icon>login</mat-icon>Log out
         </button>
     </mat-menu>
 </div>
 
-
-<mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidebar class="mat-elevation-z4" opened="true" mode="side" style="width: 18em;">
-        <mat-list>
-            <mat-list-item>
-                <mat-icon style="color: grey">account_tree</mat-icon><span style="margin-left: 1em">Org Chart</span>
-            </mat-list-item>
-            <mat-list-item>
-                <mat-icon style="color: grey">supervisor_account</mat-icon><span style="margin-left: 1em">Supervisor</span>
-            </mat-list-item>
-            <mat-list-item>
-                <mat-icon style="color: grey">notifications</mat-icon><span style="margin-left: 1em">Notifications</span>
-            </mat-list-item>
-            <mat-list-item *ngIf="isManager()">
-                <mat-icon style="color: grey">groups</mat-icon><span style="margin-left: 1em">Manager Tools</span>
-            </mat-list-item>
-            <mat-list-item *ngIf="isAdmin()">
-                <mat-icon style="color: grey">engineering</mat-icon><span style="margin-left: 1em">Admin Tools</span>
-            </mat-list-item>
-            <mat-list-item>
-                <mat-icon style="color: grey">settings</mat-icon><span style="margin-left: 1em">Settings</span>
-            </mat-list-item>
-        </mat-list>
-    </mat-sidenav>
-</mat-sidenav-container>
-
-<button mat-raised-button (click)="getUser()" class="button">
-    Get User
-</button>
-<button mat-raised-button (click)="getAllEmployees()" class="button">
-    Get All Employees
-</button>
-<button mat-raised-button (click)="openJSONUploadDialog()" class="button">
-    Upload JSON
-</button>
-
-<br>
-
-<button mat-raised-button (click)="(createEmployee())" class="button">
-    Create Employee 2501
-</button>
-
-<button mat-raised-button (click)="getSingleEmployee()" class="button">
-    Get Employee 2501
-</button>
-
-<br>
-
-<button mat-raised-button (click)="(updateEmployee())" class="button">
-    Update Employee 2501
-</button>
-
-<button mat-raised-button (click)="(deleteEmployee())" class="button">
-    Delete Employee 2501
-</button>
-
-<br>
-
-<button mat-raised-button (click)="(downloadJSON())" class="button">
-    Download JSON
-</button>
-
-<button mat-raised-button (click)="openEmployeeTransferDialog()" class="button">
-    Transfer Employee
-</button>
+<mat-drawer-container>
+    <mat-drawer #notifications mode="side" opened="false" position="end">
+        <button mat-button color="gray" (click)="notifications.toggle()">
+            <mat-icon>close</mat-icon><span class="button-text">Close</span>
+        </button>
+        <h2 class="notification-header">Notifications</h2>
+        <br>
+        <p class="notification-body">No new notifications.</p>
+    </mat-drawer>
+</mat-drawer-container>
