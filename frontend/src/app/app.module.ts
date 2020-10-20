@@ -17,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
@@ -26,6 +27,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
+import { SidenavComponent } from './components/charts/sidenav/sidenav/sidenav.component';
+import { SidenavListItemComponent } from './components/charts/sidenav/sidenav/sidenav-list-item/sidenav-list-item.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     JSONUploadDialog,
     EmployeeTransferDialog,
     EmployeeTransferComponent,
+    SidenavComponent,
+    SidenavListItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +57,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     MatInputModule,
     MatCardModule,
     MatMenuModule,
+    MatExpansionModule,
     MatDialogModule,
     MatSelectModule,
     MatFormFieldModule,

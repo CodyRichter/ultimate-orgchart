@@ -81,14 +81,6 @@ export class ChartsComponent implements OnInit {
     await this.employeeService.downloadJSON();
   }
 
-  isAdmin(): boolean {
-    return this.authService.profile.isAdmin;
-  }
-
-  isManager(): boolean {
-    return this.authService.profile.isManager;
-  }
-
   openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
 

@@ -1,0 +1,30 @@
+<mat-list>
+    <mat-list-item>
+        <mat-icon style="color: grey">account_tree</mat-icon><span style="margin-left: 1em">Org Chart</span>
+    </mat-list-item>
+    <mat-list-item>
+        <mat-icon style="color: grey">supervisor_account</mat-icon><span style="margin-left: 1em">Supervisor</span>
+    </mat-list-item>
+    <mat-list-item>
+        <mat-icon style="color: grey">notifications</mat-icon><span style="margin-left: 1em">Notifications</span>
+    </mat-list-item>
+    <mat-list-item>
+        <mat-icon style="color: grey">settings</mat-icon><span style="margin-left: 1em">Settings</span>
+    </mat-list-item>
+</mat-list>
+<mat-expansion-panel *ngIf="isManager()" (opened)="console.log('opened')">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon style="color: grey">groups</mat-icon><span style="margin-left: 1em">Manager Tools</span>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>This is the primary content of the panel.</p>
+</mat-expansion-panel>
+<mat-expansion-panel *ngIf="isAdmin()">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon style="color: grey">engineering</mat-icon><span style="margin-left: 1em">Admin Tools</span>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>This is the primary content of the panel.</p>
+</mat-expansion-panel>
