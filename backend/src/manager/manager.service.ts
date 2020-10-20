@@ -158,4 +158,12 @@ export class ManagerService {
         }
         return result;
     }
+
+
+    //jimmy:10/18
+    //get requests by employeeId
+    async getRequestByEmployeeId(employeeId:number): Promise<ManagerRequest[]>
+    {
+        return await this.managerRequestModel.find({employeeId:employeeId}).exec();
+    }
 }
