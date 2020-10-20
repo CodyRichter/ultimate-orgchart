@@ -13,7 +13,10 @@ export class ChartContainerComponent implements OnInit {
   @Input() nodeHeading = 'name';
   @Input() nodeContent = 'title';
   @Input() nodeTemplate: TemplateRef<any>;
-  @Input() groupScale = 3;
+
+  // Maximum number of child nodes
+  @Input() groupScale = 1;
+
   @Input() pan = false;
   @Input() zoom = false;
   @Input() zoomoutLimit = 0.5;

@@ -1,21 +1,18 @@
-<div class="oc-node" [id]="datasource.id" [class.oc-is-selected]="isSelected" (click)="onClickNode($event)" cdkDrag>
-    <ng-container
-            *ngTemplateOutlet="nodeTemplate ? nodeTemplate : defaultNodeTemplate; context:{ datasource:datasource,nodeHeading: nodeHeading, nodeContent: nodeContent }">
-    </ng-container>
-</div>
-<div *ngIf="datasource.children" [@expandCollapse]="isCollapsed ? 'collapsed' : 'expanded'"
-     (@expandCollapse.start)="toggleAnimStart($event)" (@expandCollapse.done)="toggleAnimEnd($event)"
-     [ngStyle]="ecStyles" class="oc-groups">
-    <ng-container *ngFor="let node of datasource.children;let i=index">
-        <div *ngIf="i % groupScale === 0" class="oc-group">
-            <ng-container *ngFor="let temp of Arr(groupScale);let j=index;">
-                <orgchart-node *ngIf="i + j < datasource.children.length" [datasource]="datasource.children[i + j]"
-                               [nodeHeading]="nodeHeading" [nodeContent]="nodeContent" [nodeTemplate]="nodeTemplate"
-                               [groupScale]="groupScale" [select]="select" (nodeClick)="onNodeClick($event)">
-                </orgchart-node>
+<div [id]="datasource.id" (click)="onClickNode($event)">
+    <div class="oc-groups">
+        <ng-container
+                *ngTemplateOutlet="nodeTemplate ? nodeTemplate : defaultNodeTemplate; context:{ datasource:datasource,nodeHeading: nodeHeading, nodeContent: nodeContent }">
+        </ng-container>
+        <div *ngIf="datasource.children" class="oc-child">
+            <ng-container *ngFor="let node of datasource.children;let i=index">
+                <div class="oc-node">
+                    <orgchart-node *ngIf="i < datasource.children.length" [datasource]="datasource.children[i]"
+                                   [nodeTemplate]="nodeTemplate" (nodeClick)="onNodeClick($event)">
+                    </orgchart-node>
+                </div>
             </ng-container>
         </div>
-    </ng-container>
+    </div>
 </div>
 
 <ng-template #defaultNodeTemplate let-nodeData="datasource" let-heading="nodeHeading" let-content="nodeContent">
