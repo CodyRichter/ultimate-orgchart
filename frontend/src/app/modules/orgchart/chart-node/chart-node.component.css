@@ -2,7 +2,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 .orgchart > :host {
@@ -19,10 +18,10 @@
 .orgchart > :host > .oc-node::after { 
     content: "";
     box-sizing: border-box;
-    left: 590px;
     height: 64px;
     width: 2px;
     position: absolute;
+    margin-left:40px;
     background-color: #707070;
     border-width: 0 2px 0 0;
 }
@@ -30,10 +29,7 @@
 .orgchart > :host > .oc-groups > .oc-group > :host::before {
     height: 0px; /* adjust the vertical postion of link line ⊢ */
     top: 36px;
-    content: "";
-    box-sizing: border-box;
-    background-color: #707070;
-    border-width: 0 2px 2px 0;
+
 }
 
 .oc-node {
@@ -45,6 +41,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
    
 }
 
@@ -91,8 +88,9 @@
     height: 64px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
     width: 10px;
     position: absolute;
-    left: 340px;
-    top: 1px; /* adjust the vertical postion of link line ⊢ */
+    margin-left:390px;
+    top: 1px; 
+    /* adjust the vertical postion of link line ⊢ */
     border-color: #07b32c;
     /* rgba(127, 79, 217, 0.8); */
     border-style: solid;
