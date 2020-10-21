@@ -22,6 +22,7 @@ export class ChartsComponent implements OnInit {
         title: 'Engineering Manager',
         children: [
           { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
+          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
           { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' }
         ]},
       {

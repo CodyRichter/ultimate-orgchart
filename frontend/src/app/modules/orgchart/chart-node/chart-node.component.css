@@ -2,6 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 
 .orgchart > :host {
@@ -23,12 +24,16 @@
     width: 2px;
     position: absolute;
     background-color: #707070;
-    border-width: 0 2px 2px 0;
+    border-width: 0 2px 0 0;
 }
 
 .orgchart > :host > .oc-groups > .oc-group > :host::before {
     height: 0px; /* adjust the vertical postion of link line ⊢ */
     top: 36px;
+    content: "";
+    box-sizing: border-box;
+    background-color: #707070;
+    border-width: 0 2px 2px 0;
 }
 
 .oc-node {
@@ -44,13 +49,13 @@
 }
 
 .orgchart > :host > .oc-groups > .oc-group:first-child {
-    padding-left: 10px;
+    /* padding-left: 10px; */
 }
 
 
 .orgchart > :host > .oc-groups > .oc-group:first-child::before {
     width: calc(100% + 8px);
-   left: 2px;
+    left: 2px;
 }
 
 :host {
@@ -61,9 +66,8 @@
     padding-top: 128px;
 }
 
-:host:not(:last-child) {
-    padding-bottom: 10px;
-}
+
+
 
 /* .oc-group > :host::before {
 
@@ -96,7 +100,7 @@
 }
 
 
-  :host:not(:last-child)::after { 
+  :host(:first-child)::after { 
     content: "";
     box-sizing: border-box;
     height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
@@ -136,6 +140,19 @@
     border-width: 0 2px 0 0;
   }
 
+  :host(:last-child)::before{ 
+    content: "";
+    box-sizing: border-box;
+    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
+    width: 320px;
+    position: absolute;
+    margin-right: 390px;
+    top: 64px; /* adjust the vertical postion of link line ⊢ */
+    border-color: #3e13d8;
+    border-style: solid;
+    border-width: 0 2px 0 0;
+  }
+
 .node-card {
     width: 200px;
     height: 80px;
@@ -145,7 +162,7 @@
 .node-card:active {
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 3px 14px 2px #0000001f;
     z-index: 99999;
 }
 
