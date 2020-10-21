@@ -14,6 +14,17 @@
     display: none;
 }
 
+/* line for org chart ceo*/
+.orgchart > :host > .oc-node::after { 
+    content: "";
+    box-sizing: border-box;
+    left: 590px;
+    height: 64px;
+    width: 2px;
+    position: absolute;
+    background-color: #707070;
+}
+
 .orgchart > :host > .oc-groups > .oc-group > :host::before {
     height: 0px; /* adjust the vertical postion of link line ⊢ */
     top: 36px;
@@ -28,24 +39,13 @@
     position: relative;
     display: flex;
     flex-direction: row;
+   
 }
 
 .orgchart > :host > .oc-groups > .oc-group:first-child {
     padding-left: 10px;
 }
 
-.oc-group:not(:last-child)::before {
-    content: "";
-    box-sizing: border-box;
-    top: 10px;
-    left: 100px;
-    height:40px;
-    width: 100px;
-    position: absolute;
-    border-color: rgba(0, 0, 0, 0.8);
-    border-style: solid;
-    border-width: 0 0 2px 0;
-}
 
 .orgchart > :host > .oc-groups > .oc-group:first-child::before {
     width: calc(100% + 8px);
@@ -81,9 +81,6 @@
 /* adjust the vertical postion of link line ⊢ */
 .oc-group:first-child > :host:first-child::before {
     /* top: -20px;  */
-}
-
-:host:not(:last-child)::before { 
     content: "";
     box-sizing: border-box;
     height: 64px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
@@ -91,11 +88,11 @@
     position: absolute;
     left: 264px;
     top: 1px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #707070;
+    border-color: #07b32c;
     /* rgba(127, 79, 217, 0.8); */
     border-style: solid;
     border-width: 0 2px 0 0;
-  }
+}
 
 
   :host:not(:last-child)::after { 
@@ -104,16 +101,15 @@
     height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
     width: 320px;
     position: absolute;
-    margin-left: 230px;
-    /* margin-right:10px; */
+    margin-right: 390px;
     top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #707070;
-    /* rgba(34, 116, 23, 0.8); */
+    border-color: #da17c9;
     border-style: solid;
-    border-width: 2px 0 0 2px;
+    border-width: 0 2px 0 0;
   }
 
-  :host:not(:first-child)::after { 
+  /* works for all nodes except single nodes*/
+  :host:not(:first-child)::after{ 
     content: "";
     box-sizing: border-box;
     height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
@@ -121,9 +117,22 @@
     position: absolute;
     margin-right: 390px;
     top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #707070;
+    border-color: #862bec;
     border-style: solid;
-    border-width: 2px 2px 0 0;
+    border-width: 0 2px 0 0;
+  }
+/* if changed to before takes off single node lines - used for single nodes*/
+  :host(:last-child)::after{ 
+    content: "";
+    box-sizing: border-box;
+    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
+    width: 320px;
+    position: absolute;
+    margin-right: 390px;
+    top: 64px; /* adjust the vertical postion of link line ⊢ */
+    border-color: #13d8c8;
+    border-style: solid;
+    border-width: 0 2px 0 0;
   }
 
 .node-card {
