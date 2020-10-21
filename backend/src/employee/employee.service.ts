@@ -21,7 +21,7 @@ export class EmployeeService {
 
     const createdEmployee = new this.employeeModel(newEmployee);
     const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('children').exec();
+    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('children').populate('projects').exec();
 
     try
     {
@@ -59,7 +59,7 @@ export class EmployeeService {
         }));
       await this.employeeAuthModel.insertMany(updatedEmployees);
       const savedEmployees = await this.employeeModel.insertMany(updatedEmployees);
-      const allEmployees = await this.employeeModel.find().populate('children').exec();
+      const allEmployees = await this.employeeModel.find().populate('children').populate('projects').exec();
 
       // console.log(savedEmployees);
       // console.log(allEmployees);
@@ -92,14 +92,14 @@ export class EmployeeService {
   }
 
   async findAllEmployees(): Promise<Employee[]> {
-    return await this.employeeModel.find().exec();
+    return await this.employeeModel.find().populate('projects').populate('children').exec();
   }
 
   async getChildren(managerId: number, depth: number): Promise<any> {
 
     let populate = { path: '' };
 
-    for (let i = 0; i < depth; ++i) {
+    for (let i = 0; i < depth; i++) {
       const temp = { path: 'children', populate: populate }
       populate = temp;
     }
@@ -113,7 +113,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findById(employeeId).populate('children').exec();
+    return await this.employeeModel.findById(employeeId).populate('children').populate('projects').exec();
   }
 
   /*
@@ -144,7 +144,7 @@ export class EmployeeService {
     const employee = await this.employeeModel.findById(employeeId).exec();
     // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     if (employee) {
-      const manager = await this.employeeModel.findById(employee.managerId).populate('children').exec();
+      const manager = await this.employeeModel.findById(employee.managerId).populate('children').populate('projects').exec();
       if (manager) {
         manager.children = manager.children.filter((emp: Employee) => emp._id !== employee._id);
         await manager.save();
@@ -165,7 +165,7 @@ export class EmployeeService {
         query = {};
       }
       //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query).populate('children').exec();
+      return await this.employeeModel.find(query).populate('children').populate('projects').exec();
   }
 
 }

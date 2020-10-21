@@ -1,8 +1,12 @@
 import { plugin, prop, Ref } from "@typegoose/typegoose";
 // import * as deeppopulate from 'mongoose-deep-populate';
+import { AutoIncrementID } from "@typegoose/auto-increment";
+import { ProjectsEmployee } from "src/project/projectsEmployee.model";
+
+// @plugin(AutoIncrementID, {})
 
 export class Employee {
-    @prop({ required: true, index: true, unique: true, })
+    @prop()
     _id: number;
 
     @prop({ required: true,  })
@@ -37,4 +41,10 @@ export class Employee {
 
     @prop({ ref: Employee })
     children: Ref<Employee>[];
+
+    @prop({ref:()=>ProjectsEmployee})
+    projects: Ref<ProjectsEmployee>[]
+    
+    // @prop({ required: true })
+    // managesProject: Ref<ProjectsEmployee>[];
 }

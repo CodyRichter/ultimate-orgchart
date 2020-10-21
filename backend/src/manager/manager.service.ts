@@ -71,9 +71,9 @@ export class ManagerService {
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('children').exec();
-        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('children').exec();
-        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('children').exec();
+        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('children').populate('projects').exec();
+        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('children').populate('projects').exec();
+        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('children').populate('projects').exec();
 
         employee.managerId = toManager._id;
         toManager.children.push(employee);
@@ -165,5 +165,13 @@ export class ManagerService {
             console.log(error);
             throw new NotFoundException('the request does not exist');
         }
+    }
+
+
+    //jimmy:10/18
+    //get requests by employeeId
+    async getRequestByEmployeeId(employeeId:number): Promise<ManagerRequest[]>
+    {
+        return await this.managerRequestModel.find({employeeId:employeeId}).populate('fromManager').populate('toManager').populate('employee').exec();
     }
 }
