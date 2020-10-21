@@ -18,11 +18,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, JSONUploadDialog } from './components/charts/charts.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ChartsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/charts/charts.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
 
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { TestComponent } from './components/test/test.component';
@@ -82,7 +83,8 @@ import { TestComponent } from './components/test/test.component';
         component: NotFoundComponent
       }
     ]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {

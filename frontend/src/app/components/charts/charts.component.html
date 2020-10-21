@@ -42,13 +42,16 @@
                 <mat-icon style="color: grey">account_tree</mat-icon><span style="margin-left: 1em">Org Chart</span>
             </mat-list-item>
             <mat-list-item>
-                <mat-icon style="color: grey">edit</mat-icon><span style="margin-left: 1em">Edit</span>
-            </mat-list-item>
-            <mat-list-item>
                 <mat-icon style="color: grey">supervisor_account</mat-icon><span style="margin-left: 1em">Supervisor</span>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon style="color: grey">notifications</mat-icon><span style="margin-left: 1em">Notifications</span>
+            </mat-list-item>
+            <mat-list-item *ngIf="isManager()">
+                <mat-icon style="color: grey">groups</mat-icon><span style="margin-left: 1em">Manager Tools</span>
+            </mat-list-item>
+            <mat-list-item *ngIf="isAdmin()">
+                <mat-icon style="color: grey">engineering</mat-icon><span style="margin-left: 1em">Admin Tools</span>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon style="color: grey">settings</mat-icon><span style="margin-left: 1em">Settings</span>

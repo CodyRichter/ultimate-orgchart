@@ -1,32 +1,50 @@
 import { Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
+import { Employee } from 'src/employee/employee.model';
+import { EmployeeService } from 'src/employee/employee.service';
+import { EmployeeAuth } from './auth.model';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
-import { Roles } from './guards/roles.decorator';
-import { RolesGuard } from './guards/roles.guard';
+import {User} from './guards/user.decorator';
 @Controller('auth')
 export class AuthController 
 {
-    constructor(private authService:AuthService){}
-   
+    constructor(private authService:AuthService, private employeeService: EmployeeService){}
 
+
+    @Post('createAdmin') 
+    async createAdminAccount() {
+        return await this.employeeService.createEmployee({
+                isManager: true, 
+                isAdmin: true, 
+                firstName: "Admin",
+                lastName: "Developer", 
+                companyId: 1,
+                positionTitle: "Software Engineer",
+                companyName: "404 Brain Not Found",
+                _id: 404123456789404,
+                employeeId: 404123456789404,
+                managerId: null,
+                email: "admin@admin.com", 
+                password: "password", 
+                startDate: new Date(),
+        });
+    }
+   
     @UseGuards(LocalAuthGuard)
     @Post('signin')
-    async signIn(@Request() req)
-    {
-
+    async signIn(@User() user:EmployeeAuth)
+    {   
             //Caution: the request will store the info in User object
             //I was using req.employeeAuth to retrieve the data! 
-            return this.authService.signIn(req.user);
+            return this.authService.signIn(user);
     }
 
-    //RoleGuard must be placed after JwtAuthGuard
-    //Otherwise RoleGuard will not receive the request from jwt
-    @UseGuards(JwtAuthGuard,RolesGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('profile')
-    async getUser(@Request() req)
+    async getUser(@User() user:Employee)
     {
-            return req.user;
+            return user;
     }
 }
 
