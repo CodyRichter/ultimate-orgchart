@@ -1,6 +1,8 @@
 import { AutoIncrementID } from "@typegoose/auto-increment";
-import { plugin, prop } from "@typegoose/typegoose";
+import { plugin, prop, Ref } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+//import { autopopulate } from 'mongoose-autopopulate';
+import { Employee } from 'src/employee/employee.model'
 
 //extends the TimeStamps class which contain createdAt and updatedAt two fields
 @plugin(AutoIncrementID, {})
@@ -16,7 +18,7 @@ export class ManagerRequest extends TimeStamps {
 
         @prop({ required: true })
         toManagerId: number;
-
+        
         //previous title
 
         //new title
