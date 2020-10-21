@@ -1,4 +1,5 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Project } from './project.model';
 import { ProjectService } from './project.service';
 
 @Controller('project')
@@ -7,12 +8,15 @@ export class ProjectController {
 
 
     @Post('create')
-    async createProject()
+    async createProject(@Body()project:Project )
+    {
+        return await this.projectService.createProject(project);
+    }
 
 
 
-    @Get(':projectId')
-    async getProject()
+    // @Get(':projectId')
+    // async getProject()
 
 
     

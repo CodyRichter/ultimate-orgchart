@@ -28,6 +28,7 @@ export class AuthController
                 email: "admin@admin.com", 
                 password: "password", 
                 startDate: new Date(),
+                projects:[],
         });
     }
    

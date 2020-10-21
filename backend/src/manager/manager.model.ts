@@ -1,7 +1,7 @@
 import { AutoIncrementID } from "@typegoose/auto-increment";
 import { plugin, prop, Ref } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
-import { autopopulate } from 'mongoose-autopopulate';
+//import { autopopulate } from 'mongoose-autopopulate';
 import { Employee } from 'src/employee/employee.model'
 
 //extends the TimeStamps class which contain createdAt and updatedAt two fields
@@ -19,9 +19,6 @@ export class ManagerRequest extends TimeStamps {
         @prop({ required: true })
         toManagerId: number;
         
-        @prop({ autopopulate: { maxDepth: 1}, ref: 'Employee' })
-        children: Ref<Employee>[];
-
         //previous title
 
         //new title
