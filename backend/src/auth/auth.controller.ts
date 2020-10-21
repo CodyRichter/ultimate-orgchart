@@ -36,7 +36,6 @@ export class AuthController
     @Post('signin')
     async signIn(@User() user:EmployeeAuth)
     {   
-            console.log(user);
             //Caution: the request will store the info in User object
             //I was using req.employeeAuth to retrieve the data! 
             return this.authService.signIn(user);
