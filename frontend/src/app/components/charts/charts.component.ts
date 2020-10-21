@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-charts',
@@ -21,10 +22,6 @@ export class ChartsComponent implements OnInit {
         title: 'Engineering Manager',
         children: [
           { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
           { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' }
         ]},
       {
@@ -33,33 +30,9 @@ export class ChartsComponent implements OnInit {
         title: 'Software Engineer II',
         children: [
           { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' }
-          
-        ]
-      },
-      {
-        id: '21',
-        name: 'Denis Matthews',
-        title: 'Software Engineer II',
-        children: [
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' }
-          
-        ]
-      },
-      {
-        id: '21',
-        name: 'Denis Matthews',
-        title: 'Software Engineer II',
-        children: [
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' }
-          
+          { id: '15', name: 'Josue Stuart', title: 'Software Engineer I' }
         ]
       }
-      
     ]
   };
 
@@ -69,7 +42,8 @@ export class ChartsComponent implements OnInit {
   constructor(private router: Router,
     public dialog: MatDialog,
     private readonly authService: AuthService,
-    private readonly employeeService: EmployeeService) {
+    private readonly employeeService: EmployeeService,
+    private _snackBar: MatSnackBar) {
 }
 
   selectNode(nodeData: {name: string, title: string}): void {
@@ -117,16 +91,16 @@ export class ChartsComponent implements OnInit {
 
   async createEmployee(): Promise<void> {
     const newEmployee = {
-      isManager: false,
-      isAdmin: false,
-      firstName: 'Ben',
-      lastName: 'Test',
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Testing',
+      lastName: 'Dummy',
       companyId: 1,
       positionTitle: 'Senior bug finder',
       companyName: 'Cyclone Aviation',
       employeeId: 2501,
       managerId: null,
-      email: 'ben@email.com',
+      email: 'testemail@email.com',
       password: 'password',
       startDate: new Date(),
     };
@@ -138,39 +112,57 @@ export class ChartsComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.profile.isAdmin;
+    try {
+      return this.authService.profile.isAdmin;
+    }
+    catch (e) {
+      return false;
+    }
   }
 
   isManager(): boolean {
-    return this.authService.profile.isManager;
+    try {
+      return this.authService.profile.isManager;
+    }
+    catch (e) {
+      return false;
+    }
   }
 
   openJSONUploadDialog(): void {
     const dialogRef = this.dialog.open(JSONUploadDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`JSON upload result: ${result}`);
+      console.log(`Dialog result: ${result}`);
     });
   }
 
-  openEmployeeTransferDialog(): void {
-    const dialogRef = this.dialog.open(EmployeeTransferDialog);
+  onClickHandler(): void {
+
+  }
+
+  onItem1Click(): void {
+    console.log('item1');
+  }
+
+  onNodeClick(): void {
+    const dialogRef = this.dialog.open(NodeDetailDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Employee transfer result: ${result}`);
+      console.log(`Dialog result: ${result}`);
     });
   }
 
 }
 
 @Component({
+  selector: 'node-detail-dialog',
+  templateUrl: 'node-detail-dialog.html',
+})
+export class NodeDetailDialog {}
+
+@Component({
   selector: 'json-upload-dialog',
   templateUrl: 'json-upload-dialog.html',
 })
 export class JSONUploadDialog {}
-
-@Component({
-  selector: 'employee-transfer-dialog',
-  templateUrl: 'employee-transfer-dialog.html',
-})
-export class EmployeeTransferDialog {}
