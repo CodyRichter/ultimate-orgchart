@@ -1,8 +1,8 @@
 import { AutoIncrementID } from "@typegoose/auto-increment";
 import { plugin, prop, Ref } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
-//import { autopopulate } from 'mongoose-autopopulate';
-import { Employee } from 'src/employee/employee.model'
+import { Employee } from "src/employee/employee.model";
+import { RequestStatus } from "src/enums/request.enum";
 
 //extends the TimeStamps class which contain createdAt and updatedAt two fields
 @plugin(AutoIncrementID, {})
@@ -10,22 +10,23 @@ export class ManagerRequest extends TimeStamps {
         @prop()
         _id: number;
 
-        @prop({ required: true })
-        employeeId: number;
+        @prop({ require: true, autopopulate: true, ref: Employee })
+        employee: Ref<Employee>;
+
+        @prop({ require: true, autopopulate: true, ref: Employee })
+        fromManager: Ref<Employee>;
+
+        @prop({ require: true, autopopulate: true, ref: Employee })
+        toManager: Ref<Employee>;
 
         @prop({ required: true })
-        fromManagerId: number;
+        previousPosition: string;
 
         @prop({ required: true })
-        toManagerId: number;
-        
-        //previous title
-
-        //new title
-
+        newPosition: string;
         //I think we don't need to enforce client send the status
         //we can set it when the request created in the service
-        @prop({ required: false })
-        status: string;
+        @prop({ required: false, default: RequestStatus.Pending })
+        status?: RequestStatus;
 
 }

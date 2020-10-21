@@ -61,6 +61,13 @@ export class EmployeeController {
     res.end();
   }
 
+  @Get('getChildren/:managerId?')
+  async getChildren(@Param('managerId') managerId: number, @Query('depth') depth: number): Promise<Employee[]> {  // needs the id of employee to view as 'id'
+    if (!depth) {
+      depth = 0;
+    }
+    return await this.employeeService.getChildren(managerId, depth);
+  }
 
   //query endpoints
   //it supports multiple query params

@@ -33,8 +33,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Employee Schema
         @Patch('approve/:requestId')
-        @Roles(Role.ADMIN,Role.MANAGER)
-        async approveRequest(@Param('requestId') _id: number): Promise<Employee> {
+        async approveRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
 
                 return await this.managerService.approveRequest(_id);
         }
@@ -81,8 +80,7 @@ export class ManagerController {
         //Param: the request id
         //return: the single request
         @Get("/:requestId")
-        @Roles(Role.ADMIN,Role.MANAGER)
-        async getOneRequest(@Param('_id') requestId: number) {
+        async getOneRequest(@Param('requestId') requestId: number) {
                 return await this.managerService.findRequestById(requestId);
         }
 

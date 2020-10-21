@@ -17,16 +17,16 @@ export class ProjectService {
     ){}
 
 
-    async createProject(newProject:Project &{managerId?:number}):Promise<Project>
+    async createProject(newProject:Project & {managerId?:number}):Promise<Project>
     {
         //get the manager from database
-        const manager=await this.employeeModel.findById(newProject.managerId ? newProject.managerId : newProject.manager).populate("projects").exec();
+        const manager=await this.employeeModel.findById(newProject.managerId ? newProject.managerId : newProject.manager).populate('children').populate('projects').exec();
 
         //
         const project=await this.projectModel.create(newProject);
 
         //create projectEmployee
-        const projectEmployee=new this.projectsEmployeeModel({project:project,employee:manager,role:"project Manager",});
+        const projectEmployee=new this.projectsEmployeeModel({project:project,employee:manager,role:"Project Manager",});
         const savedProjectEmployee=await this.projectsEmployeeModel.create(projectEmployee);
         
         savedProjectEmployee.employee=undefined;
@@ -40,13 +40,13 @@ export class ProjectService {
 
     async getProject(projtectId:number)
     {
-            return await this.projectModel.findById(projtectId).exec();
+            return await this.projectModel.findById(projtectId).populate('manager').populate('employees').exec();
 
     }
 
     async getAllProjects()
     {
-        return await this.projectModel.find().exec();
+        return await this.projectModel.find().populate('manager').populate('employees').exec();
     }
 }
 

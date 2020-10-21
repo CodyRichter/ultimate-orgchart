@@ -25,7 +25,7 @@ export class Project extends TimeStamps{
     manager: Ref<ProjectsEmployee>;
 
     @prop({required: false,ref:"ProjectsEmployee"})
-    employeeList: Ref<ProjectsEmployee>[]
+    employees: Ref<ProjectsEmployee>[]
 }
 
 
