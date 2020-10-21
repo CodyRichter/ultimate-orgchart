@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Project } from './project.model';
 import { ProjectService } from './project.service';
 
@@ -13,10 +13,18 @@ export class ProjectController {
         return await this.projectService.createProject(project);
     }
 
+    
+    @Get('all')
+    async getAllprojects():Promise<Project[]>
+    {
+        return await this.projectService.getAllProjects();
+    }
 
-
-    // @Get(':projectId')
-    // async getProject()
+     @Get(':projectId')
+     async getProject(@Param("projectId")projectId:number):Promise<Project>
+     {
+         return await this.projectService.getProject(projectId);
+     }
 
 
     

@@ -37,5 +37,16 @@ export class ProjectService {
         manager.save();
         return project;
     }
+
+    async getProject(projtectId:number)
+    {
+            return await this.projectModel.findById(projtectId).exec();
+
+    }
+
+    async getAllProjects()
+    {
+        return await this.projectModel.find().exec();
+    }
 }
 
