@@ -1,162 +1,102 @@
 .oc-groups {
-    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
 }
 
 .orgchart > :host {
     align-items: center;
 }
 
-.orgchart > :host > .oc-node.oc-is-collapsed::after {
-    height: 64px;
-    top: 64px;
-    display: none;
-}
-
-/* line for org chart ceo*/
-.orgchart > :host > .oc-node::after { 
+.orgchart > :host > .oc-node::after {
     content: "";
     box-sizing: border-box;
-    left: 590px;
-    height: 64px;
+    left: 50%;
+    height: 48px;
     width: 2px;
     position: absolute;
     background-color: #707070;
-    border-width: 0 2px 0 0;
 }
 
 .orgchart > :host > .oc-groups > .oc-group > :host::before {
-    height: 0px; /* adjust the vertical postion of link line ⊢ */
-    top: 36px;
-    content: "";
-    box-sizing: border-box;
-    background-color: #707070;
-    border-width: 0 2px 2px 0;
+    height: 48px; /* adjust the vertical postion of link line ⊢ */
+    top: -48px;
 }
 
 .oc-node {
-    /*border: 3px solid transparent;*/
-    text-align: left;
+    /*width: 140px;
+    font-family: Arial;
+    box-sizing: border-box;
+    position: relative;
+    padding: 3px;
+    margin: 0;
+    border: 2px solid transparent;
+    text-align: center;*/
 }
 
 .oc-group {
-    position: relative;
     display: flex;
-    flex-direction: row;
-   
+    flex-direction: column;
+    position: relative;
+    padding-top: 96px;
+    padding-left: 32px;
+    padding-right: 32px;
 }
 
 .orgchart > :host > .oc-groups > .oc-group:first-child {
-    /* padding-left: 10px; */
 }
 
+.oc-group:not(:last-child)::before {
+    content: "";
+    box-sizing: border-box;
+    top: 48px;
+    width: calc(100% - 2px);
+    left: calc(50% + 2px);
+    position: absolute;
+    border-color: #707070;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+}
 
 .orgchart > :host > .oc-groups > .oc-group:first-child::before {
-    width: calc(100% + 8px);
-    left: 2px;
+    width: calc(50%);
 }
 
 :host {
     position: relative;
-    align-items: center;
     display: flex;
     flex-direction: column;
-    padding-top: 128px;
+    align-items: center;
 }
 
+/*:host:not(:last-child) {
+    padding-bottom: 10px;
+}*/
 
-
-
-/* .oc-group > :host::before {
-
-  content: "";
-  box-sizing: border-box;
-  height: 65px; /* adjust the vertical postion of link line ⊢ */
-  /* width: 160px;
-  position: absolute;
-  left: -40px;
-  top: 1px; */
-  /* border-color: rgba(217, 83, 79, 0.8);
-  border-style: solid;
-  border-width: 0 0 0 2px;
-} */ 
-
-/* adjust the vertical postion of link line ⊢ */
-.oc-group:first-child > :host:first-child::before {
-    /* top: -20px;  */
+.oc-group > :host > .oc-node:not(:last-child)::after {
     content: "";
     box-sizing: border-box;
-    height: 64px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
-    width: 10px;
+    left: 50%;
+    height: 48px;
+    width: 2px;
     position: absolute;
-    left: 340px;
-    top: 1px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #07b32c;
-    /* rgba(127, 79, 217, 0.8); */
-    border-style: solid;
-    border-width: 0 2px 0 0;
+    background-color: #707070;
 }
 
-
-  :host(:first-child)::after { 
+.oc-group > :host::before {
     content: "";
     box-sizing: border-box;
-    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
-    width: 320px;
+    height: 48px; /* adjust the vertical postion of link line ⊢ */
     position: absolute;
-    margin-right: -240px;
-    top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #da17c9;
+    top: -48px;
+    left: 50%;
+    border-color: #707070;
     border-style: solid;
-    border-width: 2px 0 0 2px;
-  }
-
-  /* works for all nodes except single nodes*/
-  :host:not(:first-child)::after{ 
-    content: "";
-    box-sizing: border-box;
-    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
-    width: 305px;
-    position: absolute;
-    margin-right: -245px;
-    top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #862bec;
-    border-style: solid;
-    border-width: 2px 0 0 2px;
-  }
-/* if changed to before takes off single node lines - used for single nodes*/
-  :host(:last-child)::after{ 
-    content: "";
-    box-sizing: border-box;
-    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
-    width: 320px;
-    position: absolute;
-    margin-right: 390px;
-    top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #13d8c8;
-    border-style: solid;
-    border-width: 0 2px 0 0;
-  }
-
-  :host(:last-child)::before{ 
-    content: "";
-    box-sizing: border-box;
-    height: 65px; /* THIS IS WHERE LINE SIZING IS HAPPENING ⊢ */
-    width: 320px;
-    position: absolute;
-    margin-right: 390px;
-    top: 64px; /* adjust the vertical postion of link line ⊢ */
-    border-color: #3e13d8;
-    border-style: solid;
-    border-width: 0 2px 0 0;
-  }
+    border-width: 0 0 0 2px;
+}
 
 .node-card {
     width: 200px;
     height: 80px;
-    margin-right: 80px;
 }
 
 .node-card:active {
