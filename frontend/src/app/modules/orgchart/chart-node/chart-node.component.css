@@ -57,8 +57,20 @@
     border-width: 0 0 2px 0;
 }
 
+.oc-group:last-child:not(:first-child)::before {
+    content: "";
+    box-sizing: border-box;
+    top: 48px;
+    width: calc(50% - 32px);
+
+    position: absolute;
+    border-color: #707070;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+}
+
 .orgchart > :host > .oc-groups > .oc-group:first-child::before {
-    width: calc(50%);
+    width: calc(50% + 32px);
 }
 
 :host {
