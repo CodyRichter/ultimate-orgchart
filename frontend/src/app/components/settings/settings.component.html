@@ -1,0 +1,36 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                General Settings
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button>
+            <mat-icon>person</mat-icon>Edit Personal Info
+        </button>
+        <br>
+        <button mat-button (click)="downloadJSON()">
+            <mat-icon>archive</mat-icon>Download JSON
+        </button>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="isManager()">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Manager Tools
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button (click)="openEmployeeTransferDialog()">
+            <mat-icon>transfer_within_a_station</mat-icon>Transfer Employee
+        </button>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="isAdmin()">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Admin Tools
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button (click)="openJSONUploadDialog()">
+            <mat-icon>unarchive</mat-icon>Upload JSON
+        </button>
+    </mat-expansion-panel>
+</mat-accordion>

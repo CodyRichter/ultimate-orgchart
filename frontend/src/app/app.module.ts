@@ -17,10 +17,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/charts/charts.component';
+import { ChartsComponent, SettingsDialog } from './components/charts/charts.component';
+import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
@@ -36,7 +38,9 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     FileUploadComponent,
     JSONUploadDialog,
     EmployeeTransferDialog,
+    SettingsDialog,
     EmployeeTransferComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +57,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     MatCardModule,
     MatMenuModule,
     MatDialogModule,
+    MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
     RouterModule.forRoot([

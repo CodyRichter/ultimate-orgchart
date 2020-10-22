@@ -77,44 +77,14 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
-  async downloadJSON(): Promise<void> {
-    await this.employeeService.downloadJSON();
-  }
-
-  isAdmin(): boolean {
-    return this.authService.profile.isAdmin;
-  }
-
-  isManager(): boolean {
-    return this.authService.profile.isManager;
-  }
-
-  openJSONUploadDialog(): void {
-    const dialogRef = this.dialog.open(JSONUploadDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`JSON upload result: ${result}`);
-    });
-  }
-
-  openEmployeeTransferDialog(): void {
-    const dialogRef = this.dialog.open(EmployeeTransferDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Employee transfer result: ${result}`);
-    });
+  openSettingsDialog(): void {
+    this.dialog.open(SettingsDialog);
   }
 
 }
 
 @Component({
-  selector: 'json-upload-dialog',
-  templateUrl: 'json-upload-dialog.html',
+  selector: 'settings-dialog',
+  templateUrl: 'settings-dialog.html',
 })
-export class JSONUploadDialog {}
-
-@Component({
-  selector: 'employee-transfer-dialog',
-  templateUrl: 'employee-transfer-dialog.html',
-})
-export class EmployeeTransferDialog {}
+export class SettingsDialog {}
