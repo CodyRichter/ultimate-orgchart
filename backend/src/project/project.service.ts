@@ -33,8 +33,8 @@ export class ProjectService {
         savedProjectEmployee.project=undefined;
         project.manager=savedProjectEmployee;
         manager.projects.push(savedProjectEmployee);
-        project.save();
-        manager.save();
+        await project.save();
+        await manager.save();
         return project;
     }
 
