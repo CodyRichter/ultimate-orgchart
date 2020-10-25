@@ -3,6 +3,8 @@
         <span><img class="logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png"
                 alt="logo"></span>
         <span class="spacer"></span>
+        <button  mat-button color="accent" (click)="initializeChart()">initialize</button>
+        <button  mat-button color="accent" (click)="updateGraph()">update</button>
         <button mat-button color="accent">
             <mat-icon>help</mat-icon><span class="button-text">Help</span>
         </button>
@@ -37,3 +39,4 @@
         <p class="notification-body">No new notifications.</p>
     </mat-drawer>
 </mat-drawer-container>
+

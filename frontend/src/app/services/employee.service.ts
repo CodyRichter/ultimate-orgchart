@@ -6,11 +6,38 @@ import { saveAs } from 'file-saver';
   providedIn: 'root'
 })
 export class EmployeeService {
+  public chart: any;
 
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) {  }
 
   async getAllEmployees(): Promise<any> {
     return await this.httpClient.get('http://localhost:3000/employee/all').toPromise();
+  }
+
+  async initializeChart(): Promise<any> {
+    const temp = await this.getManagersEmployees(undefined, 2) as any[];
+    this.chart = temp.find(employee => employee._id !== 404123456789404)
+    console.log(this.chart);
+    return this.chart;
+  }
+
+  async increaseChartDepth(manager: any): Promise<any> {
+    manager.children = await this.getManagersEmployees(manager._id, 2);
+    console.log(this.chart);
+    return this.chart;
+  }
+
+  async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
+    let url = 'http://localhost:3000/employee/getChildren/';
+    if (manager) {
+      url += manager;
+    }
+    if (depth) {
+      url += `?depth=${depth}`;
+    }
+    console.log(url);
+
+    return await this.httpClient.get(url).toPromise();
   }
 
   async getEmployeeById(employeeId: number): Promise<any> {
