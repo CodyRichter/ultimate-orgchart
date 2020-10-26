@@ -14,12 +14,7 @@
         </div>
     </div>
     <div *ngIf="datasource.children.length > 2" class="oc-hybrid">
-        <div class="oc-group">
-            <ng-container
-                    *ngTemplateOutlet="defaultNodeTemplate; context:{ datasource:datasource.children[0] }">
-            </ng-container>
-        </div>
-        <chart-stack [datasource]="datasource.children.slice(1)" class="oc-group"></chart-stack>
+        <chart-stack [datasource]="datasource.children" class="oc-group"></chart-stack>
     </div>
 </div>
 
