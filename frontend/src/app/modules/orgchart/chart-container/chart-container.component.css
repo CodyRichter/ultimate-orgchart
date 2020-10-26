@@ -1,0 +1,10 @@
+.orgchart-container {
+    box-sizing: border-box;
+    position: relative;
+    overflow: auto;
+    top: 128px;
+}
+
+.orgchart {
+
+}
