@@ -1,5 +1,5 @@
 <div *ngFor=" let node of datasource;  let i=index">
-    <div *ngIf="i <= 3">
+    <div *ngIf="i < 3">
         <mat-card class="node-card" id="card{{i+1}}" style={{getColor(node.title)}}>
             <mat-card-header class="header"></mat-card-header>
             <mat-card-content>
