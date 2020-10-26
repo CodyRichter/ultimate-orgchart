@@ -1,14 +1,13 @@
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Patch, Param } from '@nestjs/common';
 import { Employee } from '../employee/employee.model';
-import { EmployeeAuth } from '../auth/auth.model';
-//import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import * as multer from 'multer';
 import { ManagerRequest } from './manager.model';
 import { ManagerService } from './manager.service';
-import {User} from'../auth/guards/user.decorator';
-@Controller('manager')
-// TODO: setup JWT auth guard???
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/guards/roles.decorator';
+import {Role} from '../enums/roles.enum';
+@Controller('managerRequest')
+@UseGuards(JwtAuthGuard,RolesGuard)
 export class ManagerController {
         constructor(private readonly managerService: ManagerService) { }
 
@@ -24,6 +23,7 @@ export class ManagerController {
         //Param: manager request
         //Return: the created request
         @Post('create')
+        @Roles(Role.ADMIN,Role.MANAGER)
         async createRequest(@Body() newRequest: ManagerRequest): Promise<ManagerRequest> {
                 return await this.managerService.createRequest(newRequest);
         }
@@ -33,7 +33,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Employee Schema
         @Patch('approve/:requestId')
-        async approveRequest(@Param('requestId') _id: number): Promise<Employee> {
+        async approveRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
 
                 return await this.managerService.approveRequest(_id);
         }
@@ -42,6 +42,7 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Request Schema
         @Patch('reject/:requestId')
+        @Roles(Role.ADMIN,Role.MANAGER)
         async rejectRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
                 return await this.managerService.rejectedRequest(_id);
         }
@@ -51,6 +52,7 @@ export class ManagerController {
         //Param: the FromManager Id
         //Return: the lists of request that he has
         @Get("all/from/:managerId")
+        @Roles(Role.ADMIN,Role.MANAGER)
         async getAllRequestFrom(@Param('managerId') managerId: number) {
                 return await this.managerService.findAllRequestsFrom(managerId);
         }
@@ -59,16 +61,17 @@ export class ManagerController {
         //Param: the toManagerId
         //Return: the list of request  that given manager Id 
         @Get("all/to/:managerId")
+        @Roles(Role.ADMIN,Role.MANAGER)
         async getAllRequestTo(@Param('managerId') managerId: number) {
                 return await this.managerService.findAllRequestsTo(managerId);
         }
 
-        //left: get request by employeeId 
 
 
         //get all request in the database
         //could be used for testing purpose
         @Get('All')
+        @Roles(Role.ADMIN,Role.MANAGER)
         async getAllRequest() {
                 return await this.managerService.findAllRequest();
         }
@@ -77,8 +80,15 @@ export class ManagerController {
         //Param: the request id
         //return: the single request
         @Get("/:requestId")
-        async getOneRequest(@Param('_id') requestId: number) {
+        async getOneRequest(@Param('requestId') requestId: number) {
                 return await this.managerService.findRequestById(requestId);
+        }
+
+        //left: get request by employeeId 
+        @Get('employee/:employeeId')
+        async getRequestsByEmployeeId(@Param('employeeId')employeeId:number)
+        {
+                return await this.managerService.getRequestByEmployeeId(employeeId);
         }
 
 }
