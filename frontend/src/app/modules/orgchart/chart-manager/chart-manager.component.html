@@ -3,7 +3,7 @@
             *ngTemplateOutlet="defaultNodeTemplate; context:{ datasource:datasource }">
     </ng-container>
 </div>
-<div *ngIf="datasource.children">
+<div *ngIf="datasource.children.length > 0">
     <div *ngIf="datasource.children.length <= 2">
         <div *ngIf="datasource.children" class="oc-groups">
             <ng-container *ngFor="let node of datasource.children">
