@@ -1,0 +1,39 @@
+<div class="oc-node" (click)="onClickNode($event)">
+    <ng-container
+            *ngTemplateOutlet="defaultNodeTemplate; context:{ datasource:datasource }">
+    </ng-container>
+</div>
+<div *ngIf="datasource.children">
+    <div *ngIf="datasource.children.length <= 2">
+        <div *ngIf="datasource.children" class="oc-groups">
+            <ng-container *ngFor="let node of datasource.children">
+                <div class="oc-group">
+                    <chart-employee [datasource]="node"></chart-employee>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div *ngIf="datasource.children.length > 2" class="oc-hybrid">
+        <div class="oc-group">
+            <ng-container
+                    *ngTemplateOutlet="defaultNodeTemplate; context:{ datasource:datasource.children[0] }">
+            </ng-container>
+        </div>
+        <chart-stack [datasource]="datasource.children.slice(1)" class="oc-group"></chart-stack>
+    </div>
+</div>
+
+<ng-template #defaultNodeTemplate let-nodeData="datasource">
+    <div class="container">
+        <mat-card class="node-card" style={{getColor(nodeData.title)}}>
+            <mat-card-header class="header"></mat-card-header>
+            <mat-card-content>
+                <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 48px; margin-left: 2px"></div>
+                <div style="margin-left: 64px;">
+                    <div><strong>{{nodeData.name}}</strong></div>
+                    <div style="margin-top: 6px">{{nodeData.title}}</div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</ng-template>
