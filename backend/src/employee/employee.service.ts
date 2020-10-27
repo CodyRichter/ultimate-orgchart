@@ -21,12 +21,12 @@ export class EmployeeService {
 
     const createdEmployee = new this.employeeModel(newEmployee);
     const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('children').populate('projects').exec();
+    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('manages').populate('projects').exec();
 
     try
     {
       if (manager) {
-        manager.children.push(createdEmployee);
+        manager.manages.push(createdEmployee);
         await manager.save();
       } 
       await this.employeeAuthModel.create(createdEmployeeAuth)
@@ -59,7 +59,7 @@ export class EmployeeService {
         }));
       await this.employeeAuthModel.insertMany(updatedEmployees);
       const savedEmployees = await this.employeeModel.insertMany(updatedEmployees);
-      const allEmployees = await this.employeeModel.find().populate('children').populate('projects').exec();
+      const allEmployees = await this.employeeModel.find().populate('manages').populate('projects').exec();
 
       // console.log(savedEmployees);
       // console.log(allEmployees);
@@ -67,7 +67,7 @@ export class EmployeeService {
       await Promise.all(savedEmployees.map(emp1 => {
         if (emp1.managerId) {
           const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
-            allEmployees[index].children.push(emp1);
+            allEmployees[index].manages.push(emp1);
         }
       }));
 
@@ -76,7 +76,7 @@ export class EmployeeService {
       // console.log(allEmployees);
 
       await Promise.all(allEmployees.map(async emp => {
-        // console.log(emp.children);
+        // console.log(emp.manages);
         // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
         await emp.save();
       }));
@@ -92,15 +92,15 @@ export class EmployeeService {
   }
 
   async findAllEmployees(): Promise<Employee[]> {
-    return await this.employeeModel.find().populate('projects').populate('children').exec();
+    return await this.employeeModel.find().populate('projects').populate('manages').exec();
   }
 
-  async getChildren(managerId: number, depth: number): Promise<any> {
+  async getManages(managerId: number, depth: number): Promise<any> {
 
     let populate = { path: '' };
 
     for (let i = 0; i < depth; i++) {
-      const temp = { path: 'children', populate: populate }
+      const temp = { path: 'manages', populate: populate }
       populate = temp;
     }
     return await this.employeeModel.find({managerId}).populate(populate).exec();
@@ -113,7 +113,7 @@ export class EmployeeService {
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
 
-    return await this.employeeModel.findById(employeeId).populate('children').populate('projects').exec();
+    return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').exec();
   }
 
   /*
@@ -144,9 +144,9 @@ export class EmployeeService {
     const employee = await this.employeeModel.findById(employeeId).exec();
     // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     if (employee) {
-      const manager = await this.employeeModel.findById(employee.managerId).populate('children').populate('projects').exec();
+      const manager = await this.employeeModel.findById(employee.managerId).populate('manages').populate('projects').exec();
       if (manager) {
-        manager.children = manager.children.filter((emp: Employee) => emp._id !== employee._id);
+        manager.manages = manager.manages.filter((emp: Employee) => emp._id !== employee._id);
         await manager.save();
       }
       employee.deleteOne();
@@ -165,7 +165,7 @@ export class EmployeeService {
         query = {};
       }
       //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query).populate('children').populate('projects').exec();
+      return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
   }
 
 }

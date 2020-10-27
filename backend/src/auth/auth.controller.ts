@@ -24,7 +24,7 @@ export class AuthController
                 companyName: "404 Brain Not Found",
                 _id: 404123456789404,
                 managerId: null,
-                children: [],
+                manages: [],
                 email: "admin@admin.com", 
                 password: "password", 
                 startDate: new Date(),
