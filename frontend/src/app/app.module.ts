@@ -35,8 +35,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TransferConfirmComponent } from './components/transfer-confirm/transfer-confirm.component';
 
-import { ConfirmDialog } from './modules/orgchart/chart-node/chart-node.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +45,6 @@ import { ConfirmDialog } from './modules/orgchart/chart-node/chart-node.componen
     JSONUploadDialog,
     NodeDetailDialog,
     TransferRequestDialog,
-    ConfirmDialog,
     TestComponent,
     NodeDetailComponent,
     TransferRequestComponent,

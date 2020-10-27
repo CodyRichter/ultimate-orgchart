@@ -8,12 +8,16 @@ import { MatCardModule } from '@angular/material/card';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartStackComponent } from './chart-stack/chart-stack.component';
 import { ChartManagerComponent } from './chart-manager/chart-manager.component';
-import { ChartEmployeeComponent } from './chart-employee/chart-employee.component';
-import { TestContainerComponent } from './test-container/test-container.component';
 import { ChartRootComponent } from './chart-root/chart-root.component';
 
 @NgModule({
-  declarations: [ChartContainerComponent, ChartNodeComponent, ChartStackComponent, ChartManagerComponent, ChartEmployeeComponent, TestContainerComponent, ChartRootComponent],
+  declarations: [
+    ChartContainerComponent,
+    ChartNodeComponent,
+    ChartStackComponent,
+    ChartManagerComponent,
+    ChartRootComponent
+  ],
   exports: [
     ChartContainerComponent,
     ChartNodeComponent
