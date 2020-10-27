@@ -74,6 +74,10 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.deleteEmployeeById(2501));
   }
 
+  // async searchEmployee():Promise<void>{
+  //   console.log(await this.employeeService.searchEmployee());
+  // }
+
   async updateEmployee(): Promise<void> {
     const newEmployee = {
       isManager: true,

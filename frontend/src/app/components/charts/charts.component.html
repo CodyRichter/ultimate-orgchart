@@ -5,12 +5,11 @@
         </button>
         <span><img class = "logo" style="margin-left: 24px; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
 
-        <div class="search-bar" [class.mat-elevation-z2]="true">
-            <mat-icon class="search-bar-icon">search</mat-icon>
-            <div class="search-bar-input">Search</div>
-            <button mat-icon-button class="search-bar-more">
-                <mat-icon>more_vert</mat-icon>
-            </button>
+        <div class="search-bar">
+            <mat-form-field appearance = "legacy" class = "example-full-width">
+            <input matInput placeholder="Search">
+            <mat-icon matSuffix>search</mat-icon> 
+            </mat-form-field>
         </div>
 
         <span class="spacer"></span>
@@ -61,9 +60,7 @@
 </mat-sidenav-container>
 
 
-<button mat-raised-button class="button">
-    Get Chart Next
-</button>
+
 
 
 <section id="chart-container">

@@ -79,7 +79,7 @@
     margin-left: 64px;
     width: 500px;
     border-radius: 3px;
-    background-color: #FFFFFF;
+    
 }
 
 .search-bar-icon {
@@ -120,3 +120,26 @@
     top:80px;
     left:260px;
 }
+
+.mat-form-field {
+    font-size: 14px;
+    min-width:400px;
+    position: absolute;
+    top:10px;
+}
+
+::ng-deep .mat-form-field-outline {
+    background-color: white;
+    
+  
+}
+
+.searchIcon {
+    color: gray;
+}
+
+.mat-toolbar.mat-primary {
+    background: #509e2f;
+    color: white;
+}
+

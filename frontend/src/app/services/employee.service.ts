@@ -29,6 +29,11 @@ export class EmployeeService {
     return await this.httpClient.post('http://localhost:3000/employee/create', employee).toPromise();
   }
 
+  // async searchEmployee(queryname:any, searchquery:any):Promise<any>{
+  //   const query = queryname + "=" + searchquery
+  //   return await this.httpClient.get(`http://localhost:30000/employee/?${query}`).toPromise();
+  // }
+
   async createManyEmployees(employees: any[]): Promise<any> {
     return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise();
   }
