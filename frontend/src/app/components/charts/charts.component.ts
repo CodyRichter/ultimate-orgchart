@@ -29,6 +29,14 @@ export class ChartsComponent implements OnInit {
     console.log(this.authService.profile);
   }
 
+  async initializeChart(): Promise<void> {
+    await this.employeeService.initializeChart();
+  }
+
+  async updateGraph(): Promise<void> {
+    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[0]);
+  }
+
   async getAllEmployees(): Promise<void> {
     console.log(await this.employeeService.getAllEmployees());
   }
