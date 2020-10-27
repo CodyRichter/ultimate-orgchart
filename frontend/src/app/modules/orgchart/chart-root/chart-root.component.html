@@ -1,7 +1,5 @@
-<div class="oc-node" [id]="datasource.id" (click)="onClickNode($event)">
-    <ng-container
-            *ngTemplateOutlet="defaultNodeTemplate; context:{ datasource:datasource }">
-    </ng-container>
+<div class="oc-node">
+    <chart-node [nodeData]="datasource"></chart-node>
 </div>
 <div *ngIf="datasource.children" class="oc-groups">
     <ng-container *ngFor="let node of datasource.children">
@@ -10,18 +8,3 @@
         </div>
     </ng-container>
 </div>
-
-<ng-template #defaultNodeTemplate let-nodeData="datasource">
-    <div class="container">
-        <mat-card class="node-card" style={{getColor(nodeData.title)}}>
-            <mat-card-header class="header"></mat-card-header>
-            <mat-card-content>
-                <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 48px; margin-left: 2px"></div>
-                <div style="margin-left: 64px;">
-                    <div><strong>{{nodeData.name}}</strong></div>
-                    <div style="margin-top: 6px">{{nodeData.title}}</div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
-</ng-template>
