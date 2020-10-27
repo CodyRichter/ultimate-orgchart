@@ -20,63 +20,64 @@ export class ProjectService {
 
     async createProject(newProject: Project): Promise<Project> {
         //NOTE: get the manager from db
-        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('children').populate('projects');
-
-        
+        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('children').populate('projects').exec();
 
         //save the role name before undefined
         const managerRoleName: string = (newProject.manager as ProjectsEmployee).role;
 
         //have copy of lists of employees
-        let newEmployees: ProjectsEmployee[] = newProject.employees as ProjectsEmployee[];
+        let newProjectEmployees: ProjectsEmployee[] = newProject.employees as ProjectsEmployee[];
 
         //made the manager undefined to pass the validation
         newProject.manager = undefined;
         newProject.employees = undefined;
         //create the project document 
+
+
         const project = await this.projectModel.create(newProject);
 
+        console.log(1);
         
         //get the employee from db
         const employees: DocumentType<Employee>[] = [];
        
-        newEmployees = await Promise.all(newEmployees.map(
+        const savedProjectsEmployees = await Promise.all(newProjectEmployees.map(
             async (projEmployee) => {
-                const employee = await this.employeeModel.findById(projEmployee.employee).populate('children').populate('projects');
+                const employee = await this.employeeModel.findById(projEmployee.employee).populate('children').populate('projects').exec();
                 projEmployee.employee = employee;
                 projEmployee.project = project;
-                project.employees=undefined;
-                employee.projects=undefined;
-                return projEmployee;
+                return await this.projectsEmployeeModel.create(projEmployee);
             }
-        ))
-            const savedProjectsEmployees=await this.projectsEmployeeModel.insertMany(newEmployees);
-        //create the projectsEmployee document for employees
-        //this iteration is for getting the employee document to the projectsEmployeeModel
-        // const projectEmployees = await Promise.all(employees.map(
-        //     async (employee, index) => {
-        //         return new this.projectsEmployeeModel({ employee: employee, project: project, role: newEmployees[index].role });
-        //     }
-        // ));
+        ));
 
-        // //save to database
-        // const savedProjectEmployees = await Promise.all(projectEmployees.map(
-        //     async (projectEmployee) => {
-        //         return await this.projectsEmployeeModel.create(projectEmployee);
-        //     }
+        console.log(newProjectEmployees);
+        
+        // const savedProjectsEmployees=await this.projectsEmployeeModel.insertMany(newProjectEmployees);
+        // console.log(savedProjectsEmployees);
+                    //this iteration is for getting the employee document to the projectsEmployeeModel
+                    // const projectEmployees = await Promise.all(employees.map(
+                    //     async (employee, index) => {
+                    //         return new this.projectsEmployeeModel({ employee: employee, project: project, role: newEmployees[index].role });
+                    //     }
+                    // ));
 
-        // ));
+                    // //save to database
+                    // const savedProjectEmployees = await Promise.all(projectEmployees.map(
+                    //     async (projectEmployee) => {
+                    //         return await this.projectsEmployeeModel.create(projectEmployee);
+                    //     }
+
+                    // ));
 
         //create the projectEmployee document for manager
+
+        console.log(2);
         const projectEmployeeManager = new this.projectsEmployeeModel({ employee: manager, project: project, role: managerRoleName });
         //save to db
         const savedProjectEmployeeManager = await this.projectsEmployeeModel.create(projectEmployeeManager);
-
-        //we then need to upadate the field
-        project.manager = savedProjectEmployeeManager;
-        project.employees = savedProjectsEmployees;
-        manager.projects.push(savedProjectEmployeeManager);
-        
+        savedProjectEmployeeManager.project = undefined;
+        savedProjectEmployeeManager.employee = undefined;
+   
         const savedEmployees = await Promise.all(employees.map(
             async (employee, index) => {
                 savedProjectsEmployees[index].project = undefined; 
@@ -85,25 +86,34 @@ export class ProjectService {
                 await employee.save();
             }
         ));
-        console.log(111);
 
-        //update 
-        // for (let index = 0; index < savedProjectEmployees.length; index++) {
+        //we then need to upadate the field
+        project.manager = savedProjectEmployeeManager;
+        project.employees = savedProjectsEmployees;
+        manager.projects.push(savedProjectEmployeeManager);
+        console.log(3);
+        
+             
+        console.log(4);
 
-        //     //add project to the corresponding employee
-        //     employees[index].projects.push(savedProjectEmployees[index]);
-        //     savedProjectEmployees[index].employee = undefined;
-        //     savedProjectEmployees[index].project = undefined;
-        //     //update the employee project info to database
-        //     await employees[index].save();
+                        //update 
+                        // for (let index = 0; index < savedProjectEmployees.length; index++) {
 
-        // }
+                        //     //add project to the corresponding employee
+                        //     employees[index].projects.push(savedProjectEmployees[index]);
+                        //     savedProjectEmployees[index].employee = undefined;
+                        //     savedProjectEmployees[index].project = undefined;
+                        //     //update the employee project info to database
+                        //     await employees[index].save();
 
-        savedProjectEmployeeManager.employee = undefined;
-        savedProjectEmployeeManager.project = undefined;
+                        // }
+
         await project.save();
         await manager.save();
-        return project;
+        console.log(5)
+        // console.log(project);
+        // return project;
+        return await this.projectModel.findById(project._id).populate({path: 'manager', populate: {path: 'employee'}}).populate({path: 'employees', populate: {path: 'employee'}});
     }
 
 
