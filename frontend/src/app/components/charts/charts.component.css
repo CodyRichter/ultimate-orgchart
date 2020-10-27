@@ -110,3 +110,13 @@
     right:150px;
 }
 
+.mat-button{
+    background-color: #008264;
+    color:white;
+}
+
+.button{
+    position:relative;
+    top:80px;
+    left:260px;
+}

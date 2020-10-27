@@ -16,32 +16,26 @@ export class ChartsComponent implements OnInit {
     id: '1',
     name: 'Adrienne Hawkins',
     title: 'CEO',
+    depth: '0',
     children: [
       { id: '2',
         name: 'Bernadine Richard',
         title: 'Engineering Manager',
+        depth:'1',
         children: [
-          { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' }
+          { id: '6', name: 'Williams Morales', title: 'Software Engineer II',depth:'2' },
+          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II',depth:'2' }
         ]},
       {
         id: '21',
         name: 'Denis Matthews',
         title: 'Software Engineer II',
+        depth:'1',
         children: [
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '15', name: 'Josue Stuart', title: 'Software Engineer I' }
+          { id: '14', name: 'Jessie Willis', title: 'Tech Lead',depth:'2' },
+          { id: '14', name: 'Jessie Willis', title: 'Tech Lead',depth:'2' }
         ]
-      },
-      { id: '2',
-        name: 'Bernadine Richard',
-        title: 'Engineering Manager',
-        children: [
-          { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' }
-        ]},
+      }
     ]
   };
 
