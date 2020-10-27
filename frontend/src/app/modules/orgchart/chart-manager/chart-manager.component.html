@@ -13,8 +13,10 @@
             </ng-container>
         </div>
     </div>
-    <div *ngIf="datasource.children.length > 2" class="oc-hybrid">
-        <chart-stack [datasource]="datasource.children" class="oc-group"></chart-stack>
+    <div *ngIf="datasource.children.length > 2">
+        <div class="oc-stack">
+            <chart-stack [datasource]="datasource.children"></chart-stack>
+        </div>
     </div>
 </div>
 

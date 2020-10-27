@@ -1,4 +1,4 @@
-<div *ngFor=" let node of datasource;  let i=index">
+<div *ngFor=" let node of datasource;  let i=index" class="oc-stack">
     <div *ngIf="i < 3">
         <mat-card class="node-card" id="card{{i}}" style={{getColor(node.title)}}>
             <mat-card-header class="header"></mat-card-header>
