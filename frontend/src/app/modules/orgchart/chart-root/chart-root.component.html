@@ -1,8 +1,8 @@
 <div class="oc-node">
     <chart-node [nodeData]="datasource"></chart-node>
 </div>
-<div *ngIf="datasource.children.length > 0" class="oc-groups">
-    <ng-container *ngFor="let node of datasource.children">
+<div *ngIf="datasource.manages.length > 0" class="oc-groups">
+    <ng-container *ngFor="let node of datasource.manages">
         <div class="oc-group">
             <chart-manager [datasource]="node"></chart-manager>
         </div>

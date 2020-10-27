@@ -1,17 +1,17 @@
 <div class="oc-node">
     <chart-node [nodeData]="datasource"></chart-node>
 </div>
-<div *ngIf="datasource.children.length > 0">
-    <div *ngIf="datasource.children.length <= 2">
-        <div *ngIf="datasource.children" class="oc-groups">
-            <div *ngFor="let node of datasource.children" class="oc-group">
+<div *ngIf="datasource.manages.length > 0">
+    <div *ngIf="datasource.manages.length <= 2">
+        <div *ngIf="datasource.manages" class="oc-groups">
+            <div *ngFor="let node of datasource.manages" class="oc-group">
                 <chart-node [nodeData]="node"></chart-node>
             </div>
         </div>
     </div>
-    <div *ngIf="datasource.children.length > 2">
+    <div *ngIf="datasource.manages.length > 2">
         <div class="oc-stack">
-            <chart-stack [datasource]="datasource.children"></chart-stack>
+            <chart-stack [datasource]="datasource.manages"></chart-stack>
         </div>
     </div>
 </div>
