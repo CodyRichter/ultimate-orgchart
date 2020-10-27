@@ -90,6 +90,7 @@ export class ProjectService {
         //return await this.projectModel.findById(project._id).populate({path: 'manager', populate: {path: 'employee'}}).populate({path: 'employees', populate: {path: 'employee'}});
     }
 
+    //create multiple projects
     async createProjects(newProjects:Project[]):Promise<Project[]>
     {
         return await Promise.all(newProjects.map(
