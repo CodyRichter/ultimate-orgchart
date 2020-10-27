@@ -22,10 +22,7 @@ export class EmployeeService {
   }
 
   async increaseChartDepth(manager: any): Promise<any> {
-    console.log(manager);
-    const temp = await this.getManagersEmployees(manager._id, 2);
-    console.log(temp);
-    manager.manages = temp;
+    manager.manages = await this.getManagersEmployees(manager._id, 2);
     console.log(this.chart);
     return this.chart;
   }
