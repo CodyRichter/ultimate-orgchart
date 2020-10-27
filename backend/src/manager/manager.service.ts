@@ -71,13 +71,13 @@ export class ManagerService {
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('children').populate('projects').exec();
-        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('children').populate('projects').exec();
-        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('children').populate('projects').exec();
+        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('manages').populate('projects').exec();
+        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('manages').populate('projects').exec();
+        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('manages').populate('projects').exec();
 
         employee.managerId = toManager._id;
-        toManager.children.push(employee);
-        fromManager.children = fromManager.children.filter((emp: Employee) => emp._id !== employee._id)
+        toManager.manages.push(employee);
+        fromManager.manages = fromManager.manages.filter((emp: Employee) => emp._id !== employee._id)
 
         await fromManager.save();
         await toManager.save()

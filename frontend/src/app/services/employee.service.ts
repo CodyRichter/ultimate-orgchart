@@ -15,20 +15,23 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<any> {
-    const temp = await this.getManagersEmployees(undefined, 2) as any[];
-    this.chart = temp.find(employee => employee._id !== 404123456789404)
+    const temp = await this.getManagersEmployees(undefined, 3) as any[];
+    this.chart = temp.find(employee => employee._id !== 404123456789404);
     console.log(this.chart);
     return this.chart;
   }
 
   async increaseChartDepth(manager: any): Promise<any> {
-    manager.children = await this.getManagersEmployees(manager._id, 2);
+    console.log(manager);
+    const temp = await this.getManagersEmployees(manager._id, 2);
+    console.log(temp);
+    manager.manages = temp;
     console.log(this.chart);
     return this.chart;
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
-    let url = 'http://localhost:3000/employee/getChildren/';
+    let url = 'http://localhost:3000/employee/getManages/';
     if (manager) {
       url += manager;
     }

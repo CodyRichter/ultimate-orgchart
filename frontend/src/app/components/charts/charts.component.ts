@@ -34,7 +34,7 @@ export class ChartsComponent implements OnInit {
   }
 
   async updateGraph(): Promise<void> {
-    await this.employeeService.increaseChartDepth(this.employeeService.chart.children[0].children[0]);
+    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[0]);
   }
 
   async getAllEmployees(): Promise<void> {
