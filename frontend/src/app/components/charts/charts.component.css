@@ -69,44 +69,19 @@
     width: 200px;
 }
 
-.orgchart {
-    position: absolute;
-    left: 500px;
+.notification-header {
+    color: gray;
+    margin-left: 30px;
+    margin-right: 150px;
+    margin-top: 10px;
 }
 
-.search-bar {
-    height: 40px;
-    margin-left: 64px;
-    width: 500px;
-    border-radius: 3px;
-    background-color: #FFFFFF;
+.notification-body {
+    color: gray;
+    margin-left: 30px;
+    margin-right: 50px;
 }
 
-.search-bar-icon {
-    position: absolute;
-    color: grey;
-    margin-left: 16px;
-    margin-top: 12px;
-    margin-right: 8px;
+.button-text {
+    margin-left: 5px;
 }
-
-.search-bar-more {
-    position: absolute;
-    color: grey;
-    margin-left: 755px;
-    margin-top: 3px;
-}
-
-.search-bar-input {
-    position: absolute;
-    color: grey;
-    margin-left: 50px;
-    font-weight: normal;
-    margin-top: 6px;
-}
-
-#chart-container{
-    position:relative;
-    right:150px;
-}
-

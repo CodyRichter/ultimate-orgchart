@@ -40,7 +40,7 @@ export class Employee {
     startDate: Date;
 
     @prop({ ref: Employee })
-    children: Ref<Employee>[];
+    manages: Ref<Employee>[];
 
     @prop({ref:()=>ProjectsEmployee})
     projects: Ref<ProjectsEmployee>[]

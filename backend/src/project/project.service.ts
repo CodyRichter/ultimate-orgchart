@@ -20,7 +20,7 @@ export class ProjectService {
     async createProject(newProject:Project & {managerId?:number}):Promise<Project>
     {
         //get the manager from database
-        const manager=await this.employeeModel.findById(newProject.managerId ? newProject.managerId : newProject.manager).populate('children').populate('projects').exec();
+        const manager=await this.employeeModel.findById(newProject.managerId ? newProject.managerId : newProject.manager).populate('manages').populate('projects').exec();
 
         //
         const project=await this.projectModel.create(newProject);

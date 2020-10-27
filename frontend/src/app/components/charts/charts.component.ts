@@ -60,6 +60,14 @@ export class ChartsComponent implements OnInit {
     console.log(this.authService.profile);
   }
 
+  async initializeChart(): Promise<void> {
+    await this.employeeService.initializeChart();
+  }
+
+  async updateGraph(): Promise<void> {
+    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[0]);
+  }
+
   async getAllEmployees(): Promise<void> {
     console.log(await this.employeeService.getAllEmployees());
   }
@@ -108,62 +116,14 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
-  async downloadJSON(): Promise<void> {
-    await this.employeeService.downloadJSON();
-  }
-
-  isAdmin(): boolean {
-    try {
-      return this.authService.profile.isAdmin;
-    }
-    catch (e) {
-      return false;
-    }
-  }
-
-  isManager(): boolean {
-    try {
-      return this.authService.profile.isManager;
-    }
-    catch (e) {
-      return false;
-    }
-  }
-
-  openJSONUploadDialog(): void {
-    const dialogRef = this.dialog.open(JSONUploadDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  onClickHandler(): void {
-
-  }
-
-  onItem1Click(): void {
-    console.log('item1');
-  }
-
-  onNodeClick(): void {
-    const dialogRef = this.dialog.open(NodeDetailDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+  openSettingsDialog(): void {
+    this.dialog.open(SettingsDialog);
   }
 
 }
 
 @Component({
-  selector: 'node-detail-dialog',
-  templateUrl: 'node-detail-dialog.html',
+  selector: 'settings-dialog',
+  templateUrl: 'settings-dialog.html',
 })
-export class NodeDetailDialog {}
-
-@Component({
-  selector: 'json-upload-dialog',
-  templateUrl: 'json-upload-dialog.html',
-})
-export class JSONUploadDialog {}
+export class SettingsDialog {}
