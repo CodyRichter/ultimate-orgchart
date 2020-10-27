@@ -4,7 +4,6 @@
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px #0000001f;
-    z-index: 99999;
 }
 
 .mat-card-content {
@@ -14,14 +13,14 @@
 
 div.inline { float:left; }
 
-#card2 {
-    position: relative;
-    bottom: 104px;
+#card1 {
+    position: absolute;
+    top: 216px;
     left: 6px;
 }
 
-#card3 {
-    position: relative;
-    bottom: 208px;
+#card2 {
+    position: absolute;
+    top: 224px;
     left: 12px;
 }
