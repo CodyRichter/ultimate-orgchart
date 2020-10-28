@@ -14,10 +14,10 @@ export class ChartsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // @ts-ignore
   constructor(private router: Router,
-    private readonly authService: AuthService,
-    private readonly employeeService: EmployeeService) {
+              private readonly authService: AuthService,
+              private readonly employeeService: EmployeeService,
+              private dialog: MatDialog) {
 
     this.employeeService.initializeChart();
 
