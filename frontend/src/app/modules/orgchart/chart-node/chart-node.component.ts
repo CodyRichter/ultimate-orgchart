@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Node } from '../shared/models/node.model';
 
 @Component({
   selector: 'chart-node',

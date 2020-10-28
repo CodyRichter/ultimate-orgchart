@@ -16,7 +16,7 @@ export class ChartsComponent implements OnInit {
 
   constructor(private router: Router,
               private readonly authService: AuthService,
-              private readonly employeeService: EmployeeService,
+              public readonly employeeService: EmployeeService,
               private dialog: MatDialog) {
 
     this.employeeService.initializeChart();
