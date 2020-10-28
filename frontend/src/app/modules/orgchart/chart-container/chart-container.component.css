@@ -1,0 +1,9 @@
+.orgchart-container {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(calc(50% - 128px));
+}
+
+.orgchart {
+}

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,10 +23,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
+import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
-import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
+
+import { OrgchartModule } from './modules/orgchart/orgchart.module';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +41,14 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     JSONUploadDialog,
     EmployeeTransferDialog,
     SettingsDialog,
-    EmployeeTransferComponent,
     SettingsComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    OrgchartModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
@@ -71,6 +74,10 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
         component: LoginComponent
       },
       {
+        path: 'test',
+        component: TestComponent
+      },
+      {
         path: 'charts',
         component: ChartsComponent
       },
@@ -83,8 +90,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
         component: NotFoundComponent
       }
     ]),
-    ReactiveFormsModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   providers: [
     {
