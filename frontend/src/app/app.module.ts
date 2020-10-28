@@ -29,7 +29,6 @@ import { AuthInterceptorService } from './services/auth/auth-interceptor.service
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
-import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +40,7 @@ import { TestComponent } from './components/test/test.component';
     JSONUploadDialog,
     EmployeeTransferDialog,
     SettingsDialog,
-    SettingsComponent,
-    TestComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -72,10 +70,6 @@ import { TestComponent } from './components/test/test.component';
       {
         path: 'login',
         component: LoginComponent
-      },
-      {
-        path: 'test',
-        component: TestComponent
       },
       {
         path: 'charts',
