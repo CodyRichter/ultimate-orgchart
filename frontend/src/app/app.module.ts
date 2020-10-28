@@ -21,13 +21,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, SettingsDialog } from './components/charts/charts.component';
+import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from "./services/auth/auth-interceptor.service";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer/employee-transfer.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +40,10 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
     JSONUploadDialog,
     EmployeeTransferDialog,
     SettingsDialog,
+    SearchDialog,
     EmployeeTransferComponent,
     SettingsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

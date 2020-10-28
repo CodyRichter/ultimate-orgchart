@@ -49,6 +49,14 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.deleteEmployeeById(2501));
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(SearchDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   async updateEmployee(): Promise<void> {
     const newEmployee = {
       isManager: true,
@@ -96,3 +104,9 @@ export class ChartsComponent implements OnInit {
   templateUrl: 'settings-dialog.html',
 })
 export class SettingsDialog {}
+
+@Component({
+  selector: 'search-dialog',
+  templateUrl: 'search-dialog.html',
+})
+export class SearchDialog {}

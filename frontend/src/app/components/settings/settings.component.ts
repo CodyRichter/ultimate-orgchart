@@ -12,7 +12,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
               private readonly employeeService: EmployeeService,
-              private readonly authService: AuthService,) { }
+              private readonly authService: AuthService) { }
 
   ngOnInit(): void {
   }

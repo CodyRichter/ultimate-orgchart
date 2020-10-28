@@ -60,6 +60,11 @@ export class EmployeeService {
     return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise();
   }
 
+  async searchEmployee(query:any):Promise<any>{
+    //const query = queryname + "=" + searchquery
+    return await this.httpClient.get(`http://localhost:3000/employee/?${query}`).toPromise();
+  }
+
   async uploadJSON(file: File): Promise<any> {
     const formData = new FormData();
     formData.append('file', file);
