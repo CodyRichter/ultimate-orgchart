@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class ChartNodeComponent implements OnInit {
 
-  @Input() nodeData;
+  @Input() nodeData: Node;
 
   @Output() nodeClick = new EventEmitter<any>();
 
@@ -25,7 +25,8 @@ export class ChartNodeComponent implements OnInit {
           'Tech Lead': '#019592',
           'Software Engineer I': '#7F39FB',
           'Research Manager': '#E57373',
-          'Software Architect': '#00BCD4'
+          'Software Architect': '#00BCD4',
+          'Senior Software Engineer': '#E57373'
         };
     return 'background: linear-gradient(0deg, white 80%,' + color[pos] +  ' 20%);';
   }

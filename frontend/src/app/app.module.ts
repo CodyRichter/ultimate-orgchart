@@ -30,13 +30,6 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { TestComponent } from './components/test/test.component';
-import { NodeDetailComponent } from './components/node-detail/node-detail.component';
-import { TransferRequestComponent } from './components/transfer-request/transfer-request.component';
-
-import { TransferRequestDialog } from './components/node-detail/node-detail.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TransferConfirmComponent } from './components/transfer-confirm/transfer-confirm.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +41,8 @@ import { TransferConfirmComponent } from './components/transfer-confirm/transfer
     JSONUploadDialog,
     EmployeeTransferDialog,
     SettingsDialog,
-    EmployeeTransferComponent,
     SettingsComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,12 +70,12 @@ import { TransferConfirmComponent } from './components/transfer-confirm/transfer
         pathMatch: 'full'
       },
       {
-        path: 'test',
-        component: TestComponent
-      },
-      {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: 'test',
+        component: TestComponent
       },
       {
         path: 'charts',

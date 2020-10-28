@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-charts',
@@ -12,39 +11,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ChartsComponent implements OnInit {
 
-  ds = {
-    id: '1',
-    name: 'Adrienne Hawkins',
-    title: 'CEO',
-    children: [
-      { id: '2',
-        name: 'Bernadine Richard',
-        title: 'Engineering Manager',
-        children: [
-          { id: '6', name: 'Williams Morales', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' },
-          { id: '7', name: 'Dewey Mckay', title: 'Software Engineer II' }
-        ]},
-      {
-        id: '21',
-        name: 'Denis Matthews',
-        title: 'Software Engineer II',
-        children: [
-          { id: '14', name: 'Jessie Willis', title: 'Tech Lead' },
-          { id: '15', name: 'Josue Stuart', title: 'Software Engineer I' }
-        ]
-      }
-    ]
-  };
-
   ngOnInit(): void {
   }
 
+  // @ts-ignore
   constructor(private router: Router,
-    public dialog: MatDialog,
     private readonly authService: AuthService,
-    private readonly employeeService: EmployeeService,
-    private _snackBar: MatSnackBar) {
+    private readonly employeeService: EmployeeService) {
+
+    this.employeeService.initializeChart();
+
 }
 
   selectNode(nodeData: {name: string, title: string}): void {
@@ -65,7 +41,7 @@ export class ChartsComponent implements OnInit {
   }
 
   async updateGraph(): Promise<void> {
-    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[0]);
+    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[2]);
   }
 
   async getAllEmployees(): Promise<void> {

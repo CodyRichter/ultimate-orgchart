@@ -10,7 +10,6 @@ import {
   transition
 } from '@angular/animations';
 import {CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragExit, CdkDragStart} from '@angular/cdk/drag-drop';
-import {NodeDetailDialog} from '../../../components/charts/charts.component';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -142,21 +141,5 @@ export class ChartManagerComponent implements OnInit {
           'Software Architect': '#00BCD4'
         };
     return 'background: linear-gradient(0deg, white 80%,' + color[pos] +  ' 20%);';
-  }
-
-  onDragEnded(event: CdkDragEnd): void {
-    event.source._dragRef.reset();
-  }
-
-  onDragStart(event: CdkDragStart): void {
-    this.dragging = true;
-  }
-
-  onDragRelease(): void {
-    // const dialogRef = this.dialog.open(ConfirmDialog);
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
   }
 }

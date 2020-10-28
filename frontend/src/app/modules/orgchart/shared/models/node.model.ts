@@ -1,6 +1,7 @@
 export class Node {
   id: string;
-  name: string;
-  title: string;
+  firstName: string;
+  lastName: string;
+  positionTitle: string;
   manages: Node[];
 }
