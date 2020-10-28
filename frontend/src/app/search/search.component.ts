@@ -36,14 +36,14 @@ export class SearchComponent implements OnInit {
     var input = (await this.employeeService.searchEmployee(currentVal));
     for(var i = 0; i<input.length;++i){
       dialoginput.innerHTML = `<a mat-list-item><span mat-line>${input[i].firstName} ${input[i].lastName}<br></span></a>`;
+
     }
     console.log(input);
     return input;
   }
 
-  search():void{
-    let result = this.myFunction();
-    console.log(result);
+  searchedEmp():void{
+    console.log("hi");
   }
 
 }
