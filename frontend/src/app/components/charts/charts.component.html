@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <mat-toolbar color="primary" class="mat-elevation-z6">
         <button mat-icon-button color="accent">
             <mat-icon>menu</mat-icon>
@@ -19,10 +19,31 @@
             <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
         </button>
     </mat-toolbar>
+</div> -->
+<div>
+    <mat-toolbar color="primary" class="mat-elevation-z6">
+        <span><img class="logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png"
+            alt="logo"></span>
+
+    <span class="spacer"></span>
+    <button  mat-button color="accent" (click)="updateGraph()">Update Chart</button>
+    <button mat-button color="accent">
+        <mat-icon>help</mat-icon>
+    </button>
+    <button mat-button color="accent" (click)="notifications.toggle()">
+        <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+        <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
+    </button>
+</mat-toolbar>
 </div>
 
 <div>
     <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openSettingsDialog()">
+            <mat-icon>settings</mat-icon>Settings
+        </button>
         <button mat-menu-item (click)="logout()">
             <mat-icon>login</mat-icon>Log out
         </button>
@@ -30,7 +51,23 @@
 </div>
 
 
-<section id="chart-container">
-    <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
-    </organization-chart>
-</section>
+
+
+
+<mat-drawer-container>
+
+    <section id="chart-container">
+        <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
+        </organization-chart>
+    </section>
+
+    <mat-drawer #notifications mode="side" opened="false" position="end">
+        <button mat-button color="gray" (click)="notifications.toggle()">
+            <mat-icon>close</mat-icon><span class="button-text">Close</span>
+        </button>
+        <h2 class="notification-header">Notifications</h2>
+        <br>
+        <p class="notification-body">No new notifications.</p>
+    </mat-drawer>
+</mat-drawer-container>
+
