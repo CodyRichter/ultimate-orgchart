@@ -30,16 +30,17 @@ export class SearchComponent implements OnInit {
     console.log(this.authService.profile);
   }
 
-  async getOneEmployee(empID:any): Promise<void> {
-    console.log(await this.employeeService.getEmployeeById(empID));
-  }
-
   async myFunction():Promise<void>{
     var currentVal = (<HTMLInputElement>document.getElementById("mySearch")).value;
     var input = (await this.employeeService.searchEmployee(currentVal));
     console.log(input[0].positionTitle);
     console.log(input);
     return input;
+  }
+
+  search():void{
+    let result = this.myFunction();
+    console.log(result);
   }
 
 }
