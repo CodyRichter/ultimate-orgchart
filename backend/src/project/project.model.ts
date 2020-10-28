@@ -6,7 +6,7 @@ import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ProjectsEmployee } from "./projectsEmployee.model";
 
 //project schema
-@plugin(AutoIncrementID, {})
+@plugin(AutoIncrementID, {startAt:1})
 export class Project extends TimeStamps{
     @prop()
     _id: number;
@@ -24,7 +24,7 @@ export class Project extends TimeStamps{
     @prop({require: true,ref:"ProjectsEmployee"})
     manager: Ref<ProjectsEmployee>;
 
-    @prop({required: false,ref:"ProjectsEmployee"})
+    @prop({required: true,ref:"ProjectsEmployee"})
     employees: Ref<ProjectsEmployee>[]
 }
 

@@ -1,0 +1,42 @@
+.oc-node {
+    width: 200px;
+    height: 80px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px #0000001f;
+}
+
+.oc-group > :host::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    height: 48px;
+    top: 48px;
+    left: 50%;
+    border-color: #707070;
+    border-style: solid;
+    border-width: 0 0 0 2px;
+}
+
+.node-pic {
+    display: inline;
+    width: 48px;
+    margin-left: 2px;
+}
+
+.node-content {
+    margin-left: 64px;
+}
+
+.node-title {
+    margin-top: 6px;
+}
+
+.mat-card-content {
+    position: relative;
+    top: 24px;
+}
+
+div.inline {
+    float:left;
+}

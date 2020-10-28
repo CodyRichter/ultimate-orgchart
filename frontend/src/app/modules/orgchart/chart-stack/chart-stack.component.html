@@ -1,0 +1,5 @@
+<div *ngFor=" let node of datasource;  let i=index" class="oc-stack">
+    <div *ngIf="i < 3">
+        <chart-node id="card{{i}}" [nodeData]="node"></chart-node>
+    </div>
+</div>

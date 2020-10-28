@@ -5,10 +5,10 @@ import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { Project } from "./project.model";
 
 //projectsEmployee table
-@plugin(AutoIncrementID, {})
+@plugin(AutoIncrementID, {startAt:1})
 export class ProjectsEmployee extends TimeStamps{
     @prop()
-    _id: number;
+    _id:number;
 
     @prop({required: true,ref:"Employee"})
     employee: Ref<Employee>
