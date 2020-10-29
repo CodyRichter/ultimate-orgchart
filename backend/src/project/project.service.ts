@@ -20,7 +20,7 @@ export class ProjectService {
 
     async createProject(newProject: Project): Promise<Project> {
         //NOTE: get the manager from db
-        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('children').populate('projects').exec();
+        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('manages').populate('projects').exec();
 
         //save the role name before undefined
         const managerRoleName: string = (newProject.manager as ProjectsEmployee).role;
@@ -42,7 +42,7 @@ export class ProjectService {
 
         const savedProjectsEmployees = await Promise.all(newProjectEmployees.map(
             async (projEmployee) => {
-                const employee = await this.employeeModel.findById(projEmployee.employee).populate('children').populate('projects').exec();
+                const employee = await this.employeeModel.findById(projEmployee.employee).populate('manages').populate('projects').exec();
                 projEmployee.employee = employee;
                 projEmployee.project = project;
                 employees.push(employee);
