@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-charts',
@@ -17,7 +18,7 @@ export class ChartsComponent implements OnInit {
   constructor(private router: Router,
               private readonly authService: AuthService,
               public readonly employeeService: EmployeeService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog, private readonly projectService: ProjectService) {
 
     this.employeeService.initializeChart();
 
@@ -56,6 +57,14 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.deleteEmployeeById(2501));
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(SearchDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   async updateEmployee(): Promise<void> {
     const newEmployee = {
       isManager: true,
@@ -92,6 +101,17 @@ export class ChartsComponent implements OnInit {
     console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
+  async createProject(): Promise<void> {
+    const newProject = 
+      {
+        name: "Example Project",
+        description: "This is dummy text to showcase project description",
+        employees: [{role: "write code", employee: {_id: 2}}, {role: "write bugs", employee: {_id: 3}}],
+        manager: {role: "manage stuff", employee: {_id: 1}}
+    };
+    console.log(await this.projectService.createProject(newProject));
+  }
+
   openSettingsDialog(): void {
     this.dialog.open(SettingsDialog);
   }
@@ -103,3 +123,9 @@ export class ChartsComponent implements OnInit {
   templateUrl: 'settings-dialog.html',
 })
 export class SettingsDialog {}
+
+@Component({
+  selector: 'search-dialog',
+  templateUrl: 'search-dialog.html',
+})
+export class SearchDialog {}

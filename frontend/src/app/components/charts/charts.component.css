@@ -89,3 +89,27 @@
 .button-text {
     margin-left: 5px;
 }
+
+.mat-form-field {
+    font-size: 14px;
+    min-width:400px;
+    position: absolute;
+    top:10px;
+    margin-left:60px;
+}
+
+::ng-deep .mat-form-field-outline {
+    background-color: white;
+    
+  
+}
+
+.searchIcon {
+    color: gray;
+}
+
+.mat-toolbar.mat-primary {
+    background: #509e2f;
+    color: white;
+}
+

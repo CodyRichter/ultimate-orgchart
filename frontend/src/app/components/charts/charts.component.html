@@ -24,8 +24,15 @@
     <mat-toolbar color="primary" class="mat-elevation-z6">
         <span><img class="logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png"
             alt="logo"></span>
+    <div class="search-bar">
+            <mat-form-field appearance = "legacy" class = "example-full-width">
+            <input matInput type = "search" id = "mySearch" placeholder="Search" (keydown.enter) = openDialog()>
+            <mat-icon matSuffix>search</mat-icon> 
+            </mat-form-field>
+        </div>
 
     <span class="spacer"></span>
+    <!-- <button  mat-button color="accent" (click)="createProject()">Create Project</button> -->
     <button  mat-button color="accent" (click)="updateGraph()">Update Chart</button>
     <button mat-button color="accent">
         <mat-icon>help</mat-icon>
