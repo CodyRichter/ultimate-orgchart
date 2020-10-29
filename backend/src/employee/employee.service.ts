@@ -112,13 +112,9 @@ export class EmployeeService {
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
-
     return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').exec();
   }
 
-  /*
-    NEW PROCESSES
-  */
 
   // updating a reference does not work using this method, do manually using .save();
   // updates a single field of an employee model found
