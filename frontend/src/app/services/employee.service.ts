@@ -7,6 +7,8 @@ import { saveAs } from 'file-saver';
 })
 export class EmployeeService {
   public chart: any;
+  public chartStack: any[];
+  public curSubtree: any;
 
   constructor(private readonly httpClient: HttpClient) {  }
 
@@ -18,11 +20,17 @@ export class EmployeeService {
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
     this.chart = temp.find(employee => employee._id !== 404123456789404);
     console.log(this.chart);
+    // this.chartStack.push(this.chart);
+    // console.log(this.chartStack);
+    this.curSubtree = this.chart;
+    console.log(this.curSubtree);
     return this.chart;
   }
 
   async increaseChartDepth(manager: any): Promise<any> {
     manager.manages = await this.getManagersEmployees(manager._id, 2);
+    // this.chartStack.push(manager);
+    this.curSubtree = manager;
     console.log(this.chart);
     return this.chart;
   }

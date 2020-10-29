@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
     var dialoginput = (<HTMLInputElement>document.getElementById("dialog"))
     var input = (await this.employeeService.searchEmployee(currentVal));
     for(var i = 0; i<input.length;++i){
-      dialoginput.innerHTML = `<a mat-list-item><span mat-line>${input[i].firstName} ${input[i].lastName}<br></span></a>`;
+      dialoginput.innerHTML = `<a mat-list-item><span mat-line><br></span></a>`;
 
     }
     console.log(input);

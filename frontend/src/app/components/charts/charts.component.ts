@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-charts',
@@ -15,9 +16,16 @@ export class ChartsComponent implements OnInit {
   }
 
   constructor(private router: Router,
-              public dialog: MatDialog,
               private readonly authService: AuthService,
-              private readonly employeeService: EmployeeService) {
+              public readonly employeeService: EmployeeService,
+              private dialog: MatDialog, private readonly projectService: ProjectService) {
+
+    this.employeeService.initializeChart();
+
+}
+
+  selectNode(nodeData: {name: string, title: string}): void {
+    alert(`Hi All. I'm ${nodeData.name}. I'm a ${nodeData.title}.`);
   }
 
   async logout(): Promise<void> {
@@ -34,7 +42,7 @@ export class ChartsComponent implements OnInit {
   }
 
   async updateGraph(): Promise<void> {
-    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[0]);
+    await this.employeeService.increaseChartDepth(this.employeeService.chart.manages[0].manages[2]);
   }
 
   async getAllEmployees(): Promise<void> {
@@ -77,20 +85,31 @@ export class ChartsComponent implements OnInit {
 
   async createEmployee(): Promise<void> {
     const newEmployee = {
-      isManager: false,
-      isAdmin: false,
-      firstName: 'Ben',
-      lastName: 'Test',
+      isManager: true,
+      isAdmin: true,
+      firstName: 'Testing',
+      lastName: 'Dummy',
       companyId: 1,
       positionTitle: 'Senior bug finder',
       companyName: 'Cyclone Aviation',
       employeeId: 2501,
       managerId: null,
-      email: 'ben@email.com',
+      email: 'testemail@email.com',
       password: 'password',
       startDate: new Date(),
     };
     console.log(await this.employeeService.createEmployee(newEmployee));
+  }
+
+  async createProject(): Promise<void> {
+    const newProject = 
+      {
+        name: "Example Project",
+        description: "This is dummy text to showcase project description",
+        employees: [{role: "write code", employee: {_id: 2}}, {role: "write bugs", employee: {_id: 3}}],
+        manager: {role: "manage stuff", employee: {_id: 1}}
+    };
+    console.log(await this.projectService.createProject(newProject));
   }
 
   openSettingsDialog(): void {

@@ -1,27 +1,49 @@
+<!-- <div>
+    <mat-toolbar color="primary" class="mat-elevation-z6">
+        <button mat-icon-button color="accent">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span><img class = "logo" style="margin-left: 24px; width: 128px;" src="assets/logo/logo-small.png" alt="logo"></span>
+
+        <span class="spacer"></span>
+        <button mat-button color="accent" (click)="updateGraph()">
+            Update Chart
+        </button>
+        <button mat-icon-button color="accent">
+            <mat-icon>help</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" style="margin-left: 1em;">
+            <mat-icon>question_answer</mat-icon>
+        </button>
+        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+            <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
+        </button>
+    </mat-toolbar>
+</div> -->
 <div>
     <mat-toolbar color="primary" class="mat-elevation-z6">
         <span><img class="logo" style="margin-left: 1em; width: 128px;" src="assets/logo/logo-small.png"
-                alt="logo"></span>
-        <div class="search-bar">
+            alt="logo"></span>
+    <div class="search-bar">
             <mat-form-field appearance = "legacy" class = "example-full-width">
             <input matInput type = "search" id = "mySearch" placeholder="Search" (keydown.enter) = openDialog()>
             <mat-icon matSuffix>search</mat-icon> 
             </mat-form-field>
         </div>
-        <span class="spacer"></span>
-        <button  mat-button color="accent" (click)="initializeChart()">initialize</button>
-        <button  mat-button color="accent" (click)="updateGraph()">update</button>
-        <button mat-button color="accent">
-            <mat-icon>help</mat-icon>
-        </button>
-        <button mat-button color="accent" (click)="notifications.toggle()">
-            <mat-icon>notifications</mat-icon>
-        </button>
-        <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2"
-            style="width: 3em; height: 3em; margin-left: 1em">
-            <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
-        </button>
-    </mat-toolbar>
+
+    <span class="spacer"></span>
+    <!-- <button  mat-button color="accent" (click)="createProject()">Create Project</button> -->
+    <button  mat-button color="accent" (click)="updateGraph()">Update Chart</button>
+    <button mat-button color="accent">
+        <mat-icon>help</mat-icon>
+    </button>
+    <button mat-button color="accent" (click)="notifications.toggle()">
+        <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
+        <img class="avatar" src="assets/icons/default-avatar.png" alt="avatar">
+    </button>
+</mat-toolbar>
 </div>
 
 <div>
@@ -35,7 +57,17 @@
     </mat-menu>
 </div>
 
+
+
+
+
 <mat-drawer-container>
+
+    <section id="chart-container">
+        <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
+        </organization-chart>
+    </section>
+
     <mat-drawer #notifications mode="side" opened="false" position="end">
         <button mat-button color="gray" (click)="notifications.toggle()">
             <mat-icon>close</mat-icon><span class="button-text">Close</span>

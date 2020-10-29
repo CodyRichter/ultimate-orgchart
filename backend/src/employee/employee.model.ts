@@ -39,10 +39,11 @@ export class Employee {
     @prop({ required: true,  })
     startDate: Date;
 
+
     @prop({ ref: Employee })
     manages: Ref<Employee>[];
 
-    @prop({ref:()=>ProjectsEmployee})
+    @prop({ref:"ProjectsEmployee"})
     projects: Ref<ProjectsEmployee>[]
     
     // @prop({ required: true })
