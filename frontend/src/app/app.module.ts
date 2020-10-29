@@ -28,7 +28,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { SearchComponent } from './search/search.component';
-
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 
 @NgModule({
