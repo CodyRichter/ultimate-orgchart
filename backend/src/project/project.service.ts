@@ -115,8 +115,6 @@ export class ProjectService {
         const deletedProject = await this.projectModel.findById(projectId).populate("employees").populate("manager");
         //delete the project employee of manager
         const managerProjEmployee=await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').exec();
-        //const managerProjEmployee=await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').populate('projects');
-        console.log("manager ProjectEmployee"+managerProjEmployee);
 
         const managerEmployee=await this.employeeModel.findById((managerProjEmployee.employee as Employee)._id).populate('projects').exec();
         managerEmployee.projects=managerEmployee.projects.filter((proj: ProjectsEmployee) =>proj._id !==managerProjEmployee._id);
@@ -124,16 +122,11 @@ export class ProjectService {
 
         //delete the  project employees that relate to this project
         await Promise.all(deletedProject.employees.map(async (employee) => {
-
             //delete each related projectsEmployee
             const updatedProjectEmployees=await this.projectsEmployeeModel.findById((employee as ProjectsEmployee)._id).populate('employee');
-            //const updatedProjectEmployees=await this.projectsEmployeeModel.findByIdAndDelete((employee as ProjectsEmployee)._id).populate('employee').exec();
-
             //delete each related employee's projectEmployee reference
             const updatedEmployees=await this.employeeModel.findById((updatedProjectEmployees.employee as Employee)._id).populate('projects').exec();
-            console.log("before filter"+updatedEmployees);
             updatedEmployees.projects=updatedEmployees.projects.filter((proj: ProjectsEmployee) =>proj._id !==updatedProjectEmployees._id);
-            console.log("After filter"+updatedEmployees);
             await updatedEmployees.save();
             await updatedProjectEmployees.remove();
         }));
