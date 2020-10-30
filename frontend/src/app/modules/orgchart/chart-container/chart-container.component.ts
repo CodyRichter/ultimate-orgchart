@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
-import { NodeSelectService } from '../shared/services/node-select.service';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,20 +9,11 @@ import { NodeSelectService } from '../shared/services/node-select.service';
 export class ChartContainerComponent implements OnInit {
 
   @Input() datasource;
-  @Input() nodeHeading = 'name';
-  @Input() nodeContent = 'title';
-  @Input() nodeTemplate: TemplateRef<any>;
-  @Input() groupScale = 1;
-  @Input() pan = false;
+  @Input() pan = true;
   @Input() zoom = false;
   @Input() zoomoutLimit = 0.5;
   @Input() zoominLimit = 7;
-  @Input() containerClass = '';
-  @Input() chartClass = '';
   @Input() select = 'single';
-
-  @Output() nodeClick = new EventEmitter<any>();
-  @Output() chartClick = new EventEmitter();
 
   cursorVal = 'default';
   panning = false;
@@ -31,7 +21,8 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor(private nodeSelectService: NodeSelectService) { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
@@ -108,45 +99,4 @@ export class ChartContainerComponent implements OnInit {
     }
   }
 
-  setChartScale(newScale): void {
-    let matrix = [];
-    let targetScale = 1;
-    if (this.transformVal === '') {
-      this.transformVal =
-          'matrix(' + newScale + ', 0, 0, ' + newScale + ', 0, 0)';
-    } else {
-      matrix = this.transformVal.split(',');
-      if (this.transformVal.indexOf('3d') === -1) {
-        targetScale = Math.abs(parseFloat(matrix[3]) * newScale);
-        if (targetScale > this.zoomoutLimit && targetScale < this.zoominLimit) {
-          matrix[0] = 'matrix(' + targetScale;
-          matrix[3] = targetScale;
-          this.transformVal = matrix.join(',');
-        }
-      } else {
-        targetScale = Math.abs(parseFloat(matrix[5]) * newScale);
-        if (targetScale > this.zoomoutLimit && targetScale < this.zoominLimit) {
-          matrix[0] = 'matrix3d(' + targetScale;
-          matrix[5] = targetScale;
-          this.transformVal = matrix.join(',');
-        }
-      }
-    }
-  }
-
-  zoomHandler(e): void {
-    const newScale = 1 + (e.deltaY > 0 ? -0.2 : 0.2);
-    this.setChartScale(newScale);
-  }
-
-  onClickChart(e): void {
-    if (!e.target.closest('.oc-node')) {
-      this.chartClick.emit();
-      this.nodeSelectService.clearSelect();
-    }
-  }
-
-  onNodeClick(nodeData: any): void {
-    this.nodeClick.emit(nodeData);
-  }
 }

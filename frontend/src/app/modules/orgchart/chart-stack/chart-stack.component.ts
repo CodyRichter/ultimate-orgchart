@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Node} from '../shared/models/node.model';
 
 @Component({
   selector: 'chart-stack',
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ChartStackComponent implements OnInit {
 
-  @Input() datasource;
+  @Input() datasource: Node;
 
   constructor() { }
 

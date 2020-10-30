@@ -18,7 +18,7 @@
 }
 
 .orgchart > :host > .oc-groups > .oc-group > :host::before {
-    height: 48px; /* adjust the vertical postion of link line ⊢ */
+    height: 48px;
     top: -48px;
 }
 
@@ -65,26 +65,3 @@
     flex-direction: column;
     align-items: center;
 }
-
-.node-card {
-    width: 200px;
-    height: 80px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px #0000001f;
-    z-index: 99999;
-}
-
-.node-card:active {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px #0000001f;
-    z-index: 99999;
-}
-
-.mat-card-content {
-    position: relative;
-    top: 24px;
-}
-
-div.inline { float:left; }
