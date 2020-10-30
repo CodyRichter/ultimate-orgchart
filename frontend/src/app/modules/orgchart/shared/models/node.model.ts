@@ -4,4 +4,5 @@ export class Node {
   lastName: string;
   positionTitle: string;
   manages: Node[];
+  email: string;
 }

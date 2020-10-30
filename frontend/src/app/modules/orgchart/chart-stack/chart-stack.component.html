@@ -1,5 +1,47 @@
-<div *ngFor=" let node of datasource;  let i=index" class="oc-stack">
-    <div *ngIf="i < 3">
-        <chart-node id="card{{i}}" [nodeData]="node"></chart-node>
-    </div>
+<div class="oc-stack">
+    <mat-card class="oc-node" id="card0" style="{{getColor(datasource[2].positionTitle)}}">
+        <mat-card-content>
+            <div class="inline">
+                <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
+            </div>
+            <div class="node-content">
+                <div>
+                    <strong>{{datasource[2].firstName}} {{datasource[2].lastName}}</strong>
+                </div>
+                <div class="node-title">
+                    {{datasource[2].positionTitle}}
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="oc-node" id="card1" style="{{getColor(datasource[1].positionTitle)}}">
+        <mat-card-content>
+            <div class="inline">
+                <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
+            </div>
+            <div class="node-content">
+                <div>
+                    <strong>{{datasource[1].firstName}} {{datasource[1].lastName}}</strong>
+                </div>
+                <div class="node-title">
+                    {{datasource[1].positionTitle}}
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="oc-node" id="card2" style="{{getColor(datasource[0].positionTitle)}}">
+        <mat-card-content>
+            <div class="inline">
+                <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
+            </div>
+            <div class="node-content">
+                <div>
+                    <strong>{{datasource[0].firstName}} {{datasource[0].lastName}}</strong>
+                </div>
+                <div class="node-title">
+                    {{datasource[0].positionTitle}}
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

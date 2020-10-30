@@ -10,21 +10,6 @@
     border-width: 0 2px 0 0;
 }
 
-.node-card {
-    width: 200px;
-    height: 80px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px #0000001f;
-}
-
-.mat-card-content {
-    position: relative;
-    top: 24px;
-}
-
-div.inline { float:left; }
-
 #card1 {
     position: absolute;
     top: 216px;
@@ -35,4 +20,35 @@ div.inline { float:left; }
     position: absolute;
     top: 224px;
     left: 12px;
+}
+
+.oc-node {
+    width: 200px;
+    height: 80px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px #0000001f;
+}
+
+.node-pic {
+    display: inline;
+    width: 48px;
+    margin-left: 2px;
+}
+
+.node-content {
+    margin-left: 64px;
+}
+
+.node-title {
+    margin-top: 6px;
+}
+
+.mat-card-content {
+    position: relative;
+    top: 24px;
+}
+
+div.inline {
+    float:left;
 }

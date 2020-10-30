@@ -10,6 +10,8 @@ import { ChartManagerComponent } from './chart-manager/chart-manager.component';
 import { ChartRootComponent } from './chart-root/chart-root.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NodeDetailComponent } from './chart-node/node-detail/node-detail.component';
 
 @NgModule({
   declarations: [
@@ -17,20 +19,22 @@ import { MatIconModule } from '@angular/material/icon';
     ChartNodeComponent,
     ChartStackComponent,
     ChartManagerComponent,
-    ChartRootComponent
+    ChartRootComponent,
+    NodeDetailComponent
   ],
   exports: [
     ChartContainerComponent,
     ChartNodeComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    DragDropModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+    imports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        DragDropModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule
+    ],
   providers: []
 })
 export class OrgchartModule { }
