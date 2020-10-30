@@ -8,7 +8,7 @@ import {Node} from '../shared/models/node.model';
 })
 export class ChartStackComponent implements OnInit {
 
-  @Input() datasource: Node;
+  @Input() datasource: Node[];
 
   constructor() { }
 
