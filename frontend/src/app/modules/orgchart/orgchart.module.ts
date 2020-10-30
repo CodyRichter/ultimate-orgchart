@@ -8,6 +8,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartStackComponent } from './chart-stack/chart-stack.component';
 import { ChartManagerComponent } from './chart-manager/chart-manager.component';
 import { ChartRootComponent } from './chart-root/chart-root.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ChartRootComponent } from './chart-root/chart-root.component';
     CommonModule,
     BrowserAnimationsModule,
     MatCardModule,
-    DragDropModule
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: []
 })

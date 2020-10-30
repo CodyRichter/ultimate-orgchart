@@ -2,8 +2,8 @@
     content: "";
     box-sizing: border-box;
     left: 50%;
-    top: 50%;
     position: absolute;
+    top: calc(50% - 28px);
     height: 48px;
     border-color: #707070;
     border-style: solid;

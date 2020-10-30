@@ -36,6 +36,7 @@
     box-sizing: border-box;
     left: 50%;
     height: 48px;
+
     width: 2px;
     position: absolute;
     background-color: #707070;
@@ -55,4 +56,10 @@
 
 .oc-stack {
     padding-top: 96px;
+}
+
+.oc-arrow {
+    left: calc(50% - 16px);
+    color: grey;
+    margin-top: 16px;
 }

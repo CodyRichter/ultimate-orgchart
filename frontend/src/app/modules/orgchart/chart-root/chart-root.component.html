@@ -1,4 +1,7 @@
 <div class="oc-node">
+    <button mat-icon-button class="oc-arrow">
+        <mat-icon>keyboard_arrow_up</mat-icon>
+    </button>
     <chart-node [nodeData]="datasource"></chart-node>
 </div>
 <div *ngIf="datasource.manages.length > 0" class="oc-groups">
