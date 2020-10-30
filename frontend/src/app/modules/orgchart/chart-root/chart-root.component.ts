@@ -1,9 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
-import {Node} from '../shared/models/node.model';
-import {Subscription} from 'rxjs';
-import {NodeSelectService} from '../shared/services/node-select.service';
-import {MatDialog} from '@angular/material/dialog';
-import {CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit } from '@angular/core';
+import { Node } from '../shared/models/node.model';
 
 @Component({
   selector: 'orgchart',
