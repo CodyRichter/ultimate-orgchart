@@ -22,11 +22,12 @@ export class ManagerService {
         // check if this is a valid request
         // get manager based on id
         // check if employeeId is present in manager's object
-        const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).exec();
+        const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).populate("manages").exec();
+        console.log(fromManager);
         const manages = fromManager.manages;
         let valid = false;
         for (let i = 0; i < manages.length; i++) {
-            if (manages[i][0]._id === newRequest.employeeId){
+            if ((manages[i] as Employee)._id === newRequest.employeeId){
                 valid = true;
                 break;
             }
@@ -37,9 +38,9 @@ export class ManagerService {
         }
 
         
-        const createdRequest = new this.managerRequestModel(newRequest);
-        //we manually add the status rather than the front-end to
-        // specifed the status
+         const createdRequest = new this.managerRequestModel(newRequest);
+        // //we manually add the status rather than the front-end to
+        // // specifed the status
         createdRequest.status = RequestStatus.Pending;
         createdRequest.fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).exec();
         createdRequest.toManager = await this.employeeModel.findById(newRequest.toManagerId ? newRequest.toManagerId : newRequest.toManager).exec();
