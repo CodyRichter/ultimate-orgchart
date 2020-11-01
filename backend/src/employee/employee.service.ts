@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "./employee.model";
-import { ReturnModelType } from "@typegoose/typegoose";
+import { mongoose, ReturnModelType } from "@typegoose/typegoose";
 import { EmployeeAuth } from "src/auth/auth.model";
 import * as bcrypt from 'bcrypt';
 
@@ -14,6 +14,10 @@ export class EmployeeService {
   ) { }
 
   async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
+
+    const session=await mongoose.startSession();
+
+try{
     if (!newEmployee._id && newEmployee.employeeId) {
       newEmployee._id = newEmployee.employeeId
     }
@@ -40,6 +44,17 @@ export class EmployeeService {
 
         throw error;
     }
+  }catch(error)
+  {
+    await session.abortTransaction();
+
+    throw error;
+  }finally
+  {
+       session.endSession();
+  }
+
+
   }
 
   async createEmployees(newEmployees: (Employee & EmployeeAuth & {employeeId?: number})[]): Promise<Employee[]> {
@@ -164,4 +179,25 @@ export class EmployeeService {
       return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
   }
 
+   waitForMongooseConnection(mongoose) {
+    return new Promise((resolve) => {
+        const connection = mongoose.connection;
+        if (connection.readyState === 1) {
+            resolve();
+            return;
+        }
+        console.log('Mongoose connection is not ready. Waiting for open or reconnect event.');
+        let resolved = false;
+        const setResolved = () => {
+            console.log('Mongoose connection became ready. promise already resolved: ' + resolved);
+            if (!resolved) {
+                console.log('Resolving waitForMongooseConnection');
+                resolved = true;
+                resolve();
+            }
+        };
+        connection.once('open', setResolved);
+        connection.once('reconnect', setResolved);
+    });
+}
 }
