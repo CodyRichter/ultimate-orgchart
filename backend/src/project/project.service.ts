@@ -16,7 +16,7 @@ export class ProjectService {
         @InjectModel(ProjectsEmployee) private readonly projectsEmployeeModel: ReturnModelType<typeof ProjectsEmployee>,
     ) { }
 
-    
+
 
     async createProject(newProject: Project): Promise<Project> {
         //NOTE: get the manager from db
@@ -91,13 +91,12 @@ export class ProjectService {
     }
 
     //create multiple projects
-    async createProjects(newProjects:Project[]):Promise<Project[]>
-    {
+    async createProjects(newProjects: Project[]): Promise<Project[]> {
         return await Promise.all(newProjects.map(
-            async(newProject)=>{
+            async (newProject) => {
                 return this.createProject(newProject);
             }
-        )) 
+        ))
     }
 
     async getProject(projtectId: number) {
@@ -114,19 +113,19 @@ export class ProjectService {
         //get the project from db
         const deletedProject = await this.projectModel.findById(projectId).populate("employees").populate("manager");
         //delete the project employee of manager
-        const managerProjEmployee=await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').exec();
+        const managerProjEmployee = await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').exec();
 
-        const managerEmployee=await this.employeeModel.findById((managerProjEmployee.employee as Employee)._id).populate('projects').exec();
-        managerEmployee.projects=managerEmployee.projects.filter((proj: ProjectsEmployee) =>proj._id !==managerProjEmployee._id);
-          
+        const managerEmployee = await this.employeeModel.findById((managerProjEmployee.employee as Employee)._id).populate('projects').exec();
+        managerEmployee.projects = managerEmployee.projects.filter((proj: ProjectsEmployee) => proj._id !== managerProjEmployee._id);
+
 
         //delete the  project employees that relate to this project
         await Promise.all(deletedProject.employees.map(async (employee) => {
             //delete each related projectsEmployee
-            const updatedProjectEmployees=await this.projectsEmployeeModel.findById((employee as ProjectsEmployee)._id).populate('employee');
+            const updatedProjectEmployees = await this.projectsEmployeeModel.findById((employee as ProjectsEmployee)._id).populate('employee');
             //delete each related employee's projectEmployee reference
-            const updatedEmployees=await this.employeeModel.findById((updatedProjectEmployees.employee as Employee)._id).populate('projects').exec();
-            updatedEmployees.projects=updatedEmployees.projects.filter((proj: ProjectsEmployee) =>proj._id !==updatedProjectEmployees._id);
+            const updatedEmployees = await this.employeeModel.findById((updatedProjectEmployees.employee as Employee)._id).populate('projects').exec();
+            updatedEmployees.projects = updatedEmployees.projects.filter((proj: ProjectsEmployee) => proj._id !== updatedProjectEmployees._id);
             await updatedEmployees.save();
             await updatedProjectEmployees.remove();
         }));
@@ -134,10 +133,54 @@ export class ProjectService {
         //delete project and manager 
         await deletedProject.remove();
         await managerProjEmployee.remove();
-        await managerEmployee.save(); 
+        await managerEmployee.save();
 
-    }   
+    }
 
+    //update the project name or description
+    async updateProjectDetail(projectId: number, update: any): Promise<Project> {
+
+        if (update.hasOwnProperty('name') | update.hasOwnProperty('description')) {
+            //update the project Model
+            return await this.projectModel.findByIdAndUpdate(projectId, update, { new: true }).exec();
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    //add project employee
+    //we should expect the body send  {employee:employeeId, role:string}
+    async addProjectEmployee(projectId: number, projectEmployees: ProjectsEmployee[]): Promise<void> {
+        //check if the employee existed 
+        projectEmployees.map(async (projectEmployee) => {
+            //find the
+            const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).populate('projects').exec();
+
+            //if not exist throw error
+            if (employee === null) {
+                throw new NotFoundException('Employee not found');
+            }
+
+            //if exist
+            //find the project from db
+            const project = await this.projectModel.findById(projectId).populate('employees').populate('manager').exec();
+            //create the project employee then save to database
+            const projEmployee = new this.projectsEmployeeModel({ employee: employee, role: projectEmployee.role, project: project });
+            const savedProjEmployee = await this.projectsEmployeeModel.create(projEmployee);
+            //push projEmployee to the project schema
+            project.employees.push(savedProjEmployee);
+
+            //update the employee schema 
+            employee.projects.push(savedProjEmployee);
+
+
+            //save the change
+            await project.save();
+            await employee.save();
+        })
+    }
 
 
 }
