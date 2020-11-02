@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {Node} from '../shared/models/node.model';
+import { StackListComponent } from './stack-list/stack-list.component';
 
 @Component({
   selector: 'chart-stack',
@@ -10,9 +12,15 @@ export class ChartStackComponent implements OnInit {
 
   @Input() datasource: Node[];
 
-  constructor() { }
+  constructor(private readonly dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  onNodeClick(): void {
+    this.dialog.open(StackListComponent, {
+        data: { stackData: this.datasource }
+    });
   }
 
   getColor(pos): string {

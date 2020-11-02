@@ -12,6 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NodeDetailComponent } from './chart-node/node-detail/node-detail.component';
+import { StackListComponent } from './chart-stack/stack-list/stack-list.component';
+import {MatListModule} from '@angular/material/list';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,8 @@ import { NodeDetailComponent } from './chart-node/node-detail/node-detail.compon
     ChartStackComponent,
     ChartManagerComponent,
     ChartRootComponent,
-    NodeDetailComponent
+    NodeDetailComponent,
+    StackListComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -30,6 +34,7 @@ import { NodeDetailComponent } from './chart-node/node-detail/node-detail.compon
         CommonModule,
         BrowserAnimationsModule,
         MatCardModule,
+        MatListModule,
         DragDropModule,
         MatButtonModule,
         MatIconModule,

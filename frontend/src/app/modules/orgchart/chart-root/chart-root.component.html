@@ -1,5 +1,5 @@
 <div class="oc-node">
-    <button mat-icon-button class="oc-arrow">
+    <button *ngIf="chartStack.length > 1" mat-icon-button class="oc-arrow" (click)="onNavigateClick()">
         <mat-icon>keyboard_arrow_up</mat-icon>
     </button>
     <chart-node [nodeData]="datasource"></chart-node>

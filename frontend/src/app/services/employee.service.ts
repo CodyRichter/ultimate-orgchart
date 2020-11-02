@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 })
 export class EmployeeService {
   public chart: any;
-  public chartStack: any[];
+  public chartStack: any[] = [];
   public curSubtree: any;
 
   constructor(private readonly httpClient: HttpClient) {  }
@@ -19,20 +19,34 @@ export class EmployeeService {
   async initializeChart(): Promise<any> {
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
     this.chart = temp.find(employee => employee._id !== 404123456789404);
-    console.log(this.chart);
-    // this.chartStack.push(this.chart);
-    // console.log(this.chartStack);
+    this.chartStack.push(this.chart);
     this.curSubtree = this.chart;
-    console.log(this.curSubtree);
+    this.curSubtree.gotManages = true;
     return this.chart;
   }
 
-  async increaseChartDepth(manager: any): Promise<any> {
-    manager.manages = await this.getManagersEmployees(manager._id, 2);
-    // this.chartStack.push(manager);
+  // async increaseChartDepth(manager: any): Promise<any> {
+  //   manager.manages = await this.getManagersEmployees(manager._id, 2);
+  //   this.chartStack.push(manager);
+  //   this.curSubtree = manager;
+  //   console.log(this.chart);
+  //   return this.chart;
+  // }
+
+  async goDownInChart(manager: any): Promise<any> {
+    if (!manager.gotManages) {
+      manager.manages = await this.getManagersEmployees(manager._id, 2);
+      manager.gotManages = true;
+    }
+    this.chartStack.push(manager);
     this.curSubtree = manager;
-    console.log(this.chart);
     return this.chart;
+  }
+
+  async goUpInChart(): Promise<any> {
+    console.log(this.chartStack);
+    this.chartStack.pop();
+    this.curSubtree = this.chartStack[this.chartStack.length - 1];
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {

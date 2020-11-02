@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { Node } from '../shared/models/node.model';
 
 @Component({
@@ -10,10 +11,16 @@ export class ChartRootComponent implements OnInit {
 
   @Input() datasource: Node;
 
-  constructor() {
+  chartStack: any[];
+  constructor(private readonly employeeService: EmployeeService) {
+    this.chartStack = employeeService.chartStack;
   }
 
   ngOnInit(): void {
+  }
+
+  onNavigateClick(): void {
+    this.employeeService.goUpInChart();
   }
 
 }

@@ -6,7 +6,7 @@
         <div *ngIf="datasource.manages" class="oc-groups">
             <div *ngFor="let node of datasource.manages" class="oc-group">
                 <chart-node [nodeData]="node"></chart-node>
-                <button mat-icon-button class="oc-arrow">
+                <button mat-icon-button class="oc-arrow" (click)="onNavigateClickSingle(node)">
                     <mat-icon>keyboard_arrow_down</mat-icon>
                 </button>
             </div>
@@ -16,7 +16,7 @@
         <div class="oc-stack">
             <chart-stack [datasource]="datasource.manages"></chart-stack>
         </div>
-        <button mat-icon-button class="oc-arrow">
+        <button *ngIf="checkDepth(datasource.manages)" mat-icon-button class="oc-arrow" (click)="onNavigateClickStack(datasource.manages)">
             <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
     </div>
