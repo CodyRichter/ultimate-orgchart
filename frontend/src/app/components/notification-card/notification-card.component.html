@@ -1,0 +1,32 @@
+<mat-card class="notification-card" *ngIf="visible && isIncomingRequest()">
+    <mat-card-header>
+        <mat-icon mat-card-avatar>announcement</mat-icon>
+        <mat-card-title>Incoming Transfer Request</mat-card-title>
+        <mat-card-subtitle>from {{destManager}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            {{destManager}} has requested that {{employee}} be transferred to his team.
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="approveRequest()">Approve</button>
+        <button mat-button (click)="rejectRequest()">Reject</button>
+    </mat-card-actions>
+</mat-card>
+
+<mat-card class="notification-card" *ngIf="visible && isOutgoingRequest()">
+    <mat-card-header>
+        <mat-icon mat-card-avatar>info</mat-icon>
+        <mat-card-title>Outgoing Transfer Request</mat-card-title>
+        <mat-card-subtitle>to {{prevManager}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            You have requested a transfer of {{employee}} from {{prevManager}}'s team to your team. The request is {{status}}.
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="dismissNotification()">Dismiss</button>
+    </mat-card-actions>
+</mat-card>

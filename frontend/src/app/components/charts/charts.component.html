@@ -62,19 +62,18 @@
 
 
 <mat-drawer-container>
-
     <section id="chart-container">
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
     </section>
-
     <mat-drawer #notifications mode="side" opened="false" position="end">
         <button mat-button color="gray" (click)="notifications.toggle()">
             <mat-icon>close</mat-icon><span class="button-text">Close</span>
         </button>
         <h2 class="notification-header">Notifications</h2>
         <br>
-        <p class="notification-body">No new notifications.</p>
+        <notification-card type="incoming" employee="Steve" prevManager="Bill" destManager="Joe"></notification-card> 
+        <notification-card type="outgoing" employee="Steve" prevManager="Bill" destManager="Joe" status="Pending"></notification-card>
     </mat-drawer>
 </mat-drawer-container>
 
