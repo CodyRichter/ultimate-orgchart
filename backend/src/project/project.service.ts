@@ -153,14 +153,15 @@ export class ProjectService {
     //add project employee
     //we should expect the body send  {employee:employeeId, role:string}
     async addProjectEmployee(projectId: number, projectEmployees: ProjectsEmployee[]): Promise<void> {
+
         //check if the employee existed 
-        projectEmployees.map(async (projectEmployee) => {
-            //find the
+        await Promise.all(projectEmployees.map(async (projectEmployee) => {
+            //find the employee
             const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).populate('projects').exec();
 
             //if not exist throw error
             if (employee === null) {
-                throw new NotFoundException('Employee not found');
+                 throw new NotFoundException('Employee not found');
             }
 
             //if exist
@@ -179,7 +180,37 @@ export class ProjectService {
             //save the change
             await project.save();
             await employee.save();
-        })
+        }))
+    }
+
+    //delete project employee
+    async deleteProjectEmployee(projectId:number,projectEmployee:ProjectsEmployee):Promise<void>
+    {
+        try{
+        //find the project document
+        const project=await this.projectModel.findById(projectId).populate('employees').populate('manager').exec();
+        
+        //filter out the given projectEmployee
+        project.employees=project.employees.filter(employee=>(employee as ProjectsEmployee)._id!==projectEmployee._id);  
+    
+        //get the projectEmployee from database
+        const projEmployee=await this.projectsEmployeeModel.findById(projectEmployee._id).populate('employee').exec();
+
+        //find the employee document
+        const employee=await this.employeeModel.findById((projEmployee.employee as Employee)._id).populate('projects').exec();
+        //filter out the project from the projects field of employee
+        employee.projects=employee.projects.filter(project=>(project as ProjectsEmployee)._id!==projectEmployee._id);
+        
+         //save the changes
+         await project.save();
+         await employee.save();
+         //delete the projectEmployee
+         await projEmployee.remove();
+        }catch(error)
+        {
+            throw new NotFoundException('The project does not exist');
+        }
+        
     }
 
 

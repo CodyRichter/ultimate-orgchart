@@ -70,11 +70,11 @@ export class ProjectController {
       }
 
     //  //delete employee from the project
-    //  @Patch(':projectId/delete')
-    //  async  deleteEmployee(@Param('projectId')projectId:number,@Body()project:Project):Promise<Project>
-    //  {
-
-    //  }
+     @Patch('delete/:projectId')
+     async  deleteEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee):Promise<void>
+     {
+          await this.projectService.deleteProjectEmployee(projectId,employee);
+     }
 
 
 
