@@ -15,8 +15,10 @@ export class EmployeeService {
 
   async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
 
-    const session=await mongoose.startSession();
+    //await this.waitForMongooseConnection(mongoose);
+    const session=this.employeeModel.db.startSession();
 
+      (await session).startTransaction();
 try{
     if (!newEmployee._id && newEmployee.employeeId) {
       newEmployee._id = newEmployee.employeeId
@@ -46,12 +48,12 @@ try{
     }
   }catch(error)
   {
-    await session.abortTransaction();
+    await (await session).abortTransaction();
 
     throw error;
   }finally
   {
-       session.endSession();
+       (await session).endSession();
   }
 
 
