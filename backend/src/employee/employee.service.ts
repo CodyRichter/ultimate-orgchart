@@ -59,6 +59,7 @@ export class EmployeeService {
 
   }
 
+  //TODO: transaction
   async createEmployees(newEmployees: (Employee & EmployeeAuth & { employeeId?: number })[]): Promise<Employee[]> {
     try {
       // return await Promise.all(newEmployees.map(async emp => {
@@ -134,6 +135,7 @@ export class EmployeeService {
 
   // updating a reference does not work using this method, do manually using .save();
   // updates a single field of an employee model found
+  //TODO: transaction
   async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null> {
     // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
     // modified fields already in place, so the service simply replaces the db entry
@@ -144,6 +146,7 @@ export class EmployeeService {
   // removes a single employee from db if request is valid
   // returns true if successful, false otherwise
   //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
+  //TODO: transaction
   async deleteEmployee(employeeId: number): Promise<Employee> {
     // check if requester is parent of employeeId TODO
     // if(false){
@@ -168,35 +171,4 @@ export class EmployeeService {
     return employee;
   }
 
-  async findEmployeeByFilter(query: any): Promise<Employee[]> {
-    //if  query  is null return all employees
-
-    if (query === null) {
-      query = {};
-    }
-    //if the key is mismatching the field, then we will return empty array
-    return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
-  }
-
-  waitForMongooseConnection(mongoose) {
-    return new Promise((resolve) => {
-      const connection = mongoose.connection;
-      if (connection.readyState === 1) {
-        resolve();
-        return;
-      }
-      console.log('Mongoose connection is not ready. Waiting for open or reconnect event.');
-      let resolved = false;
-      const setResolved = () => {
-        console.log('Mongoose connection became ready. promise already resolved: ' + resolved);
-        if (!resolved) {
-          console.log('Resolving waitForMongooseConnection');
-          resolved = true;
-          resolve();
-        }
-      };
-      connection.once('open', setResolved);
-      connection.once('reconnect', setResolved);
-    });
-  }
 }

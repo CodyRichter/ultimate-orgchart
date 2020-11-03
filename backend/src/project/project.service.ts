@@ -17,7 +17,7 @@ export class ProjectService {
     ) { }
 
     
-
+    //TODO:
     async createProject(newProject: Project): Promise<Project> {
         //NOTE: get the manager from db
         const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('manages').populate('projects').exec();
@@ -91,6 +91,7 @@ export class ProjectService {
     }
 
     //create multiple projects
+    //TODO:
     async createProjects(newProjects:Project[]):Promise<Project[]>
     {
         return await Promise.all(newProjects.map(
@@ -100,6 +101,7 @@ export class ProjectService {
         )) 
     }
 
+    
     async getProject(projtectId: number) {
         return await this.projectModel.findById(projtectId).populate('manager').populate('employees').exec();
 
@@ -109,6 +111,7 @@ export class ProjectService {
         return await this.projectModel.find().populate('manager').populate('employees').exec();
     }
 
+    //TODO:
     async deleteProject(projectId: number): Promise<void> {
 
         //get the project from db

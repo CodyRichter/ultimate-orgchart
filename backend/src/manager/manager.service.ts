@@ -17,6 +17,7 @@ export class ManagerService {
 
     
     //create request 
+    //TODO: TRANSACTION
     async createRequest(newRequest: ManagerRequest & {fromManagerId?: number, toManagerId?: number, employeeId?: number}): Promise<ManagerRequest> {
 
         // check if this is a valid request
@@ -64,6 +65,7 @@ export class ManagerService {
     //front-end should sent the request in the body 
     //then we update the 'status' and 'updatedTime' and 'the managerId' that should be updated too.
     //also update the employee info where their managerId should be updated
+    //TODO:TRANSACTION
     async approveRequest(requestId: number): Promise<ManagerRequest> {
 
         //find this request first
