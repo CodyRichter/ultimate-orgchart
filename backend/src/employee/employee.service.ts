@@ -171,4 +171,16 @@ export class EmployeeService {
     return employee;
   }
 
+  async findEmployeeByFilter(query:any):Promise<Employee[]>
+  {
+    //if  query  is null return all employees
+
+      if(query===null)
+      {
+        query = {};
+      }
+      //if the key is mismatching the field, then we will return empty array
+      return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
+  }
+
 }
