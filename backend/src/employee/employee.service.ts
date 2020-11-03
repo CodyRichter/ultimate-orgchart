@@ -1,7 +1,7 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable} from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "./employee.model";
-import { mongoose, ReturnModelType } from "@typegoose/typegoose";
+import { ReturnModelType } from "@typegoose/typegoose";
 import { EmployeeAuth } from "src/auth/auth.model";
 import * as bcrypt from 'bcrypt';
 
@@ -13,61 +13,60 @@ export class EmployeeService {
 
   ) { }
 
-  async createEmployee(newEmployee: Employee & EmployeeAuth & {employeeId?: number}): Promise<Employee> {
+  async createEmployee(newEmployee: Employee & EmployeeAuth & { employeeId?: number }): Promise<Employee> {
 
     //await this.waitForMongooseConnection(mongoose);
-    const session=this.employeeModel.db.startSession();
+    const session = await this.employeeModel.db.startSession();
+     session.startTransaction();
+    try {
+      if (!newEmployee._id && newEmployee.employeeId) {
+        newEmployee._id = newEmployee.employeeId
+      }
+      newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
 
-      (await session).startTransaction();
-try{
-    if (!newEmployee._id && newEmployee.employeeId) {
-      newEmployee._id = newEmployee.employeeId
-    }
-    newEmployee.password = await bcrypt.hash(newEmployee.password,10);
+      const createdEmployee = new this.employeeModel(newEmployee);
+      const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
+      const manager = await this.employeeModel.findById(newEmployee.managerId).populate('manages').populate('projects').session(session).exec();
 
-    const createdEmployee = new this.employeeModel(newEmployee);
-    const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-    const manager = await this.employeeModel.findById(newEmployee.managerId).populate('manages').populate('projects').exec();
 
-    try
-    {
       if (manager) {
         manager.manages.push(createdEmployee);
         await manager.save();
-      } 
-      await this.employeeAuthModel.create(createdEmployeeAuth)
-      return await this.employeeModel.create(createdEmployee);
-    }catch(error)
-    {
-        if(error.code===11000)
-        {
-          throw new ConflictException("Employee already exists");
-        }
+      }
+      
+      await this.employeeAuthModel.create([createdEmployeeAuth],{session:session});
+      const employee=await this.employeeModel.create([createdEmployee],{session:session});
+      
 
-        throw error;
+      await session.commitTransaction();
+      return employee[0];
+    } 
+    catch (error) {
+
+      await session.abortTransaction();
+     
+      if (error.code === 11000) {
+        throw new ConflictException("Employee already exists");
+      }
+
+      throw error;
+    } finally {
+
+      session.endSession();
+     
     }
-  }catch(error)
-  {
-    await (await session).abortTransaction();
-
-    throw error;
-  }finally
-  {
-       (await session).endSession();
-  }
 
 
   }
 
-  async createEmployees(newEmployees: (Employee & EmployeeAuth & {employeeId?: number})[]): Promise<Employee[]> {
-    try
-    {
+  async createEmployees(newEmployees: (Employee & EmployeeAuth & { employeeId?: number })[]): Promise<Employee[]> {
+    try {
       // return await Promise.all(newEmployees.map(async emp => {
       //   return await this.createEmployee(emp)
       // }))
-      const updatedEmployees = await Promise.all(newEmployees.map( 
-        async (employee) => { 
-          return {...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password,10)};
+      const updatedEmployees = await Promise.all(newEmployees.map(
+        async (employee) => {
+          return { ...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password, 10) };
           // const createdEmployee = new this.employeeModel(newEmployee);
           // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
           // await this.employeeAuthModel.create(createdEmployeeAuth)
@@ -83,8 +82,8 @@ try{
 
       await Promise.all(savedEmployees.map(emp1 => {
         if (emp1.managerId) {
-          const index = allEmployees.findIndex( emp2 => emp2._id === emp1.managerId );
-            allEmployees[index].manages.push(emp1);
+          const index = allEmployees.findIndex(emp2 => emp2._id === emp1.managerId);
+          allEmployees[index].manages.push(emp1);
         }
       }));
 
@@ -120,7 +119,7 @@ try{
       const temp = { path: 'manages', populate: populate }
       populate = temp;
     }
-    return await this.employeeModel.find({managerId}).populate(populate).exec();
+    return await this.employeeModel.find({ managerId }).populate(populate).exec();
   }
 
   // async findEmployee(employee: Partial<Employee>): Promise<Employee> {
@@ -165,41 +164,39 @@ try{
       employee.deleteOne();
       await this.employeeAuthModel.findByIdAndDelete(employeeId).exec();
     }
-    
+
     return employee;
   }
 
-  async findEmployeeByFilter(query:any):Promise<Employee[]>
-  {
+  async findEmployeeByFilter(query: any): Promise<Employee[]> {
     //if  query  is null return all employees
 
-      if(query===null)
-      {
-        query = {};
-      }
-      //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
+    if (query === null) {
+      query = {};
+    }
+    //if the key is mismatching the field, then we will return empty array
+    return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
   }
 
-   waitForMongooseConnection(mongoose) {
+  waitForMongooseConnection(mongoose) {
     return new Promise((resolve) => {
-        const connection = mongoose.connection;
-        if (connection.readyState === 1) {
-            resolve();
-            return;
+      const connection = mongoose.connection;
+      if (connection.readyState === 1) {
+        resolve();
+        return;
+      }
+      console.log('Mongoose connection is not ready. Waiting for open or reconnect event.');
+      let resolved = false;
+      const setResolved = () => {
+        console.log('Mongoose connection became ready. promise already resolved: ' + resolved);
+        if (!resolved) {
+          console.log('Resolving waitForMongooseConnection');
+          resolved = true;
+          resolve();
         }
-        console.log('Mongoose connection is not ready. Waiting for open or reconnect event.');
-        let resolved = false;
-        const setResolved = () => {
-            console.log('Mongoose connection became ready. promise already resolved: ' + resolved);
-            if (!resolved) {
-                console.log('Resolving waitForMongooseConnection');
-                resolved = true;
-                resolve();
-            }
-        };
-        connection.once('open', setResolved);
-        connection.once('reconnect', setResolved);
+      };
+      connection.once('open', setResolved);
+      connection.once('reconnect', setResolved);
     });
-}
+  }
 }
