@@ -1,0 +1,24 @@
+<p>
+    <mat-form-field appearance="fill">
+        <mat-label>Employee</mat-label>
+        <mat-select [(ngModel)]="selectedEmployee">
+            <mat-option *ngFor="let employee of employees" [value]="employee">
+                {{employee.firstName}}, {{employee.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</p>
+<p>
+    <mat-form-field appearance="fill">
+        <mat-label>Destination manager</mat-label>
+        <mat-select [(ngModel)]="selectedManager">
+            <mat-option *ngFor="let manager of managers" [value]="manager">
+                {{manager.firstName}}, {{manager.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</p>
+
+<button mat-raised-button color="primary">
+    Request Transfer
+</button>
