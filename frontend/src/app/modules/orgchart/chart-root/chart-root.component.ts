@@ -19,6 +19,10 @@ export class ChartRootComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  filterEmployees(node: Node): boolean {
+    return node.manages.length === 0;
+  }
+
   onNavigateClick(): void {
     this.employeeService.goUpInChart();
   }

@@ -14,6 +14,7 @@ import { Node } from '../shared/models/node.model';
 export class ChartManagerComponent implements OnInit {
 
   @Input() datasource: Node;
+  @Input() ignore = false;
 
   constructor(private readonly employeeService: EmployeeService, private readonly dialog: MatDialog) {
   }
