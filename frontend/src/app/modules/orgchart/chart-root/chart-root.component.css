@@ -66,3 +66,7 @@
     left: calc(50% - 16px);
     color: grey;
 }
+
+.placeholder {
+    height: 40px;
+}
