@@ -17,19 +17,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import {MatDividerModule} from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer.component';
 import { SearchComponent } from './search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
+
 
 @NgModule({
   declarations: [
@@ -45,6 +45,7 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
     SearchDialog,
     SettingsComponent,
     SearchComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -66,6 +67,7 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
     MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatDividerModule,
     RouterModule.forRoot([
       {
         path: '',
