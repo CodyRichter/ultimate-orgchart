@@ -6,10 +6,10 @@
                 <strong>{{node.firstName}} {{node.lastName}}</strong>
             </div>
             <span class="spacer"></span>
-            <button *ngIf="details" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)">Details</button>
-            <div class="btn-nav" style="margin-left: 64px">
-                <button *ngIf="node.manages.length > 0" mat-stroked-button color="warn" mat-dialog-close (click)="onNavigateClick(node)">Navigate</button>
+            <div class="btn-nav">
+                <button style="margin-left: 8px" *ngIf="node.manages.length > 0" mat-stroked-button color="warn" mat-dialog-close (click)="onNavigateClick(node)">Navigate</button>
             </div>
+            <button style="margin-left: 8px" *ngIf="details" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)">Details</button>
         </mat-list-item>
     </mat-list>
 </mat-dialog-content>
