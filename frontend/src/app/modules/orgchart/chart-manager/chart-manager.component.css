@@ -61,9 +61,10 @@
 }
 
 .oc-arrow-btn {
+    position: absolute;
     left: calc(50% - 16px);
     color: grey;
-    margin-top: 16px;
+    bottom: -172px;
 }
 
 .oc-arrow {
