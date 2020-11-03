@@ -19,7 +19,7 @@
     align-items: center;
 }
 
-.oc-group > :host > .oc-node::after {
+.oc-group > :host > .oc-node:not(:last-child)::after {
     content: "";
     box-sizing: border-box;
     left: 50%;
