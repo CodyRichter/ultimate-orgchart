@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NodeDetailComponent } from './chart-node/node-detail/node-detail.component';
 import { StackListComponent } from './chart-stack/stack-list/stack-list.component';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -31,14 +32,15 @@ import {MatListModule} from '@angular/material/list';
     ChartNodeComponent
   ],
     imports: [
-        CommonModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatListModule,
-        DragDropModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule
+      CommonModule,
+      BrowserAnimationsModule,
+      MatCardModule,
+      MatListModule,
+      DragDropModule,
+      MatButtonModule,
+      MatIconModule,
+      MatDialogModule,
+      MatRippleModule
     ],
   providers: []
 })
