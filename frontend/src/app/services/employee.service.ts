@@ -19,9 +19,11 @@ export class EmployeeService {
   async initializeChart(): Promise<any> {
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
     this.chart = temp.find(employee => employee._id !== 404123456789404);
-    this.chartStack.push(this.chart);
     this.curSubtree = this.chart;
-    this.curSubtree.gotManages = true;
+    if (this.curSubtree) {
+      this.chartStack.push(this.curSubtree);
+      this.curSubtree.gotManages = true;
+    }
     return this.chart;
   }
 
@@ -47,6 +49,7 @@ export class EmployeeService {
     console.log(this.chartStack);
     this.chartStack.pop();
     this.curSubtree = this.chartStack[this.chartStack.length - 1];
+    return this.chart;
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {

@@ -32,19 +32,19 @@ import { MatInputModule } from '@angular/material/input';
     ChartContainerComponent,
     ChartNodeComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatListModule,
-    DragDropModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatRippleModule,
-    MatGridListModule,
-    MatInputModule
-  ],
+    imports: [
+      CommonModule,
+      BrowserAnimationsModule,
+      MatCardModule,
+      MatListModule,
+      DragDropModule,
+      MatButtonModule,
+      MatIconModule,
+      MatDialogModule,
+      MatRippleModule,
+      MatGridListModule,
+      MatInputModule,
+    ],
   providers: []
 })
 export class OrgchartModule { }
