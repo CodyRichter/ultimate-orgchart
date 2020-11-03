@@ -19,3 +19,4 @@ export class ProjectsEmployee extends TimeStamps{
     @prop({required: true})
     role: string
 }
+

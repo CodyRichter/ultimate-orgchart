@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
 import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Project } from './project.model';
@@ -55,9 +55,26 @@ export class ProjectController {
          return await this.projectService.deleteProject(projectId);
      }
 
-
+     //update project name or description
+     @Patch(':projectId')
+     async updateProject(@Param('projectId')projectId:number,@Body()updatedField:any):Promise<Project>
+     {
+           return await this.projectService.updateProjectDetail(projectId,updatedField);
+     }
     
+      //add employee to the project
+      @Patch('add/:projectId')
+      async addEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee[]):Promise<void>
+      {
+           await this.projectService.addProjectEmployee(projectId,employee);
+      }
 
+    //  //delete employee from the project
+     @Patch('delete/:projectId')
+     async  deleteEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee):Promise<void>
+     {
+          await this.projectService.deleteProjectEmployee(projectId,employee);
+     }
 
 
 
