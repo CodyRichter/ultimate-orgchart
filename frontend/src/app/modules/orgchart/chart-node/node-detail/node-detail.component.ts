@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Node } from '../../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 
 @Component({
   selector: 'chart-node-detail',
@@ -9,7 +9,7 @@ import { Node } from '../../shared/models/node.model';
 })
 export class NodeDetailComponent implements OnInit {
 
-  nodeData: Node;
+  nodeData: Employee;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
     this.nodeData = data.nodeData;

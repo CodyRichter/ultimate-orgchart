@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Node } from '../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 
 @Component({
   selector: 'orgchart',
@@ -9,7 +9,7 @@ import { Node } from '../shared/models/node.model';
 })
 export class ChartRootComponent implements OnInit {
 
-  @Input() datasource: Node;
+  @Input() datasource: Employee;
 
   chartStack: any[];
   constructor(private readonly employeeService: EmployeeService) {
@@ -19,12 +19,12 @@ export class ChartRootComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  filterEmployees(node: Node): boolean {
+  filterEmployees(node: Employee): boolean {
     return node.manages.length === 0;
   }
 
-  onNavigateClick(): void {
-    this.employeeService.goUpInChart();
+  async onNavigateClick(): Promise<void> {
+    await this.employeeService.goUpInChart();
   }
 
 }

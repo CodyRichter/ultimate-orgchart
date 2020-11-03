@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { NodeDetailComponent } from '../../chart-node/node-detail/node-detail.component';
-import { Node } from '../../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { Node } from '../../shared/models/node.model';
 export class StackListComponent implements OnInit {
 
 
-  stackData: Node[];
+  stackData: Employee[];
   details = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly dialog: MatDialog,
@@ -24,14 +24,14 @@ export class StackListComponent implements OnInit {
     }
   }
 
-  onDetailsClick(node: any): void {
+  onDetailsClick(node: Employee): void {
     this.dialog.open(NodeDetailComponent, {
         data: { nodeData: node }
     });
   }
 
-  onNavigateClick(node: any): void {
-    this.employeeService.goDownInChart(node);
+  async onNavigateClick(node: Employee): Promise<void> {
+    await this.employeeService.goDownInChart(node);
     this.dialog.closeAll();
   }
 

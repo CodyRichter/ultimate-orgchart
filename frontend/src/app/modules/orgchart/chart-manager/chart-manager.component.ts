@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { StackListComponent } from '../chart-stack/stack-list/stack-list.component';
-import { Node } from '../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 
 @Component({
   selector: 'chart-manager',
@@ -13,8 +12,9 @@ import { Node } from '../shared/models/node.model';
 
 export class ChartManagerComponent implements OnInit {
 
-  @Input() datasource: Node;
+  @Input() datasource: Employee;
   @Input() ignore = false;
+  @Input() stack: Employee[];
 
   constructor(private readonly employeeService: EmployeeService, private readonly dialog: MatDialog) {
   }
@@ -22,17 +22,22 @@ export class ChartManagerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  checkDepth(nodes: any[]): boolean {
+  checkDepth(nodes: Employee[]): boolean {
     return nodes.some(node => node.manages.length > 0);
   }
 
-  async onNavigateClickSingle(node: any): Promise<void> {
+  async onNavigateClickSingle(node: Employee): Promise<void> {
     await this.employeeService.goDownInChart(node);
   }
 
-  onNavigateClickStack(nodes: any[]): void {
+  onNavigateClickStack(nodes: Employee[]): void {
     this.dialog.open(StackListComponent, {
         data: { stackData: nodes.filter(node => node.manages.length > 0), details: false }
     });
   }
+
+  filterEmployees(node: Employee): boolean {
+    return node.manages.length === 0;
+  }
+
 }

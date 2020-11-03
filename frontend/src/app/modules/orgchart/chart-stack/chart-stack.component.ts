@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {Node} from '../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 import { StackListComponent } from './stack-list/stack-list.component';
+import { StackDetailComponent } from './stack-detail/stack-detail.component';
 
 @Component({
   selector: 'chart-stack',
@@ -10,14 +11,14 @@ import { StackListComponent } from './stack-list/stack-list.component';
 })
 export class ChartStackComponent implements OnInit {
 
-  @Input() datasource: Node[];
+  @Input() datasource: Employee[];
 
   constructor(private readonly dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
 
-  onNodeClick(): void {
+  onStackClick(): void {
     this.dialog.open(StackListComponent, {
         data: { stackData: this.datasource }
     });

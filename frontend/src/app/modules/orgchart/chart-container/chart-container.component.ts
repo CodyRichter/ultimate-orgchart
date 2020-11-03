@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'organization-chart',
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.css']

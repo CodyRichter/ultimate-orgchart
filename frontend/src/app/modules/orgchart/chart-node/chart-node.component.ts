@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Node } from '../shared/models/node.model';
+import { Employee } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeDetailComponent } from './node-detail/node-detail.component';
 
@@ -10,7 +10,7 @@ import { NodeDetailComponent } from './node-detail/node-detail.component';
 })
 export class ChartNodeComponent implements OnInit {
 
-  @Input() nodeData: Node;
+  @Input() nodeData: Employee;
 
   @Output() nodeClick = new EventEmitter<any>();
 

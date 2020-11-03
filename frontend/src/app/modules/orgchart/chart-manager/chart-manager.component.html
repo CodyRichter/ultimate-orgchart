@@ -10,7 +10,7 @@
             <div *ngFor="let node of datasource.manages" class="oc-group">
                 <chart-node [nodeData]="node"></chart-node>
                 <div class="oc-arrow">
-                    <button *ngIf="node.manages.length > 0" mat-icon-button class="oc-arrow-btn" (click)="onNavigateClickSingle(node)">
+                    <button *ngIf="node.manages.length > 0" mat-icon-button class="oc-arrow-btn-employee" (click)="onNavigateClickSingle(node)">
                         <mat-icon>keyboard_arrow_down</mat-icon>
                     </button>
                 </div>
@@ -18,13 +18,25 @@
         </div>
     </div>
     <div *ngIf="datasource.manages.length > 2">
-        <div class="oc-stack">
-            <chart-stack [datasource]="datasource.manages"></chart-stack>
+        <div *ngIf="!ignore">
+            <div class="oc-stack">
+                <chart-stack [datasource]="datasource.manages"></chart-stack>
+            </div>
+            <div class="oc-arrow">
+                <button *ngIf="checkDepth(datasource.manages)" class="oc-arrow-btn-stack" mat-icon-button (click)="onNavigateClickStack(datasource.manages)">
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+            </div>
         </div>
-        <div class="oc-arrow">
-            <button *ngIf="checkDepth(datasource.manages)" class="oc-arrow-btn" mat-icon-button (click)="onNavigateClickStack(datasource.manages)">
-                <mat-icon>keyboard_arrow_down</mat-icon>
-            </button>
+        <div *ngIf="ignore">
+            <div class="oc-stack">
+                <chart-stack [datasource]="datasource.manages.filter(filterEmployees)"></chart-stack>
+            </div>
+            <div class="oc-arrow">
+                <button *ngIf="checkDepth(datasource.manages.filter(filterEmployees))" class="oc-arrow-btn-stack" mat-icon-button (click)="onNavigateClickStack(datasource.manages.filter(filterEmployees))">
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+            </div>
         </div>
     </div>
 </div>

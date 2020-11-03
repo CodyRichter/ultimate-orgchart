@@ -60,11 +60,18 @@
     padding-top: 96px;
 }
 
-.oc-arrow-btn {
+.oc-arrow-btn-stack {
     position: absolute;
     left: calc(50% - 16px);
     color: grey;
     bottom: -172px;
+}
+
+.oc-arrow-btn-employee {
+    position: absolute;
+    left: calc(50% - 16px);
+    color: grey;
+    top: -16px;
 }
 
 .oc-arrow {
