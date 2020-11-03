@@ -3,7 +3,7 @@
     box-sizing: border-box;
     left: 50%;
     position: absolute;
-    top: 50%;
+    bottom: 0;
     height: 48px;
     border-color: #707070;
     border-style: solid;
@@ -11,13 +11,19 @@
     z-index: -1;
 }
 
-#card1 {
+.card0 {
+    position: absolute;
+    top: 208px;
+    left: 0;
+}
+
+.card1 {
     position: absolute;
     top: 216px;
     left: 6px;
 }
 
-#card2 {
+.card2 {
     position: absolute;
     top: 224px;
     left: 12px;
