@@ -43,7 +43,7 @@
     content: "";
     box-sizing: border-box;
     top: 48px;
-    width: calc(50% - 31px);
+    width: calc(50% - 30px);
     position: absolute;
     border-color: #707070;
     border-style: solid;
