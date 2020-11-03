@@ -15,10 +15,8 @@ import { NodeDetailComponent } from './chart-node/node-detail/node-detail.compon
 import { StackListComponent } from './chart-stack/stack-list/stack-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
-import { StackDetailComponent } from './chart-stack/stack-detail/stack-detail.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
-import { Employee } from 'src/app/models/index';
 
 @NgModule({
   declarations: [
@@ -28,8 +26,7 @@ import { Employee } from 'src/app/models/index';
     ChartManagerComponent,
     ChartRootComponent,
     NodeDetailComponent,
-    StackListComponent,
-    StackDetailComponent
+    StackListComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -47,7 +44,6 @@ import { Employee } from 'src/app/models/index';
       MatRippleModule,
       MatGridListModule,
       MatInputModule,
-      Employee
     ],
   providers: []
 })
