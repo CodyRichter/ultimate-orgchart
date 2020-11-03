@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Node } from 'src/app/modules/orgchart/shared/models/node.model';
 import {MatDividerModule} from '@angular/material/divider';
 
 @Component({
