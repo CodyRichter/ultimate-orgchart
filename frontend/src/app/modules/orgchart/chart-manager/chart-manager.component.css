@@ -34,21 +34,26 @@
 .oc-group > :host::before {
     content: "";
     box-sizing: border-box;
-    height: 45px;
+    height: 46px;
     position: absolute;
     top: -46px;
     left: 50%;
     border-color: #707070;
     border-style: solid;
     border-width: 0 0 0 2px;
+    z-index: -1;
 }
 
 .oc-stack {
     padding-top: 96px;
 }
 
-.oc-arrow {
+.oc-arrow-btn {
     left: calc(50% - 16px);
     color: grey;
     margin-top: 16px;
+}
+
+.oc-arrow {
+    height: 0;
 }

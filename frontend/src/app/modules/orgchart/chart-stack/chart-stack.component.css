@@ -3,11 +3,12 @@
     box-sizing: border-box;
     left: 50%;
     position: absolute;
-    top: calc(50% - 28px);
+    top: 50%;
     height: 48px;
     border-color: #707070;
     border-style: solid;
     border-width: 0 2px 0 0;
+    z-index: -1;
 }
 
 #card1 {
