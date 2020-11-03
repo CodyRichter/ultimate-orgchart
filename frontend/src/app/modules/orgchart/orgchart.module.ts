@@ -15,10 +15,8 @@ import { NodeDetailComponent } from './chart-node/node-detail/node-detail.compon
 import { StackListComponent } from './chart-stack/stack-list/stack-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
-import { StackDetailComponent } from './chart-stack/stack-detail/stack-detail.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
-import { Employee } from 'src/app/models/index';
 
 @NgModule({
   declarations: [
@@ -28,27 +26,25 @@ import { Employee } from 'src/app/models/index';
     ChartManagerComponent,
     ChartRootComponent,
     NodeDetailComponent,
-    StackListComponent,
-    StackDetailComponent
+    StackListComponent
   ],
   exports: [
     ChartContainerComponent,
     ChartNodeComponent
   ],
-    imports: [
-      CommonModule,
-      BrowserAnimationsModule,
-      MatCardModule,
-      MatListModule,
-      DragDropModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatRippleModule,
-      MatGridListModule,
-      MatInputModule,
-      Employee
-    ],
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatListModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatRippleModule,
+    MatGridListModule,
+    MatInputModule
+  ],
   providers: []
 })
 export class OrgchartModule { }

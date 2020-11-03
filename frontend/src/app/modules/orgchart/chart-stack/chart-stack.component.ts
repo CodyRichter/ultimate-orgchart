@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models/index';
 import { StackListComponent } from './stack-list/stack-list.component';
-import { StackDetailComponent } from './stack-detail/stack-detail.component';
 
 @Component({
   selector: 'chart-stack',
