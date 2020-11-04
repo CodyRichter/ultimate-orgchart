@@ -49,19 +49,16 @@ export class ChartsComponent implements OnInit {
     const count = input.length;
     const externalHTML = `<div style="margin-top:20px;"><h3>`;
     const extremeHTML = `</h3></div>`;
-    const peopleHeaderText = 'People: ' + count + ' Results'
+    const peopleHeaderText = 'People: ' + count + ' Results';
     peopleHeader.innerHTML = externalHTML + peopleHeaderText + extremeHTML;
   }
 
   async myFunction(): Promise<void>{
     this.numberOfResults();
-    const nodeData = []; // create an array
-    const currentVal = (document.getElementById('mySearch') as HTMLInputElement).value; // value of search query
-    const dialoginput =  document.getElementById('dialog') as HTMLInputElement;
+    const currentVal = ( document.getElementById('mySearch') as HTMLInputElement).value; // value of search query
+    const dialoginput = document.getElementById('dialog') as HTMLInputElement;
     const input = await this.employeeService.searchEmployee(currentVal); // filtered array
-    for (const employee of input) {
-        nodeData.push(employee); // push filtered results into nodeData array
-        console.log(nodeData);
+    for (const employee of input){
     const externalHTML = `<mat-list-item id="listItem"><div style="display: inline-block; padding-right:10px;"><img src="assets/icons/default-avatar.png" alt="" style="width: 40px"></div>
     <div style="font-size: medium; display: inline-block; padding-right:10px;">
         <strong>`;
@@ -69,7 +66,7 @@ export class ChartsComponent implements OnInit {
         </div></div>
         <button *ngIf="node.manages.length > 0" mat-stroked-button class="button" color="warn" mat-dialog-close (click)="onNavigateClick(node)">Navigate</button></mat-list-item>`;
     const employeeDetails = employee.firstName + ' ' + employee.lastName + '<br>' + employee.positionTitle +  '<br>';
-        dialoginput.innerHTML += externalHTML + employeeDetails + extremeHTML + '<br>' + '<br>';
+    dialoginput.innerHTML += externalHTML + employeeDetails + extremeHTML + '<br>' + '<br>';
     }
 
 }
