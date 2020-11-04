@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Role } from '../../../enums/roles.enum';
+import { Role } from '../enums/roles.enum';
 import { User } from '../auth/guards/user.decorator';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 

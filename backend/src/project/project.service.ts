@@ -3,7 +3,7 @@ import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
 import { DocumentType, mongoose, ReturnModelType } from "@typegoose/typegoose";
 import { EmployeeAuth } from "src/auth/auth.model";
-import { RequestStatus } from '../../../enums/request.enum';
+import { RequestStatus } from '../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
 import { Document } from 'mongoose';
 import { Project } from "./project.model";
