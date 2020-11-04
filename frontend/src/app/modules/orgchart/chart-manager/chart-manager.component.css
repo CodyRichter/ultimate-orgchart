@@ -71,7 +71,7 @@
     position: absolute;
     left: calc(50% - 16px);
     color: grey;
-    top: -16px;
+    bottom: -40px;
 }
 
 .oc-arrow {
