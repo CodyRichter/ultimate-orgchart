@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { NodeDetailComponent } from '../../chart-node/node-detail/node-detail.component';
@@ -13,12 +13,14 @@ import { Employee } from 'src/app/models/index';
 export class StackListComponent implements OnInit {
 
 
-  stackData: Employee[];
-  details = true;
+  @Input() stackData: Employee[] = [];
+  @Input() details = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly dialog: MatDialog,
               private readonly employeeService: EmployeeService) {
-    this.stackData = data.stackData;
+    if (data.stackData) {
+      this.stackData = data.stackData;
+    }
     if (data.details !== undefined) {
       this.details = data.details;
     }

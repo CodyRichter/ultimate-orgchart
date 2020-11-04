@@ -33,44 +33,17 @@ export class ChartsComponent implements OnInit {
     await this.employeeService.initializeChart();
   }
 
-  openDialog(): void {
-    this.dialog.open(SearchDialog);
-    this.myFunction();
-  }
-
   openSettingsDialog(): void {
     this.dialog.open(SettingsDialog);
   }
 
-  async numberOfResults(): Promise<void>{
+  async openDialog(): Promise<void> {
     const currentVal = ( document.getElementById('mySearch') as HTMLInputElement).value;
-    const input = await this.employeeService.searchEmployee(currentVal);
-    const peopleHeader = ( document.getElementById('people') as HTMLInputElement);
-    const count = input.length;
-    const externalHTML = `<div style="margin-top:20px;"><h3>`;
-    const extremeHTML = `</h3></div>`;
-    const peopleHeaderText = 'People: ' + count + ' Results';
-    peopleHeader.innerHTML = externalHTML + peopleHeaderText + extremeHTML;
+    const result = await this.employeeService.searchEmployee(currentVal);
+    this.dialog.open(SearchDialog, {
+      data: {searchResult: result}
+    });
   }
-
-  async myFunction(): Promise<void>{
-    this.numberOfResults();
-    const currentVal = ( document.getElementById('mySearch') as HTMLInputElement).value; // value of search query
-    const dialoginput = document.getElementById('dialog') as HTMLInputElement;
-    const input = await this.employeeService.searchEmployee(currentVal); // filtered array
-    for (const employee of input){
-    const externalHTML = `<mat-list-item id="listItem"><div style="display: inline-block; padding-right:10px;"><img src="assets/icons/default-avatar.png" alt="" style="width: 40px"></div>
-    <div style="font-size: medium; display: inline-block; padding-right:10px;">
-        <strong>`;
-    const extremeHTML = `</strong>
-        </div></div>
-        <button *ngIf="node.manages.length > 0" mat-stroked-button class="button" color="warn" mat-dialog-close (click)="onNavigateClick(node)">Navigate</button></mat-list-item>`;
-    const employeeDetails = employee.firstName + ' ' + employee.lastName + '<br>' + employee.positionTitle +  '<br>';
-    dialoginput.innerHTML += externalHTML + employeeDetails + extremeHTML + '<br>' + '<br>';
-    }
-
-}
-
 }
 
 @Component({

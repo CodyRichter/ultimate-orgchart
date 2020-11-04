@@ -1,9 +1,15 @@
 <mat-dialog-content>
     <mat-list>
         <mat-list-item *ngFor="let node of stackData">
-            <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 40px"></div>
-            <div style="margin-left: 5px; font-size: large">
-                <strong>{{node.firstName}} {{node.lastName}}</strong>
+            <div class="inline">
+                <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
+            </div>
+            <div style="font-size: medium; display: inline-block; margin-left:10px;">
+                <strong>
+                    {{node.firstName}} {{node.lastName}}
+                <br>
+                    {{node.positionTitle}}
+                </strong>
             </div>
             <span class="spacer"></span>
             <div class="btn-nav">
@@ -11,5 +17,6 @@
             </div>
             <button style="margin-left: 8px" *ngIf="details" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)">Details</button>
         </mat-list-item>
+           
     </mat-list>
 </mat-dialog-content>
