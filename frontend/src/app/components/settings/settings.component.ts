@@ -17,12 +17,12 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  isAdmin(): boolean {
-    return this.authService.profile.isAdmin;
+  async isAdmin(): Promise<boolean> {
+    return (await this.authService.getProfile()).isAdmin;
   }
 
-  isManager(): boolean {
-    return this.authService.profile.isManager;
+  async isManager(): Promise<boolean> {
+    return (await this.authService.getProfile()).isManager;
   }
 
   openJSONUploadDialog(): void {

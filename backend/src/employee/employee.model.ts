@@ -1,11 +1,12 @@
 import { plugin, prop, Ref } from "@typegoose/typegoose";
 // import * as deeppopulate from 'mongoose-deep-populate';
 import { AutoIncrementID } from "@typegoose/auto-increment";
-import { ProjectsEmployee } from "src/project/projectsEmployee.model";
+import { ProjectsEmployee } from "../project/projectsEmployee.model";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
 // @plugin(AutoIncrementID, {})
 
-export class Employee {
+export class Employee  extends TimeStamps {
     @prop()
     _id: number;
 

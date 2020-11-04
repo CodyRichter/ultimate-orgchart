@@ -1,6 +1,7 @@
 import { prop } from "@typegoose/typegoose";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
-export class EmployeeAuth {
+export class EmployeeAuth  extends TimeStamps {
     @prop()
     _id: number;
     

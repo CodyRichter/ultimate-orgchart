@@ -1,9 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
-import {Node} from '../shared/models/node.model';
-import {Subscription} from 'rxjs';
-import {NodeSelectService} from '../shared/services/node-select.service';
-import {MatDialog} from '@angular/material/dialog';
-import {CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit } from '@angular/core';
+import { EmployeeService } from 'src/app/services/employee.service';
+import { Employee } from 'src/app/models/index';
 
 @Component({
   selector: 'orgchart',
@@ -12,12 +9,22 @@ import {CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
 })
 export class ChartRootComponent implements OnInit {
 
-  @Input() datasource: Node;
+  @Input() datasource: Employee;
 
-  constructor() {
+  chartStack: any[];
+  constructor(private readonly employeeService: EmployeeService) {
+    this.chartStack = employeeService.chartStack;
   }
 
   ngOnInit(): void {
+  }
+
+  filterEmployees(node: Employee): boolean {
+    return node.manages.length === 0;
+  }
+
+  async onNavigateClick(): Promise<void> {
+    await this.employeeService.goUpInChart();
   }
 
 }

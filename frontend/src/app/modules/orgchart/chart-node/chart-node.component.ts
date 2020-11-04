@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { Node } from '../shared/models/node.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Employee } from 'src/app/models/index';
+import { MatDialog } from '@angular/material/dialog';
+import { NodeDetailComponent } from './node-detail/node-detail.component';
 
 @Component({
   selector: 'chart-node',
@@ -8,13 +10,19 @@ import { Node } from '../shared/models/node.model';
 })
 export class ChartNodeComponent implements OnInit {
 
-  @Input() nodeData: Node;
+  @Input() nodeData: Employee;
 
   @Output() nodeClick = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private readonly dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  onNodeClick(): void {
+      this.dialog.open(NodeDetailComponent, {
+          data: { nodeData: this.nodeData }
+      });
   }
 
   getColor(pos): string {

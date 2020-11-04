@@ -11,15 +11,12 @@
     content: "";
     box-sizing: border-box;
     left: 50%;
-    height: 48px;
-    width: 2px;
+    height: 50px;
     position: absolute;
-    background-color: #707070;
-}
-
-.orgchart > :host > .oc-groups > .oc-group > :host::before {
-    height: 48px; /* adjust the vertical postion of link line ⊢ */
-    top: -48px;
+    border-color: #707070;
+    border-style: solid;
+    border-width: 0 0 0 2px;
+    z-index: -1;
 }
 
 .oc-group {
@@ -35,8 +32,7 @@
     content: "";
     box-sizing: border-box;
     top: 48px;
-    width: calc(100%);
-
+    width: 100%;
     position: absolute;
     border-color: #707070;
     border-style: solid;
@@ -47,7 +43,7 @@
     content: "";
     box-sizing: border-box;
     top: 48px;
-    width: calc(50% - 32px);
+    width: calc(50% - 30px);
     position: absolute;
     border-color: #707070;
     border-style: solid;
@@ -56,7 +52,7 @@
 
 .oc-group:first-child::before {
     left: 50%;
-    width: 100%;
+    width: calc(50% + 32px);
 }
 
 :host {
@@ -66,25 +62,11 @@
     align-items: center;
 }
 
-.node-card {
-    width: 200px;
-    height: 80px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px #0000001f;
-    z-index: 99999;
+.oc-arrow {
+    left: calc(50% - 16px);
+    color: grey;
 }
 
-.node-card:active {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px #0000001f;
-    z-index: 99999;
+.placeholder {
+    height: 40px;
 }
-
-.mat-card-content {
-    position: relative;
-    top: 24px;
-}
-
-div.inline { float:left; }
