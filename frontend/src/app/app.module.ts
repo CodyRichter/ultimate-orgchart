@@ -17,13 +17,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import {MatDividerModule} from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
@@ -31,6 +30,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
 import { SearchComponent } from './search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+
 
 @NgModule({
   declarations: [
@@ -68,6 +68,7 @@ import { NotificationCardComponent } from './components/notification-card/notifi
     MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatDividerModule,
     RouterModule.forRoot([
       {
         path: '',
