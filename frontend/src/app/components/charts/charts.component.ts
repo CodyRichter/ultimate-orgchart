@@ -130,13 +130,10 @@ export class ChartsComponent implements OnInit {
 
   async myFunction():Promise<void>{
     this.numberOfResults();
-    var nodeData = []; //create an array
     var currentVal = (<HTMLInputElement>document.getElementById("mySearch")).value; //value of search query
     var dialoginput = (<HTMLInputElement>document.getElementById("dialog"))
     var input = (await this.employeeService.searchEmployee(currentVal)) //filtered array
     for(var i = 0; i<input.length;++i){ 
-        nodeData.push(input[i]); //push filtered results into nodeData array
-        console.log(nodeData);
     let externalHTML = `<mat-list-item id="listItem"><div style="display: inline-block; padding-right:10px;"><img src="assets/icons/default-avatar.png" alt="" style="width: 40px"></div>
     <div style="font-size: medium; display: inline-block; padding-right:10px;">
         <strong>`;
