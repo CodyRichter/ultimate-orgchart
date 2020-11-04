@@ -8,8 +8,8 @@ export class ManagerService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  async createRequest(): Promise<any> {
-    // TODO
+  async createRequest(data: any): Promise<any> {
+    return await this.httpClient.post('http://localhost:3000/managerRequest/create', data).toPromise();
   }
 
   async getIncomingRequests(managerId: number): Promise<any> {

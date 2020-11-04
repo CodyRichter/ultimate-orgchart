@@ -2,28 +2,28 @@
     <mat-card-header>
         <mat-icon mat-card-avatar>announcement</mat-icon>
         <mat-card-title>Incoming Transfer Request</mat-card-title>
-        <mat-card-subtitle>from {{destManager}}</mat-card-subtitle>
+        <mat-card-subtitle>from {{prevManager}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <p>
-            {{destManager}} has requested that {{employee}} be transferred to his team.
+            {{prevManager}} has requested that {{employee}} be transferred to your team.
         </p>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-button (click)="approveRequest()">Approve</button>
-        <button mat-button (click)="rejectRequest()">Reject</button>
+        <button mat-button (click)="approveRequest()" style="color:green">Approve</button>
+        <button mat-button (click)="rejectRequest()" style="color:red">Reject</button>
     </mat-card-actions>
 </mat-card>
 
 <mat-card class="notification-card" *ngIf="visible && isOutgoingRequest()">
     <mat-card-header>
         <mat-icon mat-card-avatar>info</mat-icon>
-        <mat-card-title>Outgoing Transfer Request</mat-card-title>
-        <mat-card-subtitle>to {{prevManager}}</mat-card-subtitle>
+        <mat-card-title>{{status}} Transfer Request</mat-card-title>
+        <mat-card-subtitle>to {{destManager}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <p>
-            You have requested a transfer of {{employee}} from {{prevManager}}'s team to your team. The request is {{status}}.
+            You have requested a transfer of {{employee}} from your team to {{destManager}}'s team.
         </p>
     </mat-card-content>
     <mat-card-actions>
