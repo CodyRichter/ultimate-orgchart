@@ -1,6 +1,7 @@
-
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { ManagerService } from 'src/app/services/manager.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'employee-transfer',
@@ -9,12 +10,14 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class EmployeeTransferComponent implements OnInit {
 
-  selectedEmployee: string;
-  selectedManager: string;
+  selectedEmployee: any;
+  selectedManager: any;
   employees = [];
   managers = [];
 
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService, 
+              private readonly managerService: ManagerService,
+              private readonly authService: AuthService) { }
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -22,21 +25,23 @@ export class EmployeeTransferComponent implements OnInit {
   }
 
   async fetchEmployees() {
-    await this.employeeService
-                  .getAllEmployees()
-                  .then(res => res.map(res => {
-                    this.employees.push(res);
-                  }))
-                  .catch(error => console.log(error));
+    this.employees = this.authService.profile.manages;
   }
 
   async fetchManagers() {
-    await this.employeeService
-                  .getAllManagers()
-                  .then(res => res.map(res => {
-                    this.managers.push(res);
-                  }))
-                  .catch(error => console.log(error));
+    this.managers = await this.employeeService.getAllManagers();
+  }
+
+  async submitTransfer() {
+    const data = {
+      employee: this.selectedEmployee,
+      fromManager: this.authService.profile,
+      toManager: this.selectedManager,
+      previousPosition: 'N/A',
+      newPosition: 'N/A'
+    };
+    console.log(data);
+    console.log(await this.managerService.createRequest(data));
   }
 
 }
