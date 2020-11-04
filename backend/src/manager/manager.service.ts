@@ -3,7 +3,7 @@ import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
 import { DocumentType, ReturnModelType } from "@typegoose/typegoose";
 import { ManagerRequest } from './manager.model';
-import { RequestStatus } from '../enums/request.enum';
+import { RequestStatus } from '../../../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
 
 @Injectable()

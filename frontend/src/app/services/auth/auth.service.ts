@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Employee } from '../../../../../backend/src/employee/employee.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,9 @@ export class AuthService {
   constructor(private readonly httpClient: HttpClient) { }
 
   private authToken: string;
-  profile: any;
+  private profile: Employee;
 
-  public async login(email: string, password: string): Promise<any> {
+  public async login(email: string, password: string): Promise<Employee> {
     const response = await this.httpClient.post('http://localhost:3000/auth/signin', {email, password}).toPromise() as any;
     this.authToken = response.accessToken;
     localStorage.setItem('id_token', this.authToken);
@@ -31,9 +32,9 @@ export class AuthService {
     return this.authToken;
   }
 
-  private async getProfile(): Promise<any> {
+  public async getProfile(): Promise<Employee> {
     this.getAuthToken();
-    this.profile = await this.httpClient.get('http://localhost:3000/auth/profile').toPromise();
+    this.profile = await this.httpClient.get('http://localhost:3000/auth/profile').toPromise() as Employee;
     return this.profile;
   }
 }

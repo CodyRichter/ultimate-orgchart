@@ -21,18 +21,6 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  isAdmin(): boolean {
-    return this.authService.profile.isAdmin;
-  }
-
-  isManager(): boolean {
-    return this.authService.profile.isManager;
-  }
-
-  async getUser(): Promise<void> {
-    console.log(this.authService.profile);
-  }
-
   searchResult():any{
     var currentVal = (<HTMLInputElement>document.getElementById("mySearch")).value;
     return currentVal;

@@ -5,7 +5,7 @@ import { ManagerService } from './manager.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/guards/roles.decorator';
-import {Role} from '../enums/roles.enum';
+import {Role} from '../../../enums/roles.enum';
 @Controller('managerRequest')
 @UseGuards(JwtAuthGuard,RolesGuard)
 export class ManagerController {
