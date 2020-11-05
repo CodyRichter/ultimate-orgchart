@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { NodeDetailComponent } from '../../chart-node/node-detail/node-detail.component';
@@ -13,14 +13,20 @@ import { Employee } from 'src/app/models/index';
 export class StackListComponent implements OnInit {
 
 
-  stackData: Employee[];
-  details = true;
+  @Input() stackData: Employee[] = [];
+  @Input() details = true;
+  @Input() find = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly dialog: MatDialog,
               private readonly employeeService: EmployeeService) {
-    this.stackData = data.stackData;
+    if (data.stackData) {
+      this.stackData = data.stackData;
+    }
     if (data.details !== undefined) {
       this.details = data.details;
+    }
+    if (data.find !== undefined) {
+      this.find = data.find;
     }
   }
 
@@ -32,6 +38,11 @@ export class StackListComponent implements OnInit {
 
   async onNavigateClick(node: Employee): Promise<void> {
     await this.employeeService.goDownInChart(node);
+    this.dialog.closeAll();
+  }
+
+  async navigateToManager(node: Employee): Promise<void> {
+    await this.employeeService.goUpInChart(node, 1);
     this.dialog.closeAll();
   }
 

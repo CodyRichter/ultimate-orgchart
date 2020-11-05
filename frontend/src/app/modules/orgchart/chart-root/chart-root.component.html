@@ -1,8 +1,8 @@
 <div class="oc-node">
-    <button *ngIf="chartStack.length > 1" mat-icon-button class="oc-arrow" (click)="onNavigateClick()">
+    <button *ngIf="datasource.managerId" mat-icon-button class="oc-arrow" (click)="onNavigateClick(datasource)">
         <mat-icon>keyboard_arrow_up</mat-icon>
     </button>
-    <div class="placeholder" *ngIf="chartStack.length <= 1"></div>
+    <!-- <div class="placeholder" *ngIf="chartStack.length <= 1"></div> -->
     <chart-node [nodeData]="datasource"></chart-node>
 </div>
 <div *ngIf="datasource.manages.length > 0" class="oc-groups">

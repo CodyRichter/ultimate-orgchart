@@ -30,7 +30,8 @@ import { MatInputModule } from '@angular/material/input';
   ],
   exports: [
     ChartContainerComponent,
-    ChartNodeComponent
+    ChartNodeComponent,
+    StackListComponent
   ],
     imports: [
       CommonModule,

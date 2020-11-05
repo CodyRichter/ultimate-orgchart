@@ -69,6 +69,17 @@ export class EmployeeController {
     return await this.employeeService.getManages(managerId, depth);
   }
 
+  @Get('getManagers/:employeeId')
+  async getManagers(@Param('employeeId') employeeId: number, @Query('managerHeight') managerHeight: number, @Query('depth') depth: number): Promise<Employee> {  // needs the id of employee to view as 'id'
+    if (!depth) {
+      depth = 0;
+    }
+    if (!managerHeight) {
+      managerHeight = 1;
+    }
+    return await this.employeeService.getManagersManager(employeeId, managerHeight, depth);
+  }
+
   //query endpoints
   //it supports multiple query params
   //if the query param is empty it will return all empolyees

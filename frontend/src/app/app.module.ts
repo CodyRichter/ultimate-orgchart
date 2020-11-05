@@ -31,7 +31,6 @@ import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
