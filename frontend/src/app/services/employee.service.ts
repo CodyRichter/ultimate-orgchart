@@ -46,6 +46,7 @@ export class EmployeeService {
 
   async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
     let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
+    // ToDo: figure out string logic for case of one or the other
     if (depth) {
       url += `?managerHeight=${managerHeight}`;
     }
