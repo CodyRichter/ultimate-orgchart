@@ -29,6 +29,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer.component';
 import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatBadgeModule} from '@angular/material/badge';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
 @NgModule({
@@ -63,10 +65,13 @@ import { NotificationCardComponent } from './components/notification-card/notifi
     MatInputModule,
     MatCardModule,
     MatMenuModule,
+    MatBadgeModule,
     MatDialogModule,
     MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatTooltipModule,
+    MatBadgeModule,
     MatDividerModule,
     RouterModule.forRoot([
       {

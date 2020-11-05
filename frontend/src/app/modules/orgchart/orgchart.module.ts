@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MatInputModule } from '@angular/material/input';
       MatRippleModule,
       MatGridListModule,
       MatInputModule,
+      MatTooltipModule
     ],
   providers: []
 })

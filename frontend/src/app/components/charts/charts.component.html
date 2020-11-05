@@ -10,10 +10,10 @@
         </div>
 
     <span class="spacer"></span>
-    <button mat-button color="accent">
+    <button mat-button matTooltip="Help" color="accent">
         <mat-icon>help</mat-icon>
     </button>
-    <button mat-button color="accent" (click)="notifications.toggle()">
+    <button mat-button color="accent" matTooltip="Notifications" (click)="notifications.toggle()">
         <mat-icon>notifications</mat-icon>
     </button>
     <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
