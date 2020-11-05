@@ -7,8 +7,6 @@ import { Employee, EmployeeAuth } from '../models';
   providedIn: 'root'
 })
 export class EmployeeService {
-  public chart: Employee;
-  public chartStack: Employee[] = [];
   public curSubtree: Employee;
 
   constructor(private readonly httpClient: HttpClient) {  }
@@ -23,12 +21,8 @@ export class EmployeeService {
 
   async initializeChart(): Promise<Employee> {
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
-    this.chart = temp.find(employee => employee._id !== 404123456789404);
-    this.curSubtree = this.chart;
-    if (this.curSubtree) {
-      this.chartStack.push(this.curSubtree);
-    }
-    return this.chart;
+    this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
+    return this.curSubtree;
   }
 
   // async increaseChartDepth(manager: any): Promise<any> {
@@ -41,15 +35,24 @@ export class EmployeeService {
 
   async goDownInChart(manager: Employee): Promise<Employee> {
     manager.manages = await this.getManagersEmployees(manager._id, 2);
-    this.chartStack.push(manager);
     this.curSubtree = manager;
-    return this.chart;
+    return this.curSubtree;
   }
 
-  async goUpInChart(): Promise<Employee> {
-    this.chartStack.pop();
-    this.curSubtree = this.chartStack[this.chartStack.length - 1];
-    return this.chart;
+  async goUpInChart(employee: Employee): Promise<Employee> {
+    this.curSubtree = await this.getManagers(employee._id, 2, 2);
+    return this.curSubtree;
+  }
+
+  async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
+    let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
+    if (depth) {
+      url += `?managerHeight=${managerHeight}`;
+    }
+    if (depth) {
+      url += `&depth=${depth}`;
+    }
+    return await this.httpClient.get(url).toPromise();
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {

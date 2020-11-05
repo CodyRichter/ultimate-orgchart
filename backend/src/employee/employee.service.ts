@@ -95,12 +95,25 @@ export class EmployeeService {
     return await this.employeeModel.find().populate('projects').populate('manages').exec();
   }
 
-  async getManages(managerId: number, depth: number): Promise<any> {
+  async getManagersManager(employeeId: number, managerHeight: number, populateDepth: number): Promise<Employee> {
+    let employee = await this.employeeModel.findById(employeeId).exec()
+    for (let i = 0; i < managerHeight; i++) {
+      if (employee.managerId) {
+        employee = await this.employeeModel.findById(employee.managerId).exec()
+      } else {
+        break;
+      }
+    }
+    employee.manages = await this.getManages(employee._id, populateDepth);
+    return employee;
+  }
 
-    let populate = { path: '' };
+  async getManages(managerId: number, depth: number): Promise<Employee[]> {
+
+    let populate = { path: 'projects' };
 
     for (let i = 0; i < depth; i++) {
-      const temp = { path: 'manages', populate: populate }
+      const temp = { path: 'manages projects', populate: populate }
       populate = temp;
     }
     return await this.employeeModel.find({managerId}).populate(populate).exec();

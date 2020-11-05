@@ -11,9 +11,7 @@ export class ChartRootComponent implements OnInit {
 
   @Input() datasource: Employee;
 
-  chartStack: any[];
   constructor(private readonly employeeService: EmployeeService) {
-    this.chartStack = employeeService.chartStack;
   }
 
   ngOnInit(): void {
@@ -23,8 +21,8 @@ export class ChartRootComponent implements OnInit {
     return node.manages.length === 0;
   }
 
-  async onNavigateClick(): Promise<void> {
-    await this.employeeService.goUpInChart();
+  async onNavigateClick(employee: Employee): Promise<void> {
+    await this.employeeService.goUpInChart(employee);
   }
 
 }
