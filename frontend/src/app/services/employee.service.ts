@@ -39,8 +39,8 @@ export class EmployeeService {
     return this.curSubtree;
   }
 
-  async goUpInChart(employee: Employee): Promise<Employee> {
-    this.curSubtree = await this.getManagers(employee._id, 2, 2);
+  async goUpInChart(employee: Employee, managerHeight = 2): Promise<Employee> {
+    this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
     return this.curSubtree;
   }
 
