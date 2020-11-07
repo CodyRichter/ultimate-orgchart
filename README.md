@@ -15,13 +15,11 @@ In order to run the app using Docker:
 
 1. If you have used `docker-compose up` to set up the local database, you can run `docker-compose down` to uninstall the container
 
-   
-
 2. In the 404-brain-not-found directory run `docker-compose up` which will take care of setting up 3 replica sets
 
 3. Once your `docker-compose up` is finished
 
-4. Open a **new terminal** `cd` to 404-brain-not-found directory
+4. Open a **new terminal** and`cd` into 404-brain-not-found directory
 
 5. Run `docker -exec -it localmongo1 /bin/bash` 
 
@@ -29,13 +27,13 @@ In order to run the app using Docker:
 
 7. Here is the most important part
 
-   1. If you are in the Window  run `ifconfig` which will display the list of IP addresses what we really want it  **WI-FI** IP address. (Do not use google to find your ip address which will not work)
+   1. If you are using Windows run `ifconfig` in the command prompt which will display the list of IP addresses. What we really want is the **WI-FI** IP address. (Do not use google to find your ip address which will not work)
 
-   2. If you are in the Mac go to **System-Preferences— Network—Advanced—TCP/IP—Ipv4 address** is what we want
+   2. If you are using Mac go to **System-Preferences— Network—Advanced—TCP/IP—Ipv4 address** to get your IPv4 address
 
-   3. Run this command
+   3. Run this command replace `{Your_local_ip}` to the address that you just found out(**Notice: remember to remove the ''{}''**).
 
-      ```
+      ```shell
       rs.initiate({
         _id : 'rs0',
         members: [
@@ -44,26 +42,23 @@ In order to run the app using Docker:
           { _id : 2, host : "{YOUR_LOCAL_IP}:27013" }
         ]
       })
+      
+      //for example 
+      rs.initiate({
+        _id : 'rs0',
+        members: [
+          { _id : 0, host : "192.168.0.38:27011" },
+          { _id : 1, host : "192.168.0.38:27012" },
+          { _id : 2, host : "192.168.0.38:27013" }
+        ]
+      })
       ```
 
-      
+   
 
-   4. Run this command replace `{Your_local_ip}` to the address that you just found out(**Notice: remember to remove the ''{}''**).
+   4. Press enter to configure the replica sets
 
-   For example: 
+   5. Make sure you have download **Mongo Compass**
 
-   ```
-   rs.initiate({
-     _id : 'rs0',
-     members: [
-       { _id : 0, host : "192.168.0.38:27011" },
-       { _id : 1, host : "192.168.0.38:27012" },
-       { _id : 2, host : "192.168.0.38:27013" }
-     ]
-   })
-   ```
-
-   5. Press enter you should be good.
-   6. Make sure you have download ==Mongo Compass== 
-   7. Pase this Url `mongodb://localhost:27011,localhost:27012,localhost:27013/company?replicaSet=rs0` to the connection field to check if you successfully config the replica set
+   6. Pase this Url `mongodb://localhost:27011,localhost:27012,localhost:27013/company?replicaSet=rs0` to the connection field to check if you successfully config the replica set
 
