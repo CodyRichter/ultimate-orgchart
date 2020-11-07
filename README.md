@@ -15,7 +15,7 @@ In order to run the database using Docker:
 
   3. Once `docker-compose up` is finished open a **new terminal** and `cd` into the 404-brain-not-found directory
 
-  4. Run `docker -exec -it localmongo1 /bin/bash` if on Mac or Windows and `sudo docker exec -it test bash` if on Linux
+  4. Run `docker exec -it localmongo1 /bin/bash` if on Mac or Windows and `sudo docker exec -it test bash` if on Linux
   
   5. Enter `mongo` which is the password to login to the mongoshell
 
