@@ -17,27 +17,28 @@ export class ManagerService {
 
     
     //create request 
-    //TODO: TRANSACTION
     async createRequest(newRequest: ManagerRequest & {fromManagerId?: number, toManagerId?: number, employeeId?: number}): Promise<ManagerRequest> {
+
+       
 
         // check if this is a valid request
         // get manager based on id
         // check if employeeId is present in manager's object
         const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).populate("manages").exec();
-        console.log(fromManager);
+        
         const manages = fromManager.manages;
         let valid = false;
         for (let i = 0; i < manages.length; i++) {
-            if ((manages[i] as Employee)._id === newRequest.employeeId){
+            if ((manages[i] as Employee)._id === newRequest.employee){
                 valid = true;
                 break;
             }
         }
-        if (!valid){
+        if (valid===false){
             // CANCEL REQUEST ORDER
-            return;
+           throw new ConflictException('The manager is not authorized to move this employee');
         }
-
+        
         
          const createdRequest = new this.managerRequestModel(newRequest);
         // //we manually add the status rather than the front-end to
@@ -65,9 +66,15 @@ export class ManagerService {
     //front-end should sent the request in the body 
     //then we update the 'status' and 'updatedTime' and 'the managerId' that should be updated too.
     //also update the employee info where their managerId should be updated
-    //TODO:TRANSACTION
+   
     async approveRequest(requestId: number): Promise<ManagerRequest> {
 
+        const session =await this.managerRequestModel.db.startSession();
+
+        session.startTransaction();
+
+        try
+        {
         //find this request first
         //I set some error check in the findRequestById which help us catch the error
         const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').exec();
@@ -85,9 +92,9 @@ export class ManagerService {
 
         //update employee's managerId
         //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('manages').populate('projects').exec();
-        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('manages').populate('projects').exec();
-        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('manages').populate('projects').exec();
+        const employee = await this.employeeModel.findById(pendingRequest.employee).populate('manages').populate('projects').session(session).exec();
+        const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('manages').populate('projects').session(session).exec();
+        const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('manages').populate('projects').session(session).exec();
 
         employee.managerId = toManager._id;
         toManager.manages.push(employee);
@@ -97,6 +104,13 @@ export class ManagerService {
         await toManager.save()
         await employee.save();
         return pendingRequest;
+        }catch(erorr)
+        {
+            session.abortTransaction();
+            throw new ConflictException('Fail to appove the request');
+        }finally{
+            session.endSession();
+        }
     }
 
     //Reject the request
