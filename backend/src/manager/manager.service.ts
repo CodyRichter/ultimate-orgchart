@@ -19,12 +19,15 @@ export class ManagerService {
     //create request 
     async createRequest(newRequest: ManagerRequest & {fromManagerId?: number, toManagerId?: number, employeeId?: number}): Promise<ManagerRequest> {
 
-       
+       const session=await this.managerRequestModel.db.startSession();
 
+       session.startTransaction();
+
+       try{
         // check if this is a valid request
         // get manager based on id
         // check if employeeId is present in manager's object
-        const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).populate("manages").exec();
+        const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).populate("manages").session(session).exec();
         
         const manages = fromManager.manages;
         let valid = false;
@@ -44,22 +47,22 @@ export class ManagerService {
         // //we manually add the status rather than the front-end to
         // // specifed the status
         createdRequest.status = RequestStatus.Pending;
-        createdRequest.fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).exec();
-        createdRequest.toManager = await this.employeeModel.findById(newRequest.toManagerId ? newRequest.toManagerId : newRequest.toManager).exec();
-        createdRequest.employee = await this.employeeModel.findById(newRequest.employeeId ? newRequest.employeeId : newRequest.employee).exec();
-        console.log(createdRequest);
+        createdRequest.fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).session(session).exec();
+        createdRequest.toManager = await this.employeeModel.findById(newRequest.toManagerId ? newRequest.toManagerId : newRequest.toManager).session(session).exec();
+        createdRequest.employee = await this.employeeModel.findById(newRequest.employeeId ? newRequest.employeeId : newRequest.employee).session(session).exec();
         //save to database
-        try {
-            return await this.managerRequestModel.create(createdRequest);
-        } catch (error) {
-           console.log(error);
-            throw new HttpException
-                (
-                    {
-                        status: HttpStatus.CONFLICT,
-                        error: "The request existed",
-                    }, HttpStatus.CONFLICT);
-        }
+        
+        await this.managerRequestModel.create(createdRequest);
+        await session.commitTransaction();
+        return createdRequest;
+    }catch(error)
+    {
+        await session.abortTransaction();
+        throw new NotFoundException('Create request failed');
+    }finally{
+        session.endSession();
+    }
+
     }
 
     //approve request
@@ -77,7 +80,7 @@ export class ManagerService {
         {
         //find this request first
         //I set some error check in the findRequestById which help us catch the error
-        const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').exec();
+        const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').session(session).exec();
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
@@ -103,10 +106,11 @@ export class ManagerService {
         await fromManager.save();
         await toManager.save()
         await employee.save();
+        await session.commitTransaction();
         return pendingRequest;
         }catch(erorr)
         {
-            session.abortTransaction();
+            await session.abortTransaction();
             throw new ConflictException('Fail to appove the request');
         }finally{
             session.endSession();
