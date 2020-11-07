@@ -12,7 +12,7 @@ import { MulterModule } from '@nestjs/platform-express';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypegooseModule.forRoot(process.env.MONGO_URL2, {
+    TypegooseModule.forRoot(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
