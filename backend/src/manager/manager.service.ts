@@ -188,7 +188,7 @@ export class ManagerService {
         try {
             return await this.managerRequestModel.findByIdAndUpdate(requestId, update, { new: true, useFindAndModify: false }).exec();
         } catch (error) {
-            console.log(error);
+           
             throw new NotFoundException('the request does not exist');
         }
     }
