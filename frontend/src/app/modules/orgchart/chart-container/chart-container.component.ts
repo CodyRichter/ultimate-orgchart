@@ -26,9 +26,9 @@ export class ChartContainerComponent implements OnInit {
   ngOnInit(): void {
     console.log(window.innerHeight);
     if (window.innerHeight > 750) {
-      this.setChartScale(0.9 * (window.innerHeight / 750));
+      this.setChartScale(window.innerHeight / 850);
     } else {
-      this.setChartScale(1.1 * (window.innerHeight / 750));
+      this.setChartScale(window.innerHeight / 750);
     }
   }
 
