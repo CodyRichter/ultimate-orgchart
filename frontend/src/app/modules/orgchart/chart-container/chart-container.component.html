@@ -4,3 +4,13 @@
         <orgchart [datasource]="datasource"></orgchart>
     </div>
 </div>
+
+<div class="zoom mat-elevation-z4">
+    <button class="zoom-btn" [disableRipple]="true" mat-icon-button (click)="setChartScale(1.1)">
+        <mat-icon>add</mat-icon>
+    </button>
+    <mat-divider class="zoom-divider"></mat-divider>
+    <button class="zoom-btn" [disableRipple]="true" mat-icon-button (click)="setChartScale(0.9)">
+        <mat-icon>remove</mat-icon>
+    </button>
+</div>

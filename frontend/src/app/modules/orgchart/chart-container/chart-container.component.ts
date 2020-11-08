@@ -10,8 +10,8 @@ export class ChartContainerComponent implements OnInit {
   @Input() datasource;
   @Input() pan = true;
   @Input() zoom = false;
-  @Input() zoomoutLimit = 0.5;
-  @Input() zoominLimit = 7;
+  @Input() zoomOutLimit = 0.5;
+  @Input() zoomInLimit = 5;
   @Input() select = 'single';
 
   cursorVal = 'default';
@@ -98,4 +98,28 @@ export class ChartContainerComponent implements OnInit {
     }
   }
 
+  setChartScale(newScale): void {
+    let matrix = [];
+    let targetScale = 1;
+    if (this.transformVal === '') {
+      this.transformVal = 'matrix(' + newScale + ', 0, 0, ' + newScale + ', 0, 0)';
+    } else {
+      matrix = this.transformVal.split(',');
+      if (this.transformVal.indexOf('3d') === -1) {
+        targetScale = Math.abs(parseFloat(matrix[3]) * newScale);
+        if (targetScale > this.zoomOutLimit && targetScale < this.zoomInLimit) {
+          matrix[0] = 'matrix(' + targetScale;
+          matrix[3] = targetScale;
+          this.transformVal = matrix.join(',');
+        }
+      } else {
+        targetScale = Math.abs(parseFloat(matrix[5]) * newScale);
+        if (targetScale > this.zoomOutLimit && targetScale < this.zoomInLimit) {
+          matrix[0] = 'matrix3d(' + targetScale;
+          matrix[5] = targetScale;
+          this.transformVal = matrix.join(',');
+        }
+      }
+    }
+  }
 }

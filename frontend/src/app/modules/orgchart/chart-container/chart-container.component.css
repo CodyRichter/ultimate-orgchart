@@ -10,3 +10,18 @@
     position: relative;
     top: calc(50% - 320px);
 }
+
+.zoom {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    width: 40px;
+    height: 80px;
+    border-radius: 3px;
+    background: #FFFFFF;
+}
+
+.zoom-btn {
+    width: 40px;
+    color: #707070;
+}
