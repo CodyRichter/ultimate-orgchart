@@ -12,6 +12,10 @@
         <button mat-button (click)="downloadJSON()">
             <mat-icon>archive</mat-icon>Download JSON
         </button>
+        <br>
+        <button mat-button (click)="openCreateProjectDialog()"> 
+            <mat-icon>add_test</mat-icon>Create Project
+        </button>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="isManager()">
         <mat-expansion-panel-header>
