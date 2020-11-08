@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ChartContainerComponent implements OnInit {
 
   @Input() datasource;
-  @Input() pan = true;
+  @Input() pan = false;
   @Input() zoom = false;
   @Input() zoomOutLimit = 0.5;
   @Input() zoomInLimit = 5;
@@ -24,6 +24,8 @@ export class ChartContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(window.innerHeight);
+    this.setChartScale(700 / window.innerHeight);
   }
 
   panEndHandler(): void {

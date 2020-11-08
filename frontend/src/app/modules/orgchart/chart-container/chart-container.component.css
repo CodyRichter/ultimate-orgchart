@@ -2,8 +2,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    overflow: hidden;
 }
 
 .orgchart {
@@ -12,7 +11,7 @@
 }
 
 .zoom {
-    position: absolute;
+    position: fixed;
     right: 24px;
     bottom: 24px;
     width: 40px;
