@@ -7,7 +7,7 @@ import { Employee, EmployeeAuth } from '../models';
   providedIn: 'root'
 })
 export class EmployeeService {
-  public curSubtree: Employee;
+  private curSubtree: Employee;
 
   constructor(private readonly httpClient: HttpClient) {  }
 
@@ -19,9 +19,16 @@ export class EmployeeService {
     return await this.httpClient.get('http://localhost:3000/employee/?isManager=true').toPromise() as Employee[];
   }
 
+  getCurSubtree(): Employee {
+    return this.curSubtree;
+  }
+
   async initializeChart(): Promise<Employee> {
+    console.log('inititalize chart');
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
+    console.log('response ', temp);
     this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
+    console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
@@ -34,17 +41,23 @@ export class EmployeeService {
   // }
 
   async goDownInChart(manager: Employee): Promise<Employee> {
+    console.log('go down:', manager);
     manager.manages = await this.getManagersEmployees(manager._id, 2);
+    console.log('manages now: ', manager.manages);
     this.curSubtree = manager;
+    console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
   async goUpInChart(employee: Employee, managerHeight = 2): Promise<Employee> {
+    console.log('go up:', employee);
     this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
+    console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
   async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
+    console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
     let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
     // ToDo: figure out string logic for case of one or the other
     if (depth) {
@@ -57,6 +70,7 @@ export class EmployeeService {
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
+    console.log('get manages ', manager, ' depth ', depth);
     let url = 'http://localhost:3000/employee/getManages/';
     if (manager) {
       url += manager;

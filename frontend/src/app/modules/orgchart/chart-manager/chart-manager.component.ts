@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { StackListComponent } from '../chart-stack/stack-list/stack-list.component';
@@ -20,6 +20,12 @@ export class ChartManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges (changes: SimpleChanges){
+    if (changes.datasource){
+      console.log('manager data source changed to: ', this.datasource);
+    }
   }
 
   checkDepth(nodes: Employee[]): boolean {
