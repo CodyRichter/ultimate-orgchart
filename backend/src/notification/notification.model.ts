@@ -7,9 +7,12 @@ import { ManagerRequest } from "src/manager/manager.model";
 
 
 @plugin(AutoIncrementID,{})
-export class Notification extends TimeStamps{
+export class NotificationDoc extends TimeStamps{
     @prop()
     _id:number;
+
+    @prop({require:true})
+    employeeId:number;
 
     @prop({require:true})
     title:string;
@@ -17,14 +20,15 @@ export class Notification extends TimeStamps{
     @prop({require:true})
     description:string;
 
-    @prop({ref:ManagerRequest})
+    @prop({required:false,default:false})
+    dismissed:boolean;
+
+    @prop({required:false,ref:ManagerRequest})
     managerRequest: Ref<ManagerRequest>;
 
-    @prop()
-    dismiss:boolean;
+    
 
-    @prop({require:true})
-    employeeId:number;
+    
 
 
 }

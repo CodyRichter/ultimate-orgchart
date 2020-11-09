@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { NotificationDoc } from './notification.model';
 import { NotificationService } from './notification.service';
 
 @Controller('notification')
@@ -6,7 +7,12 @@ export class NotificationController {
 
     constructor(private readonly notificationService:NotificationService){}
 
-
+    //Create notification test endpoint
+    @Post('/create')
+    async createNotification(@Body()notification:NotificationDoc):Promise<NotificationDoc>
+    {
+            return this.notificationService.createNotification(notification);
+    }
 
     //TODO: get all the notifications of given employee Id
     @Get(':EmployeeId')

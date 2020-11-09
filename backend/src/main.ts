@@ -9,8 +9,7 @@ async function bootstrap() {
     },
     
   });
-  const net = os.networkInterfaces();
-  console.log(net);
+
   await app.listen(3000);
 }
 bootstrap();
