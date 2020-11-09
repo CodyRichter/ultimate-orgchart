@@ -49,7 +49,7 @@ export class EmployeeService {
         throw new ConflictException("Employee already exists");
       }
 
-      throw new NotFoundException('The employee is not existed');
+      throw new NotFoundException('The employee creation failed');
     } finally {
 
       session.endSession();
