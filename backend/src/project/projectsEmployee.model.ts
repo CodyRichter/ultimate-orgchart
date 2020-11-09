@@ -8,15 +8,15 @@ import { Project } from "./project.model";
 @plugin(AutoIncrementID, {startAt:1})
 export class ProjectsEmployee extends TimeStamps{
     @prop()
-    _id:number;
+    _id: number;
 
     @prop({required: true,ref:"Employee"})
-    employee: Ref<Employee>
+    employee: Ref<Employee>;
 
     @prop({required: true,ref:"Project"})
-    project: Ref<Project>
+    project: Ref<Project>;
 
     @prop({required: true})
-    role: string
+    role: string;
 }
 

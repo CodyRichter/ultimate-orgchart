@@ -1,42 +1,59 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
+import { Employee, EmployeeAuth } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  public chart: any;
-  public chartStack: any[];
-  public curSubtree: any;
+  public curSubtree: Employee;
 
   constructor(private readonly httpClient: HttpClient) {  }
 
-  async getAllEmployees(): Promise<any> {
-    return await this.httpClient.get('http://localhost:3000/employee/').toPromise();
+  async getAllEmployees(): Promise<Employee[]> {
+    return await this.httpClient.get('http://localhost:3000/employee/').toPromise() as Employee[];
   }
 
-  async getAllManagers(): Promise<any> {
-    return await this.httpClient.get('http://localhost:3000/employee/?isManager=true').toPromise();
+  async getAllManagers(): Promise<Employee[]> {
+    return await this.httpClient.get('http://localhost:3000/employee/?isManager=true').toPromise() as Employee[];
   }
 
-  async initializeChart(): Promise<any> {
+  async initializeChart(): Promise<Employee> {
     const temp = await this.getManagersEmployees(undefined, 3) as any[];
-    this.chart = temp.find(employee => employee._id !== 404123456789404);
-    console.log(this.chart);
-    // this.chartStack.push(this.chart);
-    // console.log(this.chartStack);
-    this.curSubtree = this.chart;
-    console.log(this.curSubtree);
-    return this.chart;
+    this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
+    return this.curSubtree;
   }
 
-  async increaseChartDepth(manager: any): Promise<any> {
+  // async increaseChartDepth(manager: any): Promise<any> {
+  //   manager.manages = await this.getManagersEmployees(manager._id, 2);
+  //   this.chartStack.push(manager);
+  //   this.curSubtree = manager;
+  //   console.log(this.chart);
+  //   return this.chart;
+  // }
+
+  async goDownInChart(manager: Employee): Promise<Employee> {
     manager.manages = await this.getManagersEmployees(manager._id, 2);
-    // this.chartStack.push(manager);
     this.curSubtree = manager;
-    console.log(this.chart);
-    return this.chart;
+    return this.curSubtree;
+  }
+
+  async goUpInChart(employee: Employee, managerHeight = 2): Promise<Employee> {
+    this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
+    return this.curSubtree;
+  }
+
+  async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
+    let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
+    // ToDo: figure out string logic for case of one or the other
+    if (depth) {
+      url += `?managerHeight=${managerHeight}`;
+    }
+    if (depth) {
+      url += `&depth=${depth}`;
+    }
+    return await this.httpClient.get(url).toPromise();
   }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
@@ -47,43 +64,40 @@ export class EmployeeService {
     if (depth) {
       url += `?depth=${depth}`;
     }
-    console.log(url);
-
     return await this.httpClient.get(url).toPromise();
   }
 
-  async getEmployeeById(employeeId: number): Promise<any> {
-    return await this.httpClient.get(`http://localhost:3000/employee/${employeeId}`).toPromise();
+  async getEmployeeById(employeeId: number): Promise<Employee> {
+    return await this.httpClient.get(`http://localhost:3000/employee/${employeeId}`).toPromise() as Employee;
   }
 
-  async deleteEmployeeById(employeeId: number): Promise<any> {
-    return await this.httpClient.delete(`http://localhost:3000/employee/${employeeId}`).toPromise();
+  async deleteEmployeeById(employeeId: number): Promise<Employee> {
+    return await this.httpClient.delete(`http://localhost:3000/employee/${employeeId}`).toPromise() as Employee;
   }
 
-  async updateEmployee(employee: any): Promise<any> {
-    return await this.httpClient.patch(`http://localhost:3000/employee/${employee.employeeId}`, employee).toPromise();
+  async updateEmployee(employee: Employee): Promise<Employee> {
+    return await this.httpClient.patch(`http://localhost:3000/employee/${employee._id}`, employee).toPromise() as Employee;
   }
 
-  async createEmployee(employee: any): Promise<any> {
-    return await this.httpClient.post('http://localhost:3000/employee/create', employee).toPromise();
+  async createEmployee(employee: Employee & EmployeeAuth): Promise<Employee> {
+    return await this.httpClient.post('http://localhost:3000/employee/create', employee).toPromise() as Employee;
   }
 
-  async createManyEmployees(employees: any[]): Promise<any> {
-    return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise();
+  async createManyEmployees(employees: (Employee & EmployeeAuth)[]): Promise<any> {
+    return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise() as Employee[];
   }
 
-  async searchEmployee(query:any):Promise<any>{
-    //const query = queryname + "=" + searchquery
-    return await this.httpClient.get(`http://localhost:3000/employee/?${query}`).toPromise();
+  async searchEmployee(query: any): Promise<Employee[]>{
+    return await this.httpClient.get(`http://localhost:3000/employee/?${query}`).toPromise() as Employee[];
   }
 
-  async uploadJSON(file: File): Promise<any> {
+  async uploadJSON(file: File): Promise<Employee[]> {
     const formData = new FormData();
     formData.append('file', file);
-    return await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise()
+    return await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise() as Employee[];
   }
 
-  downloadJSON(): any {
+  downloadJSON(): void {
      this.httpClient.get('http://localhost:3000/employee/JSON', {responseType: 'blob', observe: 'response'}).subscribe(
        response => {
         const blob = new Blob([response.body], {type: response.headers.get('Content-Type')});

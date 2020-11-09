@@ -13,11 +13,11 @@ export class Project extends TimeStamps{
 
     //project name
     @prop()
-    name: string
+    name: string;
 
     
     @prop()
-    description: string
+    description: string;
 
 
     //
@@ -25,22 +25,5 @@ export class Project extends TimeStamps{
     manager: Ref<ProjectsEmployee>;
 
     @prop({required: true,ref:"ProjectsEmployee"})
-    employees: Ref<ProjectsEmployee>[]
+    employees: Ref<ProjectsEmployee>[];
 }
-
-
-// //projectsEmployee table
-// //@plugin(AutoIncrementID, {})
-// export class ProjectsEmployee extends TimeStamps{
-//     @prop()
-//     __id: number;
-
-//     @prop({required: true})
-//     employee: Ref<Employee>
-
-//     @prop({required: true})
-//     project: Ref<Project>
-
-//     @prop({required: true})
-//     role: string
-// }

@@ -1,8 +1,6 @@
-<div class="orgchart-container" [ngClass]="containerClass" (wheel)="zoom ? zoomHandler($event) : true"
-     (mouseup)="pan && panning ? panEndHandler() : true">
-    <div class="orgchart" [ngClass]="chartClass" [ngStyle]="{'transform': transformVal, 'cursor': cursorVal}"
-         (mousedown)="pan ? panStartHandler($event) : true" (mousemove)="pan && panning ? panHandler($event) : true"
-         (click)="onClickChart($event)">
+<div class="orgchart-container" (mouseup)="pan && panning ? panEndHandler() : true">
+    <div class="orgchart" [ngStyle]="{'transform': transformVal, 'cursor': cursorVal}"
+         (mousedown)="pan ? panStartHandler($event) : true" (mousemove)="pan && panning ? panHandler($event) : true">
         <orgchart [datasource]="datasource"></orgchart>
     </div>
 </div>

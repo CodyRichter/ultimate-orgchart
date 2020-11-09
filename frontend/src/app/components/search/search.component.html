@@ -1,0 +1,12 @@
+<div class = "search-query">
+    <h3> Search Result : "{{this.searchResult()}}"</h3>
+</div>
+<mat-divider></mat-divider>
+<span id="people">
+    <div style="margin-top:20px;">
+        <h3>
+            People: {{searchResults.length}} Results
+        </h3>
+    </div>
+</span>
+<app-stack-list [stackData]="searchResults" find="true"></app-stack-list>

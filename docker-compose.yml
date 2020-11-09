@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   mongo1:
     hostname: mongo1
     container_name: localmongo1
@@ -31,14 +32,14 @@ services:
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
-  #database:
-   # image: mongo
-    # container_name: 'blah'
-    # volumes:
-    #   - "./database/dbinfo:/data/db"
-  #  ports:
-     # - "27017:27017"
-  
+  # database:
+  #   image: mongo
+  #   # container_name: 'blah'
+  #   # volumes:
+  #   #   - "./database/dbinfo:/data/db"
+  #   ports:
+  #     - "27017:27017"
+
   # mongo-seed:
   #   image: mongo
   #   network_mode: service:database

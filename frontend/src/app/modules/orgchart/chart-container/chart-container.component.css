@@ -1,9 +1,12 @@
 .orgchart-container {
-    position: relative;
+    position: absolute;
+    width: 100%;
+    height: 100%;
     margin-left: auto;
     margin-right: auto;
-    transform: translateY(calc(50% - 128px));
 }
 
 .orgchart {
+    position: relative;
+    top: calc(50% - 320px);
 }

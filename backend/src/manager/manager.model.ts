@@ -1,8 +1,8 @@
 import { AutoIncrementID } from "@typegoose/auto-increment";
 import { plugin, prop, Ref } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
-import { Employee } from "src/employee/employee.model";
-import { RequestStatus } from "src/enums/request.enum";
+import { Employee } from "../employee/employee.model";
+import { RequestStatus } from "../enums/request.enum";
 
 //extends the TimeStamps class which contain createdAt and updatedAt two fields
 @plugin(AutoIncrementID, {})
