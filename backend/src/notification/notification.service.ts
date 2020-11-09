@@ -23,8 +23,7 @@ export class NotificationService {
             throw new NotFoundException('Employee Id is required');
         }
         else {
-            if (notification.hasOwnProperty('managerRequest')) 
-            {
+            if (notification.hasOwnProperty('managerRequest')) {
 
 
                 const managerRequest = await this.managerRequestModel.findById((notification.managerRequest as ManagerRequest)._id).populate('employee').populate('fromManager').populate('toManager').exec();
@@ -43,8 +42,45 @@ export class NotificationService {
                 await savedNotification.save();
                 return savedNotification;
             }
-        }     
+        }
     }
 
-    //
+
+    //update notification document
+    async updateNotification(notificationId:number):Promise<NotificationDoc>{
+        
+        //find the notification from db
+        const notification=await this.notificationModel.findById(notificationId).populate('managerRequest').exec();
+        if(notification===null)
+        {
+            throw new NotFoundException('The notification does not exist!');
+        }
+        notification.dismissed=true;
+        await notification.save();    
+        return notification;
+    }
+
+
+    //get all notifications
+    //mainly for admin 
+    async getAllNotifications(dismissed:any):Promise<NotificationDoc[]>
+    {
+        if(dismissed&&dismissed==='false')
+        {
+        return await this.notificationModel.find({dismissed:false}).populate('managerRequest').exec();
+        }
+        else return await this.notificationModel.find().populate('managerRequest').exec();
+    }
+
+    //get all notifications by employeeId
+    async getNotificationsByEmployeeId(employeeId:number,dismissed:string):Promise<NotificationDoc[]>
+    {
+        //if dissmissed is true means we need to return  dismissed=false notifications
+        if(dismissed&&dismissed==='false')
+        {
+        return await this.notificationModel.find({employeeId:employeeId,dismissed:false}).populate('managerRequest').exec();
+        }
+        else return await this.notificationModel.find({employeeId:employeeId}).populate('managerRequest').exec();
+    }
 }
+
