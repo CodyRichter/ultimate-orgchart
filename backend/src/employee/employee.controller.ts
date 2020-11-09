@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import * as multer from 'multer';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Role } from 'src/enums/roles.enum';
+import { Role } from '../enums/roles.enum';
 import { User } from '../auth/guards/user.decorator';
 
 //this is controller-scoped guard which guarantee the endpoint is protected 
@@ -67,6 +67,17 @@ export class EmployeeController {
       depth = 0;
     }
     return await this.employeeService.getManages(managerId, depth);
+  }
+
+  @Get('getManagers/:employeeId')
+  async getManagers(@Param('employeeId') employeeId: number, @Query('managerHeight') managerHeight: number, @Query('depth') depth: number): Promise<Employee> {  // needs the id of employee to view as 'id'
+    if (!depth) {
+      depth = 0;
+    }
+    if (!managerHeight) {
+      managerHeight = 1;
+    }
+    return await this.employeeService.getManagersManager(employeeId, managerHeight, depth);
   }
 
   //query endpoints

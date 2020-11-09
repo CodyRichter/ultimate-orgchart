@@ -27,9 +27,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer.component';
-import { SearchComponent } from './search/search.component';
+import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
-
+import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
 @NgModule({
   declarations: [
@@ -44,8 +44,8 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
     SettingsDialog,
     SearchDialog,
     SettingsComponent,
-    SearchComponent
-    
+    SearchComponent,
+    NotificationCardComponent
   ],
   imports: [
     BrowserModule,

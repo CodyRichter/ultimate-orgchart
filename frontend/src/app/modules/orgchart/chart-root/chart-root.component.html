@@ -1,10 +1,18 @@
 <div class="oc-node">
+    <button *ngIf="datasource.managerId" mat-icon-button class="oc-arrow" (click)="onNavigateClick(datasource)">
+        <mat-icon>keyboard_arrow_up</mat-icon>
+    </button>
+    <div class="placeholder" *ngIf="!datasource.managerId"></div>
     <chart-node [nodeData]="datasource"></chart-node>
 </div>
 <div *ngIf="datasource.manages.length > 0" class="oc-groups">
-    <ng-container *ngFor="let node of datasource.manages">
-        <div class="oc-group">
-            <chart-manager [datasource]="node"></chart-manager>
+    <ng-container *ngFor="let node of datasource.manages" >
+        <div *ngIf="node.manages.length > 0" class="oc-group">
+            <chart-manager  [datasource]="node"></chart-manager>
         </div>
     </ng-container>
+    <div *ngIf="datasource.manages.filter(filterEmployees).length > 0" class="oc-group">
+        <chart-manager [ignore]="true" [datasource]="datasource"></chart-manager>
+    </div>
 </div>
+

@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
