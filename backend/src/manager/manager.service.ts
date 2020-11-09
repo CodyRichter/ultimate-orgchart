@@ -52,9 +52,9 @@ export class ManagerService {
         createdRequest.employee = await this.employeeModel.findById(newRequest.employeeId ? newRequest.employeeId : newRequest.employee).session(session).exec();
         //save to database
         
-        await this.managerRequestModel.create(createdRequest);
+        await this.managerRequestModel.create([createdRequest],{session:session});
         await session.commitTransaction();
-        return createdRequest;
+        return createdRequest[0];
     }catch(error)
     {
         await session.abortTransaction();
