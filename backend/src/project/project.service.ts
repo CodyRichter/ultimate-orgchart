@@ -10,12 +10,14 @@ import { Project } from "./project.model";
 import { ProjectsEmployee } from "./projectsEmployee.model";
 import { Session } from "inspector";
 import { session } from "passport";
+import { NotificationDoc } from "src/notification/notification.model";
 @Injectable()
 export class ProjectService {
     constructor(
         @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>,
         @InjectModel(Project) private readonly projectModel: ReturnModelType<typeof Project>,
         @InjectModel(ProjectsEmployee) private readonly projectsEmployeeModel: ReturnModelType<typeof ProjectsEmployee>,
+        @InjectModel(NotificationDoc) private readonly notificationModel:ReturnModelType<typeof NotificationDoc>,
     ) { }
 
 
@@ -92,7 +94,18 @@ export class ProjectService {
         manager.projects.push(savedProjectEmployeeManager[0]);
         await project[0].save();
         await manager.save();
-
+        //create notification to those corresponding employee 
+        for (let index = 0; index <savedEmployees.length; index++) 
+        {
+            const description=`${savedEmployees[index].firstName} has been assgined to a project`;
+            const notification=new this.notificationModel({employeeId:savedEmployees[0]._id,title:project[0].name,description:description});
+            await this.notificationModel.create([notification],{session:session});
+            
+        }
+        //create notification to manager 
+        const description=`${manager.firstName} has created a project`;
+        const notificationManager=new this.notificationModel({employeeId:manager._id,title:project[0].name,description:description});
+        await this.notificationModel.create([notificationManager],{session:session});
 
         project[0].manager.employee = manager;
         project[0].employees = project[0].employees.map(
@@ -101,6 +114,8 @@ export class ProjectService {
                 return projectEmployee;
             }
         )
+
+        
 
         await session.commitTransaction();
         return project[0];
