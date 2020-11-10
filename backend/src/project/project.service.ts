@@ -8,19 +8,27 @@ import { EmployeeService } from '../employee/employee.service';
 import { Document } from 'mongoose';
 import { Project } from "./project.model";
 import { ProjectsEmployee } from "./projectsEmployee.model";
+import { Session } from "inspector";
+import { session } from "passport";
+import { NotificationDoc } from "src/notification/notification.model";
 @Injectable()
 export class ProjectService {
     constructor(
         @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>,
         @InjectModel(Project) private readonly projectModel: ReturnModelType<typeof Project>,
         @InjectModel(ProjectsEmployee) private readonly projectsEmployeeModel: ReturnModelType<typeof ProjectsEmployee>,
+        @InjectModel(NotificationDoc) private readonly notificationModel:ReturnModelType<typeof NotificationDoc>,
     ) { }
 
 
-
     async createProject(newProject: Project): Promise<Project> {
+        const session= await this.projectModel.db.startSession();
+
+        session.startTransaction();
+
+        try{
         //NOTE: get the manager from db
-        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('manages').populate('projects').exec();
+        const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).populate('manages').populate('projects').session(session).exec();
 
         //save the role name before undefined
         const managerRoleName: string = (newProject.manager as ProjectsEmployee).role;
@@ -33,8 +41,8 @@ export class ProjectService {
         newProject.employees = undefined;
         //create the project document 
 
-
-        const project = await this.projectModel.create(newProject);
+         
+        const project = await this.projectModel.create([newProject],{session:session});
 
 
         //get the employee from db
@@ -42,51 +50,83 @@ export class ProjectService {
 
         const savedProjectsEmployees = await Promise.all(newProjectEmployees.map(
             async (projEmployee) => {
-                const employee = await this.employeeModel.findById(projEmployee.employee).populate('manages').populate('projects').exec();
+                const employee = await this.employeeModel.findById(projEmployee.employee).populate('manages').populate('projects').session(session).exec();
                 projEmployee.employee = employee;
-                projEmployee.project = project;
+                projEmployee.project = project[0];
                 employees.push(employee);
-                return await this.projectsEmployeeModel.create(projEmployee);
+                return await this.projectsEmployeeModel.create([projEmployee],{session:session});
             }
         ));
-
+        
         //create the projectEmployee document for manager
 
-        const projectEmployeeManager = new this.projectsEmployeeModel({ employee: manager, project: project, role: managerRoleName });
+        const projectEmployeeManager = new this.projectsEmployeeModel({ employee: manager, project: project[0], role: managerRoleName });
         //save to db
-        const savedProjectEmployeeManager = await this.projectsEmployeeModel.create(projectEmployeeManager);
-        savedProjectEmployeeManager.project = undefined;
-        savedProjectEmployeeManager.employee = undefined;
-
+        
+        const savedProjectEmployeeManager = await this.projectsEmployeeModel.create([projectEmployeeManager],{session:session});
+        
+        
+        savedProjectEmployeeManager[0].project = undefined;
+        savedProjectEmployeeManager[0].employee = undefined;
+        
         const savedEmployees = await Promise.all(employees.map(
             async (employee, index) => {
-                savedProjectsEmployees[index].project = undefined;
-                savedProjectsEmployees[index].employee = undefined;
-                employee.projects.push(savedProjectsEmployees[index]);
+                savedProjectsEmployees[index][0].project = undefined;
+                savedProjectsEmployees[index][0].employee = undefined;
+               
+                employee.projects.push(savedProjectsEmployees[index][0]);   
                 await employee.save();
+                
                 return employee;
             }
         ));
-
-
+       
+     
         //we then need to upadate the field
-        project.manager = savedProjectEmployeeManager;
-        project.employees = savedProjectsEmployees;
-        manager.projects.push(savedProjectEmployeeManager);
+        project[0].manager = savedProjectEmployeeManager[0];
+        //project[0].employees = savedProjectsEmployees[][0];
+        for(let index=0;index<savedProjectsEmployees.length;index++)
+        {
+            const projEmployee=savedProjectsEmployees[index][0];
+            project[0].employees.push(projEmployee);
+        }
 
-
-        await project.save();
+        manager.projects.push(savedProjectEmployeeManager[0]);
+        await project[0].save();
         await manager.save();
+        //create notification to those corresponding employee 
+        for (let index = 0; index <savedEmployees.length; index++) 
+        {
+            const description=`${savedEmployees[index].firstName} has been assgined to a project`;
+            const notification=new this.notificationModel({employeeId:savedEmployees[0]._id,title:project[0].name,description:description});
+            await this.notificationModel.create([notification],{session:session});
+            
+        }
+        //create notification to manager 
+        const description=`${manager.firstName} has created a project`;
+        const notificationManager=new this.notificationModel({employeeId:manager._id,title:project[0].name,description:description});
+        await this.notificationModel.create([notificationManager],{session:session});
 
-
-        project.manager.employee = manager;
-        project.employees = project.employees.map(
+        project[0].manager.employee = manager;
+        project[0].employees = project[0].employees.map(
             (projectEmployee: ProjectsEmployee, index) => {
                 projectEmployee.employee = savedEmployees[index];
                 return projectEmployee;
             }
         )
-        return project;
+
+        
+
+        await session.commitTransaction();
+        return project[0];
+        }catch(error)
+        {
+                await session.abortTransaction();
+
+                throw new ConflictException('Peoject creation failed');
+        }finally{
+            session.endSession();
+        }
         //return await this.projectModel.findById(project._id).populate({path: 'manager', populate: {path: 'employee'}}).populate({path: 'employees', populate: {path: 'employee'}});
     }
 
@@ -99,6 +139,7 @@ export class ProjectService {
         ))
     }
 
+    
     async getProject(projtectId: number) {
         return await this.projectModel.findById(projtectId).populate('manager').populate('employees').exec();
 
@@ -110,21 +151,27 @@ export class ProjectService {
 
     async deleteProject(projectId: number): Promise<void> {
 
-        //get the project from db
-        const deletedProject = await this.projectModel.findById(projectId).populate("employees").populate("manager");
-        //delete the project employee of manager
-        const managerProjEmployee = await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').exec();
+        const session =await this.projectModel.db.startSession();
 
-        const managerEmployee = await this.employeeModel.findById((managerProjEmployee.employee as Employee)._id).populate('projects').exec();
+        session.startTransaction();
+
+        try{
+        //get the project from db
+        const deletedProject = await this.projectModel.findById(projectId).populate("employees").populate("manager").session(session).exec();
+        //delete the project employee of manager
+        const managerProjEmployee = await this.projectsEmployeeModel.findById((deletedProject.manager as ProjectsEmployee)._id).populate('employee').session(session).exec();
+
+        const managerEmployee = await this.employeeModel.findById((managerProjEmployee.employee as Employee)._id).populate('projects').session(session).exec();
         managerEmployee.projects = managerEmployee.projects.filter((proj: ProjectsEmployee) => proj._id !== managerProjEmployee._id);
 
 
         //delete the  project employees that relate to this project
         await Promise.all(deletedProject.employees.map(async (employee) => {
             //delete each related projectsEmployee
-            const updatedProjectEmployees = await this.projectsEmployeeModel.findById((employee as ProjectsEmployee)._id).populate('employee');
+            const updatedProjectEmployees = await this.projectsEmployeeModel.findById((employee as ProjectsEmployee)._id).populate('employee').session(session).exec();
+        
             //delete each related employee's projectEmployee reference
-            const updatedEmployees = await this.employeeModel.findById((updatedProjectEmployees.employee as Employee)._id).populate('projects').exec();
+            const updatedEmployees = await this.employeeModel.findById((updatedProjectEmployees.employee as Employee)._id).populate('projects').session(session).exec();
             updatedEmployees.projects = updatedEmployees.projects.filter((proj: ProjectsEmployee) => proj._id !== updatedProjectEmployees._id);
             await updatedEmployees.save();
             await updatedProjectEmployees.remove();
@@ -134,7 +181,15 @@ export class ProjectService {
         await deletedProject.remove();
         await managerProjEmployee.remove();
         await managerEmployee.save();
-
+       
+        await session.commitTransaction();
+    }catch(error)
+    {
+        await session.abortTransaction();
+        throw new ConflictException('Can not deleted the project');
+    }finally{
+         session.endSession();
+    }
     }
 
     //update the project name or description
@@ -154,10 +209,15 @@ export class ProjectService {
     //we should expect the body send  {employee:employeeId, role:string}
     async addProjectEmployee(projectId: number, projectEmployees: ProjectsEmployee[]): Promise<void> {
 
+        const session=await this.projectModel.db.startSession();
+
+        session.startTransaction();
+        try
+        {
         //check if the employee existed 
         await Promise.all(projectEmployees.map(async (projectEmployee) => {
             //find the employee
-            const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).populate('projects').exec();
+            const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).populate('projects').session(session).exec();
 
             //if not exist throw error
             if (employee === null) {
@@ -166,47 +226,66 @@ export class ProjectService {
 
             //if exist
             //find the project from db
-            const project = await this.projectModel.findById(projectId).populate('employees').populate('manager').exec();
+            const project = await this.projectModel.findById(projectId).populate('employees').populate('manager').session(session).exec();
             //create the project employee then save to database
             const projEmployee = new this.projectsEmployeeModel({ employee: employee, role: projectEmployee.role, project: project });
-            const savedProjEmployee = await this.projectsEmployeeModel.create(projEmployee);
+            const savedProjEmployee = await this.projectsEmployeeModel.create([projEmployee],{session:session});
             //push projEmployee to the project schema
-            project.employees.push(savedProjEmployee);
+            project.employees.push(savedProjEmployee[0]);
 
             //update the employee schema 
-            employee.projects.push(savedProjEmployee);
+            employee.projects.push(savedProjEmployee[0]);
 
 
             //save the change
             await project.save();
             await employee.save();
+            await session.commitTransaction();
         }))
+        }catch(error)
+        {
+            await session.abortTransaction();
+            throw new ConflictException('Unable to add the employee to the project');   
+        }finally{
+             session.endSession();
+        }
     }
 
     //delete project employee
-    async deleteProjectEmployee(projectId: number, projectEmployee: ProjectsEmployee): Promise<void> {
-        try {
-            //find the project document
-            const project = await this.projectModel.findById(projectId).populate('employees').populate('manager').exec();
 
-            //filter out the given projectEmployee
-            project.employees = project.employees.filter(employee => (employee as ProjectsEmployee)._id !== projectEmployee._id);
+    async deleteProjectEmployee(projectId:number,projectEmployee:ProjectsEmployee):Promise<void>
+    {
+        const session=await this.projectModel.db.startSession();
 
-            //get the projectEmployee from database
-            const projEmployee = await this.projectsEmployeeModel.findById(projectEmployee._id).populate('employee').exec();
+        session.startTransaction();
 
-            //find the employee document
-            const employee = await this.employeeModel.findById((projEmployee.employee as Employee)._id).populate('projects').exec();
-            //filter out the project from the projects field of employee
-            employee.projects = employee.projects.filter(project => (project as ProjectsEmployee)._id !== projectEmployee._id);
+        try{
+        //find the project document
+        const project=await this.projectModel.findById(projectId).populate('employees').populate('manager').session(session).exec();
+        
+        //filter out the given projectEmployee
+        project.employees=project.employees.filter(employee=>(employee as ProjectsEmployee)._id!==projectEmployee._id);  
+    
+        //get the projectEmployee from database
+        const projEmployee=await this.projectsEmployeeModel.findById(projectEmployee._id).populate('employee').session(session).exec();
 
-            //save the changes
-            await project.save();
-            await employee.save();
-            //delete the projectEmployee
-            await projEmployee.remove();
-        } catch (error) {
-            throw new NotFoundException('The project does not exist');
+        //find the employee document
+        const employee=await this.employeeModel.findById((projEmployee.employee as Employee)._id).populate('projects').session(session).exec();
+        //filter out the project from the projects field of employee
+        employee.projects=employee.projects.filter(project=>(project as ProjectsEmployee)._id!==projectEmployee._id);
+        
+         //save the changes
+         await project.save();
+         await employee.save();
+         await session.commitTransaction();
+         //delete the projectEmployee
+         await projEmployee.remove();
+        }catch(error)
+        {
+            await session.abortTransaction();
+            throw new NotFoundException('The employee is not in the project');
+        }finally{
+             session.endSession();
         }
 
     }

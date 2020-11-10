@@ -5,9 +5,10 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { Project } from './project.model';
 import { Employee } from 'src/employee/employee.model';
 import { ProjectsEmployee } from './projectsEmployee.model';
+import { NotificationDoc } from 'src/notification/notification.model';
 
 @Module({
-  imports:[TypegooseModule.forFeature([Employee,Project,ProjectsEmployee]),],
+  imports:[TypegooseModule.forFeature([Employee,Project,ProjectsEmployee,NotificationDoc]),],
   providers: [ProjectService],
   exports: [ProjectService],
   controllers: [ProjectController]

@@ -9,6 +9,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { AuthModule } from './auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
     ManagerModule, 
     ProjectModule, 
-    EmployeeModule, AuthModule
+    EmployeeModule, AuthModule, NotificationModule
   ],
   controllers: [AppController, SearchController],
   providers: [AppService],
