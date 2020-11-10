@@ -129,9 +129,6 @@ export class EmployeeService {
     return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').exec();
   }
 
-  /*
-    NEW PROCESSES
-  */
 
   // updating a reference does not work using this method, do manually using .save();
   // updates a single field of an employee model found
@@ -146,12 +143,6 @@ export class EmployeeService {
   // returns true if successful, false otherwise
   //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
   async deleteEmployee(employeeId: number): Promise<Employee> {
-    // check if requester is parent of employeeId TODO
-    // if(false){
-    //   return false;  // UNIMPLEMENTED
-    // } 
-
-
     // delete employee from db
 
     const employee = await this.employeeModel.findById(employeeId).exec();
