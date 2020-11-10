@@ -9,6 +9,7 @@ import { ProjectsEmployee } from './projectsEmployee.model';
 @Module({
   imports:[TypegooseModule.forFeature([Employee,Project,ProjectsEmployee]),],
   providers: [ProjectService],
+  exports: [ProjectService],
   controllers: [ProjectController]
 })
 export class ProjectModule {}

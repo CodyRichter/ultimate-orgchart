@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
+import { SearchController } from './search.controller'
 import { AppService } from './app.service';
 import { ManagerModule } from './manager/manager.module';
 import { ProjectModule } from './project/project.module';
@@ -21,7 +22,7 @@ import { MulterModule } from '@nestjs/platform-express';
     ProjectModule, 
     EmployeeModule, AuthModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, SearchController],
   providers: [AppService],
 })
 export class AppModule {}
