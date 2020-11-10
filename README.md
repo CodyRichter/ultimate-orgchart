@@ -51,7 +51,6 @@ In order to run the database using Docker:
         ]
       })
 
-      ```
 
   8. Press enter to configure the replica sets
   9. Paste this Url `mongodb://localhost:27011,localhost:27012,localhost:27013/company?replicaSet=rs0` to the connection field in MongoCompass to check if you successfully configured the replica set
