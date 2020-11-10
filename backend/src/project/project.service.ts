@@ -211,7 +211,7 @@ export class ProjectService {
 
     }
 
-    async generalSearch(query: string): Promise<Project[]> {
+    async generalSearch(query: string, skip = 0, limit = 10): Promise<Project[]> {
         let queri = {}
         queri = {
             $or: [{ name: { $regex: '.*' + query + '.*', $options: 'i' } },
@@ -219,7 +219,7 @@ export class ProjectService {
             ]
         }
 
-        return await this.projectModel.find(queri).populate('employees').populate('manager').exec();
+        return await this.projectModel.find(queri).populate('employees').populate('manager').skip(skip).limit(limit).exec();
     }
 
 

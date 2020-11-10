@@ -172,7 +172,7 @@ export class EmployeeService {
       return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
   }
 
-  async generalSearch(query: string): Promise<Employee[]>{
+  async generalSearch(query: string, skip = 0, limit = 10): Promise<Employee[]>{
     let queri = {}
     queri = { $or: [{ firstName: { $regex: '.*' + query + '.*', $options: 'i' } }, 
               { lastName: { $regex: '.*' + query + '.*', $options: 'i' } },
@@ -180,7 +180,7 @@ export class EmployeeService {
               { email: { $regex: '.*' + query + '.*', $options: 'i' } },
             ] }
 
-    return await this.employeeModel.find(queri).populate('manages').populate('projects').exec();
+    return await this.employeeModel.find(queri).populate('manages').populate('projects').skip(skip).limit(limit).exec();
   }
 
 }

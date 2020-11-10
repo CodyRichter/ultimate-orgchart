@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param, Response, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Patch, Delete, Param, Response, Request, Query } from '@nestjs/common';
 import { EmployeeService } from './employee/employee.service';
 import { Employee } from './employee/employee.model';
 import { ReturnModelType } from "@typegoose/typegoose";
@@ -32,13 +32,114 @@ export class SearchController {
 
   // general search query (LIKE)
   @Get()
-  async generalSearch(@Query('query') query: string): Promise<{employees: Employee[], projects: Project[]}> {
+  async generalSearch(@Request() req, @Query('query') query: string, @Query('skip') skip: number, @Query('limit') limit: number): Promise<any>{//Promise<{employees: Employee[], projects: Project[]}> {
 
+    if(isNaN(skip)){
+      skip = 0;
+    } else{
+      skip = Number(skip)
+    }
+    if(isNaN(limit)){
+      limit = 10;
+    } else{
+      limit = Number(limit)
+    }
 
-    const employeeMatches = await this.employeeService.generalSearch(query);
-    const projectMatches = await this.projectService.generalSearch(query);
+    let nextEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${skip + limit}`;
+    let nextProjectURL = req.headers.host + req.baseUrl + `/search/project?query=${query}&limit=${limit}&skip=${skip + limit}`;
+    let prevSkip = skip - limit;
+    if(prevSkip < 0 && skip !== 0){
+      prevSkip = 0;
+  
+    }
+    let prevEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${prevSkip}`;
+    let prevProjectURL = req.headers.host + req.baseUrl + `/search/project?query=${query}&limit=${limit}&skip=${prevSkip}`;
 
-    return {employees: employeeMatches, projects: projectMatches};
+    if (skip === 0) {
+      prevEmployeeURL = undefined;
+      prevProjectURL = undefined;
+    }
 
+    const employeeMatches = await this.employeeService.generalSearch(query, skip, limit);
+    const projectMatches = await this.projectService.generalSearch(query, skip, limit);
+
+    if(employeeMatches.length < limit){
+      nextEmployeeURL = undefined;
+    }
+    if(projectMatches.length < limit){
+      nextProjectURL = undefined;
+    }
+
+    return {employees: employeeMatches, projects: projectMatches, nextEmployeeURL, prevEmployeeURL, nextProjectURL, prevProjectURL};
+  }
+
+  @Get('employee')
+  async generalSearchEmployee(@Request() req, @Query('query') query: string, @Query('skip') skip: number, @Query('limit') limit: number): Promise<any>{//Promise<{employees: Employee[], projects: Project[]}> {
+
+    if(isNaN(skip)){
+      skip = 0;
+    } else{
+      skip = Number(skip)
+    }
+    if(isNaN(limit)){
+      limit = 10;
+    } else{
+      limit = Number(limit)
+    }
+
+    let nextEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${skip + limit}`;
+    let prevSkip = skip - limit;
+    if(prevSkip < 0 && skip !== 0){
+      prevSkip = 0;
+  
+    }
+    let prevEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${prevSkip}`;
+
+    if (skip === 0) {
+      prevEmployeeURL = undefined;
+    }
+
+    const employeeMatches = await this.employeeService.generalSearch(query, skip, limit);
+
+    if(employeeMatches.length < limit){
+      nextEmployeeURL = undefined;
+    }
+
+    return {employees: employeeMatches, nextEmployeeURL, prevEmployeeURL};
+  }
+
+  @Get('project')
+  async generalSearchProject(@Request() req, @Query('query') query: string, @Query('skip') skip: number, @Query('limit') limit: number): Promise<any>{//Promise<{employees: Employee[], projects: Project[]}> {
+
+    if(isNaN(skip)){
+      skip = 0;
+    } else{
+      skip = Number(skip)
+    }
+    if(isNaN(limit)){
+      limit = 10;
+    } else{
+      limit = Number(limit)
+    }
+
+    let nextProjectURL = req.headers.host + req.baseUrl + `/search/project?query=${query}&limit=${limit}&skip=${skip + limit}`;
+    let prevSkip = skip - limit;
+    if(prevSkip < 0 && skip !== 0){
+      prevSkip = 0;
+  
+    }
+    let prevProjectURL = req.headers.host + req.baseUrl + `/search/project?query=${query}&limit=${limit}&skip=${prevSkip}`;
+
+    if (skip === 0) {
+      prevProjectURL = undefined;
+    }
+
+    const projectMatches = await this.projectService.generalSearch(query, skip, limit);
+
+    if(projectMatches.length < limit){
+      nextProjectURL = undefined;
+    }
+
+    return {projects: projectMatches, nextProjectURL, prevProjectURL};
   }
 }
