@@ -63,14 +63,14 @@ export class ProjectController {
      }
     
       //add employee to the project
-      @Patch('add/:projectId')
+      @Patch('addEmployee/:projectId')
       async addEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee[]):Promise<void>
       {
            await this.projectService.addProjectEmployee(projectId,employee);
       }
 
     //  //delete employee from the project
-     @Patch('delete/:projectId')
+     @Patch('removeEmployee/:projectId')
      async  deleteEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee):Promise<void>
      {
           await this.projectService.deleteProjectEmployee(projectId,employee);

@@ -35,7 +35,8 @@ In order to run the database using Docker:
         members: [
           { _id : 0, host : "{YOUR_LOCAL_IP}:27011" },
           { _id : 1, host : "{YOUR_LOCAL_IP}:27012" },
-                    { _id : 2, host : "{YOUR_LOCAL_IP}:27013" }
+          { _id : 2, host : "{YOUR_LOCAL_IP}:27013" }
+
         ]
       })
       
