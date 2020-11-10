@@ -173,12 +173,6 @@ export class EmployeeService {
   // returns true if successful, false otherwise
   //async deleteEmployee(requester: EmployeeAuth, employee: Employee): Promise<boolean> {
   async deleteEmployee(employeeId: number): Promise<Employee> {
-    // check if requester is parent of employeeId TODO
-    // if(false){
-    //   return false;  // UNIMPLEMENTED
-    // } 
-
-
     // delete employee from db
     const session= await this.employeeModel.db.startSession();
 
@@ -218,6 +212,17 @@ export class EmployeeService {
       }
       //if the key is mismatching the field, then we will return empty array
       return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
+  }
+
+  async generalSearch(query: string, skip = 0, limit = 10): Promise<Employee[]>{
+    let queri = {}
+    queri = { $or: [{ firstName: { $regex: '.*' + query + '.*', $options: 'i' } }, 
+              { lastName: { $regex: '.*' + query + '.*', $options: 'i' } },
+              { positionTitle: { $regex: '.*' + query + '.*', $options: 'i' } },
+              { email: { $regex: '.*' + query + '.*', $options: 'i' } },
+            ] }
+
+    return await this.employeeModel.find(queri).populate('manages').populate('projects').skip(skip).limit(limit).exec();
   }
 
 }

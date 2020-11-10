@@ -10,6 +10,7 @@ import { NotificationDoc } from 'src/notification/notification.model';
 @Module({
   imports:[TypegooseModule.forFeature([Employee,Project,ProjectsEmployee,NotificationDoc]),],
   providers: [ProjectService],
+  exports: [ProjectService],
   controllers: [ProjectController]
 })
 export class ProjectModule {}

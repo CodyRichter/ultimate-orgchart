@@ -221,7 +221,7 @@ export class ProjectService {
 
             //if not exist throw error
             if (employee === null) {
-                 throw new NotFoundException('Employee not found');
+                throw new NotFoundException('Employee not found');
             }
 
             //if exist
@@ -252,6 +252,7 @@ export class ProjectService {
     }
 
     //delete project employee
+
     async deleteProjectEmployee(projectId:number,projectEmployee:ProjectsEmployee):Promise<void>
     {
         const session=await this.projectModel.db.startSession();
@@ -286,7 +287,18 @@ export class ProjectService {
         }finally{
              session.endSession();
         }
-        
+
+    }
+
+    async generalSearch(query: string, skip = 0, limit = 10): Promise<Project[]> {
+        let queri = {}
+        queri = {
+            $or: [{ name: { $regex: '.*' + query + '.*', $options: 'i' } },
+            { description: { $regex: '.*' + query + '.*', $options: 'i' } }
+            ]
+        }
+
+        return await this.projectModel.find(queri).populate('employees').populate('manager').skip(skip).limit(limit).exec();
     }
 
 
