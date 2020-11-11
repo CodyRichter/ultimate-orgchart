@@ -7,10 +7,14 @@ import { Project } from '../models';
 })
 export class ProjectService {
 
-  constructor(private readonly httpClient:HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) { }
 
   async createProject(project: Project): Promise<Project> {
     return await this.httpClient.post('http://localhost:3000/project/create', project).toPromise() as Project;
+  }
+
+  async getAllProjects(): Promise<Project[]> {
+    return await this.httpClient.get('http://localhost:3000/project/all').toPromise() as Project[];
   }
 }
 

@@ -30,6 +30,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
 import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { NotificationCardComponent } from './components/notification-card/notifi
     SearchDialog,
     SettingsComponent,
     SearchComponent,
-    NotificationCardComponent
+    NotificationCardComponent,
+    ProjectDetailComponent
   ],
   imports: [
     BrowserModule,

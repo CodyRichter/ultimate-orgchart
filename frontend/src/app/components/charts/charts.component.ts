@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { ProjectDetailComponent } from '../project-detail/project-detail.component';
 
 @Component({
   selector: 'app-charts',
@@ -43,6 +44,10 @@ export class ChartsComponent implements OnInit {
     this.dialog.open(SearchDialog, {
       data: {searchResult: result}
     });
+  }
+
+  openProjectDialog(): void {
+    this.dialog.open(ProjectDetailComponent);
   }
 }
 
