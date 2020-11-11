@@ -36,12 +36,7 @@
     </mat-menu>
 </div>
 
-
-
-
-
 <mat-drawer-container>
-
     <section id="chart-container" *ngIf="employeeService.curSubtree">
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
@@ -52,8 +47,14 @@
         </button>
         <h2 class="notification-header">Notifications</h2>
         <br>
-        <notification-card type="incoming" employee="Steve" prevManager="Bill" destManager="Joe"></notification-card> 
-        <notification-card type="outgoing" employee="Steve" prevManager="Bill" destManager="Joe" status="Pending"></notification-card>
+        <ng-container *ngFor="let notification of notifications">
+            <div>
+                {{notification}}
+            </div>
+        </ng-container>
+        <!-- <div *ngFor="let notification of notifications | async">
+            <notification-card [notification]="notification"></notification-card>
+        </div> -->
     </mat-drawer>
 </mat-drawer-container>
 

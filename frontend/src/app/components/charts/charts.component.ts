@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { ProjectDetailComponent } from '../project-detail/project-detail.component';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { NotificationModel } from 'src/app/models';
 
 @Component({
   selector: 'app-charts',
@@ -13,13 +15,17 @@ import { ProjectDetailComponent } from '../project-detail/project-detail.compone
 })
 export class ChartsComponent implements OnInit {
 
+  notifications = [];
+
   ngOnInit(): void {
+    this.getNotifications();
   }
 
   constructor(private router: Router,
               private readonly authService: AuthService,
               public readonly employeeService: EmployeeService,
-              private dialog: MatDialog, private readonly projectService: ProjectService) {
+              private dialog: MatDialog, private readonly projectService: ProjectService,
+              private readonly notificationService: NotificationsService) {
 
     this.employeeService.initializeChart();
 
@@ -49,6 +55,11 @@ export class ChartsComponent implements OnInit {
   async openProjectDialog(): Promise<void> {
     const projects = await this.projectService.getAllProjects();
     this.dialog.open(ProjectDetailComponent, {data: {project: projects[projects.length - 1]}});
+  }
+
+  async getNotifications(): Promise<NotificationModel[]> {
+    this.notifications = await this.notificationService.getNotifications(this.authService.profile._id);
+    return this.notifications;
   }
 }
 
