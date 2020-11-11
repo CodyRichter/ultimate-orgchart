@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/app/models/index';
 
@@ -17,6 +17,13 @@ export class ChartRootComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.datasource);
   }
+
+  ngOnChanges (changes: SimpleChanges){
+    if (changes.datasource){
+      console.log('root data source changed to: ', this.datasource);
+    }
+  }
+  
 
   filterEmployees(node: Employee): boolean {
     return node.manages.length === 0;
