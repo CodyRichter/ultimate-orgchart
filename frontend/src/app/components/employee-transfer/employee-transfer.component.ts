@@ -39,7 +39,7 @@ export class EmployeeTransferComponent implements OnInit {
   async submitTransfer(): Promise<void> {
     const data = {
       employee: this.selectedEmployee,
-      fromManager: this.selectedEmployee.manager as Employee,
+      fromManager: this.selectedEmployee.manager ? this.selectedEmployee.manager as Employee : this.authService.profile,
       toManager: this.selectedManager,
       previousPosition: 'N/A',
       newPosition: 'N/A'

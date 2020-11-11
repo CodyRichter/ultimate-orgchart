@@ -16,4 +16,7 @@ export class Employee {
     projects: (ProjectsEmployee |number)[];
     createdAt?: Date;
     updatedAt?: Date;
+
+    // frontend only feature
+    highlight?: boolean;
 }

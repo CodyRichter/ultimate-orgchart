@@ -3,9 +3,9 @@ import { RequestStatus } from '../enums/request.enum';
 
 export class ManagerRequest {
         _id?: number;
-        employee: Employee;
-        fromManager: Employee;
-        toManager: Employee;
+        employee: Employee | number;
+        fromManager: Employee | number;
+        toManager: Employee | number;
         previousPosition: string;
         newPosition: string;
         status?: RequestStatus;

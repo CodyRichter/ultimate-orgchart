@@ -7,7 +7,9 @@ import { Employee, EmployeeAuth } from '../models';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private curSubtree: Employee;
+  public curSubtree: Employee;
+  public trees: Employee[];
+  public curTreeIndex: number;
 
   constructor(private readonly httpClient: HttpClient) {  }
 
@@ -24,8 +26,9 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<Employee> {
-    const temp = await this.getManagersEmployees(undefined, 3) as any[];
-    this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
+    this.trees = await this.getManagersEmployees(undefined, 2) as Employee[];
+    this.curTreeIndex = 1;
+    this.curSubtree = this.trees[this.curTreeIndex];
     return this.curSubtree;
   }
 
@@ -42,29 +45,52 @@ export class EmployeeService {
     manager.manages = await this.getManagersEmployees(manager._id, 1);
     console.log('manages now: ', manager.manages);
     this.curSubtree = manager;
+    this.curSubtree.highlight = true;
+    this.trees[this.curTreeIndex] = this.curSubtree;
     console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
-  async goUpInChart(employee: Employee, managerHeight = 2): Promise<Employee> {
-    console.log('go up:', employee);
-    this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
-    console.log('subtree', this.curSubtree);
+  async goUpInChart(employee: Employee): Promise<Employee> {
+    if (employee.manager) {
+      const manager = (employee.manager as Employee);
+      if (manager.manager) {
+        const secondManagerId = manager.manager as number;
+        this.curSubtree = await this.getEmployeeByIdWithDepth(secondManagerId, 2);
+        const firstManager = this.curSubtree.manages.find((emp: Employee) => emp._id === manager._id) as Employee;
+        const employeeIndex = firstManager.manages.findIndex((emp: Employee) => emp._id === employee._id);
+        const temp = firstManager.manages[employeeIndex] as Employee;
+        temp.highlight = true;
+        firstManager.manages[employeeIndex] = firstManager.manages[0];
+        firstManager.manages[0] = temp;
+      } else {
+        this.curSubtree = await this.getEmployeeByIdWithDepth(manager._id, 2);
+        const employeeIndex = this.curSubtree.manages.findIndex((emp: Employee) => emp._id === employee._id);
+        const temp = this.curSubtree.manages[employeeIndex] as Employee;
+        temp.highlight = true;
+        this.curSubtree.manages[employeeIndex] = this.curSubtree.manages[0];
+        this.curSubtree.manages[0] = temp;
+      }
+    }
+    this.trees[this.curTreeIndex] = this.curSubtree;
+    // console.log('go up:', employee);
+    // this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
+    // console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
-  async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
-    console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
-    let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
-    // ToDo: figure out string logic for case of one or the other
-    if (depth) {
-      url += `?managerHeight=${managerHeight}`;
-    }
-    if (depth) {
-      url += `&depth=${depth}`;
-    }
-    return await this.httpClient.get(url).toPromise();
-  }
+  // async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
+  //   console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
+  //   let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
+  //   // ToDo: figure out string logic for case of one or the other
+  //   if (depth) {
+  //     url += `?managerHeight=${managerHeight}`;
+  //   }
+  //   if (depth) {
+  //     url += `&depth=${depth}`;
+  //   }
+  //   return await this.httpClient.get(url).toPromise();
+  // }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
     console.log('get manages ', manager, ' depth ', depth);
@@ -72,6 +98,14 @@ export class EmployeeService {
     if (manager) {
       url += manager;
     }
+    if (depth) {
+      url += `?depth=${depth}`;
+    }
+    return await this.httpClient.get(url).toPromise();
+  }
+
+  async getEmployeeByIdWithDepth(employeeId: number, depth?: number): Promise<any> {
+    let url = `http://localhost:3000/employee/${employeeId}`;
     if (depth) {
       url += `?depth=${depth}`;
     }

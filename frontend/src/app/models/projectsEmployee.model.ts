@@ -3,8 +3,8 @@ import { Project } from './project.model';
 
 export class ProjectsEmployee{
     _id?: number;
-    employee: Employee;
-    project: Project;
+    employee: Employee | number;
+    project: Project | number;
     role: string;
     createdAt?: Date;
     updatedAt?: Date;
