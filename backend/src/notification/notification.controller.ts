@@ -15,20 +15,20 @@ export class NotificationController {
 
     //get all notifications from db   could be used by admin
     @Get('/all')
-    async getAllNotifications(@Query('dismissed')dismissed:any): Promise<NotificationDoc[]> {
+    async getAllNotifications(@Query('dismissed') dismissed:string): Promise<NotificationDoc[]> {
         return await this.notificationService.getAllNotifications(dismissed);
     }
 
     //get all the notifications of given employee Id
-    @Get(':EmployeeId')
-    async getNotifications(@Param('EmployeeId') employeeId: number,@Query('dismissed') dismissed:any): Promise<NotificationDoc[]> {
+    @Get('employee/:employeeId')
+    async getNotifications(@Param('employeeId') employeeId: number,@Query('dismissed') dismissed:string): Promise<NotificationDoc[]> {
         return await this.notificationService.getNotificationsByEmployeeId(employeeId,dismissed);
     }
 
     //do we need to receive the body? since it is simply change the dimiss field to false
-    @Patch(':notificationId')
+    @Patch('dismiss/:notificationId')
     async updateNotification(@Param('notificationId') notificationId: number): Promise<NotificationDoc> {
-        return this.notificationService.updateNotification(notificationId);
+        return this.notificationService.dismissNotification(notificationId);
     }
 
 }

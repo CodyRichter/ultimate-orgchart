@@ -27,6 +27,9 @@ export class EmployeeTransferComponent implements OnInit {
 
   async fetchEmployees(): Promise<void> {
     this.employees = (await this.authService.getProfile()).manages;
+    if (this.authService.profile.isAdmin) {
+      this.employees = await this.employeeService.getAllEmployees();
+    }
   }
 
   async fetchManagers(): Promise<void> {
@@ -36,7 +39,7 @@ export class EmployeeTransferComponent implements OnInit {
   async submitTransfer(): Promise<void> {
     const data = {
       employee: this.selectedEmployee,
-      fromManager: await this.authService.getProfile(),
+      fromManager: this.selectedEmployee.manager as Employee,
       toManager: this.selectedManager,
       previousPosition: 'N/A',
       newPosition: 'N/A'

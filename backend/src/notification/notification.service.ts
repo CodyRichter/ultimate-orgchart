@@ -23,6 +23,8 @@ export class NotificationService {
             throw new NotFoundException('Employee Id is required');
         }
         else {
+            let savedNotification = new this.notificationModel({...notification});
+
             if (notification.hasOwnProperty('managerRequest')) {
 
 
@@ -30,24 +32,16 @@ export class NotificationService {
                 if (managerRequest === null) {
                     throw new NotFoundException('Manager Request does not exist');
                 }
-
-                const savedNotification = new this.notificationModel({ employeeId: notification.employeeId, title: notification.title, description: notification.description, managerRequest: managerRequest });
-
-                //save to database
-                await savedNotification.save();
-                return savedNotification;
+                savedNotification = new this.notificationModel({...notification, managerRequest: managerRequest });
             }
-            else {
-                const savedNotification = new this.notificationModel({ employeeId: notification.employeeId, title: notification.title, description: notification.description });
-                await savedNotification.save();
-                return savedNotification;
-            }
+            await savedNotification.save();
+            return savedNotification;
         }
     }
 
 
     //update notification document
-    async updateNotification(notificationId:number):Promise<NotificationDoc>{
+    async dismissNotification(notificationId:number):Promise<NotificationDoc>{
         
         //find the notification from db
         const notification=await this.notificationModel.findById(notificationId).populate('managerRequest').exec();
@@ -63,7 +57,7 @@ export class NotificationService {
 
     //get all notifications
     //mainly for admin 
-    async getAllNotifications(dismissed:any):Promise<NotificationDoc[]>
+    async getAllNotifications(dismissed:string):Promise<NotificationDoc[]>
     {
         if(dismissed&&dismissed==='false')
         {

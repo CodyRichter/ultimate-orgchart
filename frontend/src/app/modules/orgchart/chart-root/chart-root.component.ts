@@ -15,6 +15,7 @@ export class ChartRootComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.datasource);
   }
 
   filterEmployees(node: Employee): boolean {

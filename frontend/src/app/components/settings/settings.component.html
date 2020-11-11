@@ -13,7 +13,7 @@
             <mat-icon>archive</mat-icon>Download JSON
         </button>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="isManager()">
+    <mat-expansion-panel *ngIf="authService.profile.isManager">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Manager Tools
@@ -23,7 +23,7 @@
             <mat-icon>transfer_within_a_station</mat-icon>Transfer Employee
         </button>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="isAdmin()">
+    <mat-expansion-panel *ngIf="authService.profile.isAdmin">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Admin Tools

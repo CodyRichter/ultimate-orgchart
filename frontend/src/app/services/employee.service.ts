@@ -20,8 +20,10 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<Employee> {
-    const temp = await this.getManagersEmployees(undefined, 3) as any[];
+    const temp = await this.getManagersEmployees(undefined, 2) as any[];
+    console.log(temp);
     this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
+    console.log(this.curSubtree);
     return this.curSubtree;
   }
 

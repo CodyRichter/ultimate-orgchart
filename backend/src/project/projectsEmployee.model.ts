@@ -10,11 +10,11 @@ export class ProjectsEmployee extends TimeStamps{
     @prop()
     _id: number;
 
-    @prop({required: true,ref:"Employee"})
-    employee: Ref<Employee>;
+    @prop({required: true,ref:"Employee", type: Number})
+    employee: Ref<Employee, number>;
 
-    @prop({required: true,ref:"Project"})
-    project: Ref<Project>;
+    @prop({required: true,ref:Project, type: Number})
+    project: Ref<Project, number>;
 
     @prop({required: true})
     role: string;

@@ -50,30 +50,30 @@ export class ProjectController {
      }
 
      @Delete(':projectId')
-     async deleteProject(@Param('projectId') projectId:number):Promise<void>
+     async deleteProject(@Param('projectId') projectId:number):Promise<Project>
      {
          return await this.projectService.deleteProject(projectId);
      }
 
      //update project name or description
      @Patch(':projectId')
-     async updateProject(@Param('projectId')projectId:number,@Body()updatedField:any):Promise<Project>
+     async updateProject(@Param('projectId') projectId:number, @Body() updatedField:Project):Promise<Project>
      {
-           return await this.projectService.updateProjectDetail(projectId,updatedField);
+          return await this.projectService.updateProjectDetail(projectId,updatedField);
      }
     
       //add employee to the project
       @Patch('addEmployee/:projectId')
-      async addEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee[]):Promise<void>
+      async addEmployee(@Param('projectId') projectId: number, @Body() employee: ProjectsEmployee[]):Promise<Project>
       {
-           await this.projectService.addProjectEmployee(projectId,employee);
+          return await this.projectService.addProjectEmployee(projectId,employee);
       }
 
     //  //delete employee from the project
      @Patch('removeEmployee/:projectId')
-     async  deleteEmployee(@Param('projectId')projectId:number,@Body()employee:ProjectsEmployee):Promise<void>
+     async  deleteEmployee(@Param('projectId') projectId: number,@Body() employee: ProjectsEmployee[]):Promise<Project>
      {
-          await this.projectService.deleteProjectEmployee(projectId,employee);
+        return await this.projectService.deleteProjectEmployee(projectId,employee);
      }
 
 
