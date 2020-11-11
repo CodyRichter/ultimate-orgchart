@@ -24,7 +24,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   async createProj(): Promise<void> {
-
     const id = Math.random();
     let projEmployee = {
       _id: id,
@@ -35,7 +34,6 @@ export class CreateProjectComponent implements OnInit {
       updatedAt: new Date()
     };
 
-
     const project = {
       _id: Math.random(),
       name: this.selectedProjectName,
@@ -43,6 +41,9 @@ export class CreateProjectComponent implements OnInit {
       manager: projEmployee,
       employees: <ProjectsEmployee[]>[]
     };
+
+    // projEmployee.project = project;
+
     console.log(project);
     console.log(await this.projectService.createProject(project))
 
