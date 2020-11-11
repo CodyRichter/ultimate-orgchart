@@ -17,8 +17,10 @@ import { ProjectsEmployee } from 'src/app/models';
 export class CreateProjectComponent implements OnInit {
 
   formControl = new FormControl();
+  managerFormControl = new FormControl();
   assignees: any;
   employees: Employee[] = [];
+  manager: Employee;
 
   selectedProjectName: string;
   selectedProjectDescription: string;
@@ -33,9 +35,8 @@ export class CreateProjectComponent implements OnInit {
   }
 
   async createProj(): Promise<void> {
-    console.log(await this.authService.getProfile());
     const projEmployee = {
-      employee: await this.authService.getProfile(),
+      employee: this.manager[0],
       project: null,
       role: 'Project Manager',
       createdAt: new Date(),

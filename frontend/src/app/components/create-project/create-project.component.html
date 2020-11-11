@@ -13,6 +13,19 @@
     </p>
     <div>
         <mat-form-field appearance="fill">
+            <mat-label>Manager</mat-label>
+            <mat-select [formControl]="managerFormControl" [(value)]="manager" multiple>
+                <mat-select-trigger>
+                    {{managerFormControl.value ? managerFormControl.value[0].firstName + ' ' + managerFormControl.value[0].lastName: ''}}
+                </mat-select-trigger>
+                <mat-option *ngFor="let employee of employees" [value]="employee">
+                    {{employee.firstName}} {{employee.lastName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
             <mat-label>Assignees</mat-label>
             <mat-select [formControl]="formControl" [(value)]="assignees" multiple>
                 <mat-select-trigger>
@@ -21,7 +34,9 @@
             (+{{formControl.value.length - 1}} {{formControl.value?.length === 2 ? 'other' : 'others'}})
           </span>
                 </mat-select-trigger>
-                <mat-option *ngFor="let employee of employees" [value]="employee">{{employee.firstName}} {{employee.lastName}}</mat-option>
+                <mat-option *ngFor="let employee of employees" [value]="employee">
+                    {{employee.firstName}} {{employee.lastName}}
+                </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
