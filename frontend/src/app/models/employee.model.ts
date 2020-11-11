@@ -1,7 +1,7 @@
 import { ProjectsEmployee } from './projectsEmployee.model';
 
 export class Employee {
-    _id: number;
+    _id?: number;
     firstName: string;
     lastName: string;
     companyId: number;

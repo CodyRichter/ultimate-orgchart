@@ -4,8 +4,8 @@ import { ManagerService } from 'src/app/services/manager.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Employee } from 'src/app/models';
 
-import { Project } from 'src/app/models'
-import { ProjectService } from 'src/app/services/project.service'
+import { Project } from 'src/app/models';
+import { ProjectService } from 'src/app/services/project.service';
 import { ProjectsEmployee } from 'src/app/models';
 
 @Component({
@@ -18,34 +18,31 @@ export class CreateProjectComponent implements OnInit {
   selectedProjectName: string;
   selectedProjectDescription: string;
 
-  constructor (private readonly projectService: ProjectService, private readonly authService: AuthService) { }
+  constructor(private readonly projectService: ProjectService, private readonly authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   async createProj(): Promise<void> {
-    const id = Math.random();
-    let projEmployee = {
-      _id: id,
+    const projEmployee = {
       employee: await this.authService.getProfile(),
       project: null,
-      role: "Project Manager",
+      role: 'Project Manager',
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
     const project = {
-      _id: Math.random(),
       name: this.selectedProjectName,
       description: this.selectedProjectDescription,
       manager: projEmployee,
-      employees: <ProjectsEmployee[]>[]
+      employees:  [] as ProjectsEmployee[]
     };
 
     // projEmployee.project = project;
 
     console.log(project);
-    console.log(await this.projectService.createProject(project))
+    console.log(await this.projectService.createProject(project));
 
   }
 

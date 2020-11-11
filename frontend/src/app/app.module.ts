@@ -48,7 +48,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
     SettingsComponent,
     SearchComponent,
     NotificationCardComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog
   ],

@@ -46,8 +46,9 @@ export class ChartsComponent implements OnInit {
     });
   }
 
-  openProjectDialog(): void {
-    this.dialog.open(ProjectDetailComponent);
+  async openProjectDialog(): Promise<void> {
+    const projects = await this.projectService.getAllProjects();
+    this.dialog.open(ProjectDetailComponent, {data: {project: projects[projects.length - 1]}});
   }
 }
 

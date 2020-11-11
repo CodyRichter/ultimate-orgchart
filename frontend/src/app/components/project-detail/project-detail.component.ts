@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models';
 import {HttpClient} from '@angular/common/http';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-detail',
@@ -10,14 +11,17 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ProjectDetailComponent implements OnInit {
 
-  project: Project;
+  @Input() project: Project;
 
-  constructor(private readonly projectService: ProjectService,
+  constructor(@Inject(MAT_DIALOG_DATA) private data, private readonly projectService: ProjectService,
               private readonly httpClient: HttpClient) {
+          if (data.project) {
+            this.project = data.project;
+          }
   }
 
   ngOnInit(): void {
-    console.log(this.projectService.getAllProjects().then(val => this.project = val[val.length - 1]));
+    // console.log(this.projectService.getAllProjects().then(val => this.project = val[val.length - 1]));
   }
 
 }
