@@ -3,6 +3,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Employee } from 'src/app/models';
+import { FormControl } from '@angular/forms';
 
 import { Project } from 'src/app/models';
 import { ProjectService } from 'src/app/services/project.service';
@@ -15,28 +16,47 @@ import { ProjectsEmployee } from 'src/app/models';
 })
 export class CreateProjectComponent implements OnInit {
 
+  formControl = new FormControl();
+  assignees: any;
+  employees: Employee[] = [];
+  manager: Employee;
+
   selectedProjectName: string;
   selectedProjectDescription: string;
 
-  constructor(private readonly projectService: ProjectService, private readonly authService: AuthService) { }
+  constructor(private readonly projectService: ProjectService,
+              private readonly authService: AuthService,
+              private readonly employeeService: EmployeeService) {
+    this.getAllEmployee().then();
+  }
 
   ngOnInit(): void {
   }
 
   async createProj(): Promise<void> {
     const projEmployee = {
-      employee: await this.authService.getProfile(),
+      employee: this.manager,
       project: null,
       role: 'Project Manager',
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
+    const projectAssignees: ProjectsEmployee[] = [];
+
+    for (const assignee of this.assignees) {
+      projectAssignees.push({
+        employee: assignee,
+        project: null,
+        role: 'role TBD'
+      });
+    }
+
     const project = {
       name: this.selectedProjectName,
       description: this.selectedProjectDescription,
       manager: projEmployee,
-      employees:  [] as ProjectsEmployee[]
+      employees: projectAssignees
     };
 
     // projEmployee.project = project;
@@ -44,6 +64,13 @@ export class CreateProjectComponent implements OnInit {
     console.log(project);
     console.log(await this.projectService.createProject(project));
 
+  }
+
+  async getAllEmployee(): Promise<void> {
+    // TODO
+    for (let i = 1; i < 100; i++) {
+      this.employees.push(await this.employeeService.getEmployeeById(i));
+    }
   }
 
 }

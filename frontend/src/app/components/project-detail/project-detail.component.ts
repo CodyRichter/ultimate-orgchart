@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models';
-import {HttpClient} from '@angular/common/http';
+import { Employee } from '../../models';
+import { ProjectsEmployee} from '../../models';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -13,15 +13,18 @@ export class ProjectDetailComponent implements OnInit {
 
   @Input() project: Project;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data, private readonly projectService: ProjectService,
-              private readonly httpClient: HttpClient) {
-          if (data.project) {
-            this.project = data.project;
-          }
+  constructor(@Inject(MAT_DIALOG_DATA) private data) {
+    if (data.project) {
+      this.project = data.project;
+    }
   }
 
   ngOnInit(): void {
-    // console.log(this.projectService.getAllProjects().then(val => this.project = val[val.length - 1]));
+  }
+
+  getManagerName(): string {
+    const manager: Employee = ((this.project.manager as ProjectsEmployee).employee as Employee);
+    return manager.firstName + ' ' + manager.lastName;
   }
 
 }
