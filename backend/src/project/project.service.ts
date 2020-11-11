@@ -144,12 +144,12 @@ export class ProjectService {
 
     
     async getProject(projtectId: number) {
-        return await this.projectModel.findById(projtectId).populate('manager').populate('employees').exec();
+        return await this.projectModel.findById(projtectId).populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
 
     }
 
     async getAllProjects() {
-        return await this.projectModel.find().populate('manager').populate('employees').exec();
+        return await this.projectModel.find().populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
     }
 
     async deleteProject(projectId: number): Promise<Project> {
@@ -349,7 +349,7 @@ export class ProjectService {
             ]
         }
 
-        return await this.projectModel.find(queri).populate('employees').populate('manager').skip(skip).limit(limit).exec();
+        return await this.projectModel.find(queri).populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).skip(skip).limit(limit).exec();
     }
 
 
