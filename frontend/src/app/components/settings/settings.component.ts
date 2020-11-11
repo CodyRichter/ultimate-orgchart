@@ -12,17 +12,10 @@ export class SettingsComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
               private readonly employeeService: EmployeeService,
-              private readonly authService: AuthService) { }
+              public readonly authService: AuthService) { }
 
   ngOnInit(): void {
-  }
-
-  async isAdmin(): Promise<boolean> {
-    return (await this.authService.getProfile()).isAdmin;
-  }
-
-  async isManager(): Promise<boolean> {
-    return (await this.authService.getProfile()).isManager;
+    this.authService.getProfile();
   }
 
   openJSONUploadDialog(): void {

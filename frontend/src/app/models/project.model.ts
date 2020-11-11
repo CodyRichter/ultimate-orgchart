@@ -6,8 +6,8 @@ export class Project {
     _id: number;
     name: string;
     description: string;
-    manager: ProjectsEmployee;
-    employees: ProjectsEmployee[];
+    manager: ProjectsEmployee | number;
+    employees: (ProjectsEmployee | number)[];
     createdAt?: Date;
     updatedAt?: Date;
 }

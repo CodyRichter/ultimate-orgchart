@@ -31,8 +31,8 @@ export class Employee  extends TimeStamps {
     @prop({ required: true, default: false })
     isAdmin: boolean;
 
-    @prop({ required: false,  })
-    managerId?: number;
+    @prop({ ref: Employee, type: Number, required: false})
+    manager?: Ref<Employee, number>;
 
     @prop({ required: true, index:true, unique:true })
     email: string;
@@ -41,11 +41,11 @@ export class Employee  extends TimeStamps {
     startDate: Date;
 
 
-    @prop({ ref: Employee })
-    manages: Ref<Employee>[];
+    @prop({ ref: Employee, type: Number})
+    manages: Ref<Employee, number>[];
 
-    @prop({ref:"ProjectsEmployee"})
-    projects: Ref<ProjectsEmployee>[]
+    @prop({ref: ProjectsEmployee, type: Number})
+    projects: Ref<ProjectsEmployee, number>[]
     
     // @prop({ required: true })
     // managesProject: Ref<ProjectsEmployee>[];

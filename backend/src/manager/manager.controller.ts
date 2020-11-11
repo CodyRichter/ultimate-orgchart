@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import {Role} from '../enums/roles.enum';
+import { User } from 'src/auth/guards/user.decorator';
 @Controller('managerRequest')
 @UseGuards(JwtAuthGuard,RolesGuard)
 export class ManagerController {
@@ -24,8 +25,8 @@ export class ManagerController {
         //Return: the created request
         @Post('create')
         @Roles(Role.ADMIN,Role.MANAGER)
-        async createRequest(@Body() newRequest: ManagerRequest): Promise<ManagerRequest> {
-                return await this.managerService.createRequest(newRequest);
+        async createRequest(@Body() newRequest: ManagerRequest, @User() user:Employee): Promise<ManagerRequest> {
+                return await this.managerService.createRequest(newRequest, user);
         }
 
 
@@ -33,9 +34,9 @@ export class ManagerController {
         //Param: the manager request
         //Return: the updated Employee Schema
         @Patch('approve/:requestId')
-        async approveRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
+        async approveRequest(@Param('requestId') _id: number, @User() user:Employee): Promise<ManagerRequest> {
 
-                return await this.managerService.approveRequest(_id);
+                return await this.managerService.approveRequest(_id, user);
         }
 
         //reject the request
@@ -43,8 +44,14 @@ export class ManagerController {
         //Return: the updated Request Schema
         @Patch('reject/:requestId')
         @Roles(Role.ADMIN,Role.MANAGER)
-        async rejectRequest(@Param('requestId') _id: number): Promise<ManagerRequest> {
-                return await this.managerService.rejectedRequest(_id);
+        async rejectRequest(@Param('requestId') _id: number, @User() user:Employee): Promise<ManagerRequest> {
+                return await this.managerService.rejectedRequest(_id, user);
+        }
+
+        @Patch('cancel/:requestId')
+        @Roles(Role.ADMIN,Role.MANAGER)
+        async cancelRequest(@Param('requestId') _id: number, @User() user:Employee): Promise<ManagerRequest> {
+                return await this.managerService.cancelRequest(_id, user);
         }
 
 
@@ -86,8 +93,7 @@ export class ManagerController {
 
         //left: get request by employeeId 
         @Get('employee/:employeeId')
-        async getRequestsByEmployeeId(@Param('employeeId')employeeId:number)
-        {
+        async getRequestsByEmployeeId(@Param('employeeId')employeeId:number) {
                 return await this.managerService.getRequestByEmployeeId(employeeId);
         }
 
