@@ -26,7 +26,7 @@
             <mat-label>Assignees</mat-label>
             <mat-select [formControl]="formControl" [(value)]="assignees" multiple>
                 <mat-select-trigger>
-                    {{formControl.value ? formControl.value[0].firstName : ''}}
+                    {{formControl.value ? (formControl.value[0] !== undefined ? formControl.value[0].firstName : '') : ''}}
                     <span *ngIf="formControl.value?.length > 1" class="example-additional-selection">
             (+{{formControl.value.length - 1}} {{formControl.value?.length === 2 ? 'other' : 'others'}})
           </span>
