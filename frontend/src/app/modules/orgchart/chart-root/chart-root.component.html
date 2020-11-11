@@ -7,7 +7,7 @@
 </div>
 <div *ngIf="datasource.manages.length > 0" class="oc-groups">
     <ng-container *ngFor="let node of datasource.manages" >
-        <div *ngIf="node" class="oc-group">
+        <div *ngIf="node.manages.length> 0" class="oc-group">
             <chart-manager  [datasource]="node"></chart-manager>
         </div>
     </ng-container>

@@ -24,7 +24,7 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<Employee> {
-    const temp = await this.getManagersEmployees(undefined, 2) as any[];
+    const temp = await this.getManagersEmployees(undefined, 3) as any[];
     this.curSubtree = temp.find(employee => employee._id !== 404123456789404);
     return this.curSubtree;
   }
@@ -39,7 +39,7 @@ export class EmployeeService {
 
   async goDownInChart(manager: Employee): Promise<Employee> {
     console.log('go down:', manager);
-    manager.manages = await this.getManagersEmployees(manager._id, 2);
+    manager.manages = await this.getManagersEmployees(manager._id, 1);
     console.log('manages now: ', manager.manages);
     this.curSubtree = manager;
     console.log('subtree', this.curSubtree);
