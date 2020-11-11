@@ -6,7 +6,7 @@ import { ManagerRequest } from "src/manager/manager.model";
 
 
 
-@plugin(AutoIncrementID,{})
+@plugin(AutoIncrementID, {startAt: 1})
 export class NotificationDoc extends TimeStamps {
     @prop()
     _id:number;

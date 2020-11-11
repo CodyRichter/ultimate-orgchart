@@ -15,21 +15,22 @@ import { NotificationModel } from 'src/app/models';
 })
 export class ChartsComponent implements OnInit {
 
-  notifications = [];
+  notifs: NotificationModel[] = [];
 
-  ngOnInit(): void {
-    this.getNotifications();
+  async ngOnInit(): Promise<void> {
+    await this.authService.getProfile();
+    await this.getNotifications();
   }
 
   constructor(private router: Router,
-              private readonly authService: AuthService,
-              public readonly employeeService: EmployeeService,
-              private dialog: MatDialog, private readonly projectService: ProjectService,
-              private readonly notificationService: NotificationsService) {
+    private readonly authService: AuthService,
+    public readonly employeeService: EmployeeService,
+    private dialog: MatDialog, private readonly projectService: ProjectService,
+    private readonly notificationService: NotificationsService) {
 
     this.employeeService.initializeChart();
 
-}
+  }
 
   async logout(): Promise<void> {
     this.authService.logout();
@@ -45,21 +46,21 @@ export class ChartsComponent implements OnInit {
   }
 
   async openDialog(): Promise<void> {
-    const currentVal = ( document.getElementById('mySearch') as HTMLInputElement).value;
+    const currentVal = (document.getElementById('mySearch') as HTMLInputElement).value;
     const result = await this.employeeService.searchEmployee(currentVal);
     this.dialog.open(SearchDialog, {
-      data: {searchResult: result}
+      data: { searchResult: result }
     });
   }
 
   async openProjectDialog(): Promise<void> {
     const projects = await this.projectService.getAllProjects();
-    this.dialog.open(ProjectDetailComponent, {data: {project: projects[projects.length - 1]}});
+    this.dialog.open(ProjectDetailComponent, { data: { project: projects[projects.length - 1] } });
   }
 
   async getNotifications(): Promise<NotificationModel[]> {
-    this.notifications = await this.notificationService.getNotifications(this.authService.profile._id);
-    return this.notifications;
+    this.notifs = await this.notificationService.getNotifications(this.authService.profile._id);
+    return this.notifs;
   }
 }
 
@@ -68,10 +69,10 @@ export class ChartsComponent implements OnInit {
   selector: 'settings-dialog',
   templateUrl: 'settings-dialog.html',
 })
-export class SettingsDialog {}
+export class SettingsDialog { }
 
 @Component({
   selector: 'search-dialog',
   templateUrl: 'search-dialog.html',
 })
-export class SearchDialog {}
+export class SearchDialog { }

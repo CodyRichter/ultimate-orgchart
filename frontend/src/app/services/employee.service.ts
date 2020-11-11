@@ -27,7 +27,7 @@ export class EmployeeService {
 
   async initializeChart(): Promise<Employee> {
     this.trees = await this.getManagersEmployees(undefined, 2) as Employee[];
-    this.curTreeIndex = 1;
+    this.curTreeIndex = 0;
     this.curSubtree = this.trees[this.curTreeIndex];
     return this.curSubtree;
   }

@@ -47,14 +47,9 @@
         </button>
         <h2 class="notification-header">Notifications</h2>
         <br>
-        <ng-container *ngFor="let notification of notifications">
-            <div>
-                {{notification}}
-            </div>
-        </ng-container>
-        <!-- <div *ngFor="let notification of notifications | async">
-            <notification-card [notification]="notification"></notification-card>
-        </div> -->
+        <div *ngFor="let notif of notifs">
+            <notification-card [notification]="notif"></notification-card>
+        </div>
     </mat-drawer>
 </mat-drawer-container>
 

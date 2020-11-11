@@ -32,4 +32,8 @@ export class ManagerService {
   async rejectRequest(id: number): Promise<ManagerRequest> {
     return await this.httpClient.patch('http://localhost:3000/managerRequest/reject/' + id, null).toPromise() as ManagerRequest;
   }
+
+  async cancelRequest(id: number): Promise<ManagerRequest> {
+    return await this.httpClient.patch('http://localhost:3000/managerRequest/cancel/' + id, null).toPromise() as ManagerRequest;
+  }
 }

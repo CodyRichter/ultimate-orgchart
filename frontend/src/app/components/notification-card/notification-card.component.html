@@ -1,17 +1,33 @@
-<mat-card class="notification-card" *ngIf="notification">
+<mat-card class="notification-card" *ngIf="notification && !notification.dismissed">
     <mat-card-header>
         <mat-icon mat-card-avatar>announcement</mat-icon>
         <mat-card-title>{{ notification.title }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+        <p *ngIf="notification.managerRequest">
+            Status: {{ notification.managerRequest.status }}
+        </p>
         <p>
             {{ notification.description }}
         </p>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-button *ngIf="!notification.managerRequest || notification.managerRequest.toManager._id !== authService.profile._id">Dismiss</button>
-        <!--button mat-button (click)="">Cancel</button>
-        <button mat-button (click)="approveRequest()" style="color:green">Approve</button>
-        <button mat-button (click)="rejectRequest()" style="color:red">Reject</button-->
+        <button mat-button *ngIf="!notification.managerRequest || 
+            notification.managerRequest.toManager !== authService.profile._id" (click)="dismiss()">
+            Dismiss
+        </button>
+        <button mat-button *ngIf="notification.managerRequest && 
+            (notification.managerRequest.fromManager === authService.profile._id || 
+            (authService.profile.isAdmin && authService.profile._id !== notification.managerRequest.toManager))" (click)="cancelRequest()">
+            Cancel
+        </button>
+        <button mat-button *ngIf="notification.managerRequest && 
+            notification.managerRequest.toManager === authService.profile._id" (click)="approveRequest()" style="color:green">
+            Approve
+        </button>
+        <button mat-button *ngIf="notification.managerRequest && 
+            notification.managerRequest.toManager === authService.profile._id" (click)="rejectRequest()" style="color:red">
+            Reject
+        </button>
     </mat-card-actions>
 </mat-card>
