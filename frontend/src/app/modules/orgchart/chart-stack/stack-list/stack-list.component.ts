@@ -42,7 +42,7 @@ export class StackListComponent implements OnInit {
   }
 
   async navigateToManager(node: Employee): Promise<void> {
-    await this.employeeService.goUpInChart(node, 1);
+    await this.employeeService.goUpInChart(node);
     this.dialog.closeAll();
   }
 

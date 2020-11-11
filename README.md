@@ -16,7 +16,7 @@ In order to run the database using Docker:
   3. Once `docker-compose up` is finished open a **new terminal** and `cd` into the 404-brain-not-found directory
 
   4. Run `docker exec -it localmongo1 /bin/bash` if on Mac or Windows and `sudo docker exec -it test bash` if on Linux
-  
+
   5. Enter `mongo` which is the password to login to the mongoshell
 
   6. Obtaining your local IPv4 address
@@ -30,12 +30,14 @@ In order to run the database using Docker:
   7. Run the below command in the mongo shell and replace `{Your_local_ip}` with the address that you found in the previous step (**Notice: remember to remove the ''{}''**).
 
       ```shell
+
       rs.initiate({
         _id : 'rs0',
         members: [
           { _id : 0, host : "{YOUR_LOCAL_IP}:27011" },
           { _id : 1, host : "{YOUR_LOCAL_IP}:27012" },
-                    { _id : 2, host : "{YOUR_LOCAL_IP}:27013" }
+          { _id : 2, host : "{YOUR_LOCAL_IP}:27013" }
+
         ]
       })
       
@@ -48,7 +50,8 @@ In order to run the database using Docker:
           { _id : 2, host : "192.168.0.38:27013" }
         ]
       })
-      ```
+
 
   8. Press enter to configure the replica sets
   9. Paste this Url `mongodb://localhost:27011,localhost:27012,localhost:27013/company?replicaSet=rs0` to the connection field in MongoCompass to check if you successfully configured the replica set
+

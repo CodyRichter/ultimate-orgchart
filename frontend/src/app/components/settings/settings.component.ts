@@ -12,17 +12,10 @@ export class SettingsComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
               private readonly employeeService: EmployeeService,
-              private readonly authService: AuthService) { }
+              public readonly authService: AuthService) { }
 
   ngOnInit(): void {
-  }
-
-  async isAdmin(): Promise<boolean> {
-    return (await this.authService.getProfile()).isAdmin;
-  }
-
-  async isManager(): Promise<boolean> {
-    return (await this.authService.getProfile()).isManager;
+    this.authService.getProfile();
   }
 
   openJSONUploadDialog(): void {
@@ -35,6 +28,10 @@ export class SettingsComponent implements OnInit {
 
   async downloadJSON(): Promise<void> {
     await this.employeeService.downloadJSON();
+  }
+
+  openCreateProjectDialog(): void {
+    this.dialog.open(ProjectCreateDialog);
   }
 }
 
@@ -49,3 +46,9 @@ export class JSONUploadDialog {}
   templateUrl: 'employee-transfer-dialog.html',
 })
 export class EmployeeTransferDialog {}
+
+@Component({
+  selector: 'project-create-dialog',
+  templateUrl: 'project-create-dialog.html',
+})
+export class ProjectCreateDialog {}

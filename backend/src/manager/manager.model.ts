@@ -5,19 +5,19 @@ import { Employee } from "../employee/employee.model";
 import { RequestStatus } from "../enums/request.enum";
 
 //extends the TimeStamps class which contain createdAt and updatedAt two fields
-@plugin(AutoIncrementID, {})
+@plugin(AutoIncrementID, {startAt: 1})
 export class ManagerRequest extends TimeStamps {
         @prop()
         _id: number;
 
-        @prop({ require: true, autopopulate: true, ref: Employee })
-        employee: Ref<Employee>;
+        @prop({ require: true, autopopulate: true, ref: Employee, type: Number })
+        employee: Ref<Employee, number>;
 
-        @prop({ require: true, autopopulate: true, ref: Employee })
-        fromManager: Ref<Employee>;
+        @prop({ require: true, autopopulate: true, ref: Employee, type: Number })
+        fromManager: Ref<Employee, number>;
 
-        @prop({ require: true, autopopulate: true, ref: Employee })
-        toManager: Ref<Employee>;
+        @prop({ require: true, autopopulate: true, ref: Employee, type: Number  })
+        toManager: Ref<Employee, number>;
 
         @prop({ required: true })
         previousPosition: string;

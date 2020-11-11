@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'organization-chart',
@@ -21,6 +21,12 @@ export class ChartContainerComponent implements OnInit {
   transformVal = '';
 
   constructor() {
+  }
+
+  ngOnChanges (changes: SimpleChanges){
+    if (changes.datasource){
+      console.log('container data source changed to: ', this.datasource);
+    }
   }
 
   ngOnInit(): void {

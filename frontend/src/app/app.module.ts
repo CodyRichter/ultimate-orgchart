@@ -21,7 +21,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
-import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog } from './components/settings/settings.component';
+import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
@@ -31,6 +31,7 @@ import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,8 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
     SearchComponent,
     NotificationCardComponent,
     ProjectDetailComponent
+    CreateProjectComponent,
+    ProjectCreateDialog
   ],
   imports: [
     BrowserModule,
