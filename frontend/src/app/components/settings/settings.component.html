@@ -26,6 +26,10 @@
         <button mat-button (click)="openEmployeeTransferDialog()">
             <mat-icon>transfer_within_a_station</mat-icon>Transfer Employee
         </button>
+        <br>
+        <button mat-button (click)="openCreateEmployeeDialog()">
+            <mat-icon>create</mat-icon>Add Employee
+        </button>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="authService.profile.isAdmin">
         <mat-expansion-panel-header>
