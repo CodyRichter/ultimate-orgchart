@@ -5,6 +5,12 @@
     </div>
 </div>
 
+<div class="find-me-container mat-elevation-z4">
+    <button mat-icon-button [disableRipple]="true" class="find-me-btn" (click)="findMe()">
+        <mat-icon>person</mat-icon>
+    </button>
+</div>
+
 <div class="zoom mat-elevation-z4">
     <mat-divider class="zoom-divider"></mat-divider>
     <button class="zoom-btn" [disableRipple]="true" mat-icon-button (click)="setChartScale(1.1)">

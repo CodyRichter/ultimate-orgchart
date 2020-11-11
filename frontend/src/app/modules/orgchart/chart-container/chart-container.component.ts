@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {EmployeeService} from "../../../services/employee.service";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'organization-chart',
@@ -20,7 +22,8 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor() {
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService) {
   }
 
   ngOnChanges (changes: SimpleChanges){
@@ -133,5 +136,19 @@ export class ChartContainerComponent implements OnInit {
         }
       }
     }
+  }
+
+  async findMe(): Promise<void> {
+    if (!this.authService.profile) {
+      await this.authService.getProfile();
+    }
+    if (this.authService.profile.manages.length > 0) {
+      console.log('go down');
+      await this.employeeService.goDownInChart(this.authService.profile);
+    } else {
+      console.log('go up');
+      await this.employeeService.goUpInChart(this.authService.profile);
+    }
+    console.log(this.employeeService.curSubtree);
   }
 }

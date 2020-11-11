@@ -24,3 +24,18 @@
     width: 40px;
     color: #707070;
 }
+
+.find-me-container {
+    position: fixed;
+    right: 24px;
+    bottom: 120px;
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    background: #FFFFFF;
+}
+
+.find-me-btn {
+    width: 40px;
+    color: #707070;
+}

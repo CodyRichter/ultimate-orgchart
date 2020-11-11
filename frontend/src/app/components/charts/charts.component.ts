@@ -50,20 +50,6 @@ export class ChartsComponent implements OnInit {
     const projects = await this.projectService.getAllProjects();
     this.dialog.open(ProjectDetailComponent, {data: {project: projects[projects.length - 1]}});
   }
-
-  async findMe(): Promise<void> {
-    if (!this.authService.profile) {
-      await this.authService.getProfile();
-    }
-    if (this.authService.profile.manages.length > 0) {
-      console.log('go down');
-      await this.employeeService.goDownInChart(this.authService.profile);
-    } else {
-      console.log('go up');
-      await this.employeeService.goUpInChart(this.authService.profile);
-    }
-    console.log(this.employeeService.curSubtree);
-  }
 }
 
 
