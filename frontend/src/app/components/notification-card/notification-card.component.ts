@@ -12,14 +12,15 @@ import { ManagerRequest, NotificationModel } from '../../models';
   styleUrls: ['./notification-card.component.css']
 })
 export class NotificationCardComponent implements OnInit {
-  
+
   @Input() notification: NotificationModel;
+  requestStatus = RequestStatus;
 
-  constructor(private readonly managerService: ManagerService, 
-    public readonly authService: AuthService,
-    private readonly notificationService: NotificationsService) { }
+  constructor(private readonly managerService: ManagerService,
+              public readonly authService: AuthService,
+              private readonly notificationService: NotificationsService) { }
 
-  async ngOnInit(): Promise<void> { 
+  async ngOnInit(): Promise<void> {
     console.log(this.notification);
     await this.authService.getProfile();
   }

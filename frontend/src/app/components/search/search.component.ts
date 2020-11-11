@@ -11,7 +11,7 @@ import { Employee } from 'src/app/models';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  searchResults: Employee[];
+  searchResults: any;
 
   constructor(
     public dialog: MatDialog,
