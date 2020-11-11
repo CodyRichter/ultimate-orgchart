@@ -14,10 +14,7 @@
     <div>
         <mat-form-field appearance="fill">
             <mat-label>Manager</mat-label>
-            <mat-select [formControl]="managerFormControl" [(value)]="manager" multiple>
-                <mat-select-trigger>
-                    {{managerFormControl.value ? managerFormControl.value[0].firstName + ' ' + managerFormControl.value[0].lastName: ''}}
-                </mat-select-trigger>
+            <mat-select [(ngModel)]="manager">
                 <mat-option *ngFor="let employee of employees" [value]="employee">
                     {{employee.firstName}} {{employee.lastName}}
                 </mat-option>

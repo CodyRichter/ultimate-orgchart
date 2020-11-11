@@ -17,7 +17,6 @@ import { ProjectsEmployee } from 'src/app/models';
 export class CreateProjectComponent implements OnInit {
 
   formControl = new FormControl();
-  managerFormControl = new FormControl();
   assignees: any;
   employees: Employee[] = [];
   manager: Employee;
@@ -36,7 +35,7 @@ export class CreateProjectComponent implements OnInit {
 
   async createProj(): Promise<void> {
     const projEmployee = {
-      employee: this.manager[0],
+      employee: this.manager,
       project: null,
       role: 'Project Manager',
       createdAt: new Date(),
