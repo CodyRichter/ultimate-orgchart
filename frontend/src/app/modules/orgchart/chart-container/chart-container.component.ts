@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {EmployeeService} from "../../../services/employee.service";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'organization-chart',
@@ -10,8 +12,8 @@ export class ChartContainerComponent implements OnInit {
   @Input() datasource;
   @Input() pan = true;
   @Input() zoom = false;
-  @Input() zoomoutLimit = 0.5;
-  @Input() zoominLimit = 7;
+  @Input() zoomOutLimit = 0.5;
+  @Input() zoomInLimit = 5;
   @Input() select = 'single';
 
   cursorVal = 'default';
@@ -20,7 +22,8 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor() {
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService) {
   }
 
   ngOnChanges (changes: SimpleChanges){
@@ -30,6 +33,12 @@ export class ChartContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(window.innerHeight);
+    if (window.innerHeight > 750) {
+      this.setChartScale(window.innerHeight / 850);
+    } else {
+      this.setChartScale(window.innerHeight / 750);
+    }
   }
 
   panEndHandler(): void {
@@ -104,4 +113,42 @@ export class ChartContainerComponent implements OnInit {
     }
   }
 
+  setChartScale(newScale): void {
+    let matrix = [];
+    let targetScale = 1;
+    if (this.transformVal === '') {
+      this.transformVal = 'matrix(' + newScale + ', 0, 0, ' + newScale + ', 0, 0)';
+    } else {
+      matrix = this.transformVal.split(',');
+      if (this.transformVal.indexOf('3d') === -1) {
+        targetScale = Math.abs(parseFloat(matrix[3]) * newScale);
+        if (targetScale > this.zoomOutLimit && targetScale < this.zoomInLimit) {
+          matrix[0] = 'matrix(' + targetScale;
+          matrix[3] = targetScale;
+          this.transformVal = matrix.join(',');
+        }
+      } else {
+        targetScale = Math.abs(parseFloat(matrix[5]) * newScale);
+        if (targetScale > this.zoomOutLimit && targetScale < this.zoomInLimit) {
+          matrix[0] = 'matrix3d(' + targetScale;
+          matrix[5] = targetScale;
+          this.transformVal = matrix.join(',');
+        }
+      }
+    }
+  }
+
+  async findMe(): Promise<void> {
+    if (!this.authService.profile) {
+      await this.authService.getProfile();
+    }
+    if (this.authService.profile.manages.length > 0) {
+      console.log('go down');
+      await this.employeeService.goDownInChart(this.authService.profile);
+    } else {
+      console.log('go up');
+      await this.employeeService.goUpInChart(this.authService.profile);
+    }
+    console.log(this.employeeService.curSubtree);
+  }
 }

@@ -30,6 +30,7 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
 import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 
 @NgModule({
@@ -47,6 +48,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
     SettingsComponent,
     SearchComponent,
     NotificationCardComponent,
+    ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog
   ],
