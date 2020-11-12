@@ -1,5 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { RouteConfigLoadEnd } from '@angular/router';
+import { RequestStatus } from 'src/app/enums/request.enum';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { ManagerService } from 'src/app/services/manager.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { ManagerRequest, NotificationModel } from '../../models';
 
 @Component({
   selector: 'notification-card',
@@ -7,39 +12,35 @@ import { ManagerService } from 'src/app/services/manager.service';
   styleUrls: ['./notification-card.component.css']
 })
 export class NotificationCardComponent implements OnInit {
-  @Input() type: string;
-  @Input() id: number;
-  @Input() employee: string;
-  @Input() prevManager: string;
-  @Input() destManager: string;
-  @Input() status: string;
 
-  visible: boolean = true;
+  @Input() notification: NotificationModel;
+  requestStatus = RequestStatus;
 
-  constructor(private readonly managerService: ManagerService) { }
+  constructor(private readonly managerService: ManagerService,
+              public readonly authService: AuthService,
+              private readonly notificationService: NotificationsService) { }
 
-  ngOnInit(): void { }
-
-  isIncomingRequest(): boolean {
-    return this.type == "incoming"
-  }
-
-  isOutgoingRequest(): boolean {
-    return this.type == "outgoing"
+  async ngOnInit(): Promise<void> {
+    console.log(this.notification);
+    await this.authService.getProfile();
   }
 
   async approveRequest() {
-    this.dismissNotification();
-    console.log(await this.managerService.approveRequest(this.id));
+    this.dismiss();
+    console.log(await this.managerService.approveRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
   async rejectRequest() {
-    this.dismissNotification();
-    console.log(await this.managerService.rejectRequest(this.id));
+    this.dismiss();
+    console.log(await this.managerService.rejectRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
-  dismissNotification(): void {
-    this.visible = false;
+  async cancelRequest() {
+    this.dismiss();
+    console.log(await this.managerService.cancelRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
+  async dismiss() {
+    this.notification = await this.notificationService.dismissNotification(this.notification._id);
+  }
 }

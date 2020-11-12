@@ -27,7 +27,7 @@ export class EmployeeService {
 
   async initializeChart(): Promise<Employee> {
     this.trees = await this.getManagersEmployees(undefined, 2) as Employee[];
-    this.curTreeIndex = 1;
+    this.curTreeIndex = this.trees.findIndex(emp => emp._id !== 404123456789404);
     this.curSubtree = this.trees[this.curTreeIndex];
     return this.curSubtree;
   }
@@ -130,10 +130,6 @@ export class EmployeeService {
 
   async createManyEmployees(employees: (Employee & EmployeeAuth)[]): Promise<any> {
     return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise() as Employee[];
-  }
-
-  async searchEmployee(query: any): Promise<Employee[]>{
-    return await this.httpClient.get(`http://localhost:3000/employee/?${query}`).toPromise() as Employee[];
   }
 
   async uploadJSON(file: File): Promise<Employee[]> {

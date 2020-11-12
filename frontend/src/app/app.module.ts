@@ -32,6 +32,9 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -50,10 +53,13 @@ import { CreateProjectComponent } from './components/create-project/create-proje
     NotificationCardComponent,
     ProjectDetailComponent,
     CreateProjectComponent,
-    ProjectCreateDialog
+    ProjectCreateDialog,
+    ProjectListComponent
   ],
   imports: [
     BrowserModule,
+    MatTabsModule,
+    MatPaginatorModule,
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,

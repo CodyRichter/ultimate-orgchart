@@ -142,7 +142,7 @@ export class ChartContainerComponent implements OnInit {
     if (!this.authService.profile) {
       await this.authService.getProfile();
     }
-    if (this.authService.profile.manages.length > 0) {
+    if (this.authService.profile.manages.length > 0 || !this.authService.profile.manager) {
       console.log('go down');
       await this.employeeService.goDownInChart(this.authService.profile);
     } else {
