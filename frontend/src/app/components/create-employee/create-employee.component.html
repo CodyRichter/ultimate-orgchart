@@ -7,9 +7,56 @@
     </mat-form-field>
     <br>
     <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Position Title</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Manager Name or ID</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput placeholder="user@email.com" [formControl]="email" required>
-        <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+        <input matInput placeholder="pat@email.com" [formControl]="email" required>
+        <mat-error>{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br><mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Start Date</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
 </p>

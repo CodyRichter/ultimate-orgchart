@@ -14,8 +14,8 @@ export class SettingsComponent implements OnInit {
               private readonly employeeService: EmployeeService,
               public readonly authService: AuthService) { }
 
-  ngOnInit(): void {
-    this.authService.getProfile();
+  async ngOnInit(): Promise<void> {
+    await this.authService.getProfile();
   }
 
   openJSONUploadDialog(): void {

@@ -4,6 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { ProjectDetailComponent } from '../project-detail/project-detail.component';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { NotificationModel } from 'src/app/models';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-charts',
@@ -12,17 +16,23 @@ import { ProjectService } from 'src/app/services/project.service';
 })
 export class ChartsComponent implements OnInit {
 
-  ngOnInit(): void {
+  notifs: NotificationModel[] = [];
+
+  async ngOnInit(): Promise<void> {
+    await this.authService.getProfile();
+    await this.getNotifications();
   }
 
   constructor(private router: Router,
-              private readonly authService: AuthService,
-              public readonly employeeService: EmployeeService,
-              private dialog: MatDialog, private readonly projectService: ProjectService) {
+    private readonly authService: AuthService,
+    public readonly employeeService: EmployeeService,
+    private dialog: MatDialog, private readonly projectService: ProjectService,
+    private readonly searchService: SearchService,
+    private readonly notificationService: NotificationsService) {
 
     this.employeeService.initializeChart();
 
-}
+  }
 
   async logout(): Promise<void> {
     this.authService.logout();
@@ -38,22 +48,33 @@ export class ChartsComponent implements OnInit {
   }
 
   async openDialog(): Promise<void> {
-    const currentVal = ( document.getElementById('mySearch') as HTMLInputElement).value;
-    const result = await this.employeeService.searchEmployee(currentVal);
+    const currentVal = (document.getElementById('mySearch') as HTMLInputElement).value;
+    const result = await this.searchService.searchGeneral(currentVal);
     this.dialog.open(SearchDialog, {
-      data: {searchResult: result}
+      data: { searchResult: result }
     });
   }
+
+  async openProjectDialog(): Promise<void> {
+    const projects = await this.projectService.getAllProjects();
+    this.dialog.open(ProjectDetailComponent, { data: { project: projects[projects.length - 1] } });
+  }
+
+  async getNotifications(): Promise<NotificationModel[]> {
+    this.notifs = await this.notificationService.getNotifications(this.authService.profile._id);
+    return this.notifs;
+  }
 }
+
 
 @Component({
   selector: 'settings-dialog',
   templateUrl: 'settings-dialog.html',
 })
-export class SettingsDialog {}
+export class SettingsDialog { }
 
 @Component({
   selector: 'search-dialog',
   templateUrl: 'search-dialog.html',
 })
-export class SearchDialog {}
+export class SearchDialog { }

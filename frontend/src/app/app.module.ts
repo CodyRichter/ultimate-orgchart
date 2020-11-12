@@ -30,7 +30,11 @@ import { EmployeeTransferComponent } from './components/employee-transfer/employ
 import { SearchComponent } from './components/search/search.component';
 import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 
 @NgModule({
@@ -48,6 +52,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
     SettingsComponent,
     SearchComponent,
     NotificationCardComponent,
+    ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog,
     CreateEmployeeComponent,
@@ -55,6 +60,8 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
   ],
   imports: [
     BrowserModule,
+    MatTabsModule,
+    MatPaginatorModule,
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
