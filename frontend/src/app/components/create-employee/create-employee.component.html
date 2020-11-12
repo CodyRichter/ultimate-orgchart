@@ -1,1 +1,15 @@
 <p>create-employee works!</p>
+<p>
+    <mat-form-field>
+        <mat-label>Employee ID</mat-label>
+        <input matInput placeHolder = "1" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="user@email.com" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+</p>
