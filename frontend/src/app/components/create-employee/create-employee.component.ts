@@ -23,9 +23,6 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   getErrorMessage() {
-    if (this.id.hasError('required')) {
-      return 'You must enter a value';
-    }
     return this.id.hasError('required')? 'You must nter a value':'';
   }
 
