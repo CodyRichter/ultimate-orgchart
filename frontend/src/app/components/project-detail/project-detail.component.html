@@ -1,0 +1,15 @@
+<div class="project-container">
+    <h2 mat-dialog-title>{{project.name}}</h2>
+    <mat-dialog-content class="mat-typography">
+        <h3><strong>Description</strong></h3>
+        <p>{{project.description}}</p>
+
+        <h3><strong>Manager</strong></h3>
+        <p>{{getManagerName()}}</p>
+
+        <h3><strong>Assignees</strong></h3>
+        <ng-container *ngFor="let assignee of project.employees">
+            <p>{{assignee.employee.firstName}} {{assignee.employee.lastName}}</p>
+        </ng-container>
+    </mat-dialog-content>
+</div>

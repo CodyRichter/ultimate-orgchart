@@ -1,4 +1,4 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
 import { DocumentType, ReturnModelType } from "@typegoose/typegoose";
@@ -21,55 +21,73 @@ export class ManagerService {
 
 
     //create request 
-    async createRequest(newRequest: ManagerRequest & { fromManagerId?: number, toManagerId?: number, employeeId?: number }): Promise<ManagerRequest> {
+    async createRequest(newRequest: ManagerRequest, user: Employee): Promise<ManagerRequest> {
 
         const session = await this.managerRequestModel.db.startSession();
 
         session.startTransaction();
 
         try {
-            // check if this is a valid request
-            // get manager based on id
-            // check if employeeId is present in manager's object
-            const fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).populate("manages").session(session).exec();
-
-            const manages = fromManager.manages;
-            let valid = false;
-            for (let i = 0; i < manages.length; i++) {
-                if ((manages[i] as Employee)._id === newRequest.employee) {
-                    valid = true;
-                    break;
-                }
-            }
-            if (valid === false) {
-                // CANCEL REQUEST ORDER
-                throw new ConflictException('The manager is not authorized to move this employee');
-            }
-
-
             const createdRequest = new this.managerRequestModel(newRequest);
             // //we manually add the status rather than the front-end to
             // // specifed the status
-            createdRequest.status = RequestStatus.Pending;
-            createdRequest.fromManager = await this.employeeModel.findById(newRequest.fromManagerId ? newRequest.fromManagerId : newRequest.fromManager).session(session).exec();
-            createdRequest.toManager = await this.employeeModel.findById(newRequest.toManagerId ? newRequest.toManagerId : newRequest.toManager).session(session).exec();
-            createdRequest.employee = await this.employeeModel.findById(newRequest.employeeId ? newRequest.employeeId : newRequest.employee).session(session).exec();
+            const employee = await this.employeeModel.findById(newRequest.employee).session(session).exec();
+            const fromManager = await this.employeeModel.findById(newRequest.fromManager).session(session).exec();
+            const toManager = await this.employeeModel.findById(newRequest.toManager).session(session).exec();
+            const foundEmployee = user.manages.find((emp: Employee) => emp._id === employee._id);
+            if (!user.isAdmin && (!foundEmployee || fromManager._id !== user._id)) {
+                throw new UnauthorizedException('User is not authorized to move this employee');
+            }
 
-
-
+            if (fromManager._id === toManager._id) {
+                createdRequest.status = RequestStatus.Approved;
+                employee.positionTitle = createdRequest.newPosition;
+                employee.save();
+            } else {
+                createdRequest.status = RequestStatus.Pending;
+            }
+            createdRequest.fromManager = fromManager;
+            createdRequest.toManager = toManager;
+            createdRequest.employee = employee;
 
             //save to database
-            const savedRequest = await this.managerRequestModel.create([createdRequest], { session: session });
-            //create the notification as well
-            const description = `This is transfer request from Manager :${createdRequest.fromManager.firstName} to transfer Employee:${createdRequest.employee.firstName} to Manager:${createdRequest.toManager.firstName} team`;
-            const notification = new this.notificationModel({ employeeId: createdRequest.employee._id, title: 'Transfer Request', description:description,managerRequest:savedRequest[0] });
-            await this.notificationModel.create([notification],{session:session});
+            const savedRequests = await this.managerRequestModel.create([createdRequest], { session: session });
+            const savedRequest = savedRequests[0];
+            
+     
+            const notifications: NotificationDoc[] = []
+            let requester = `${user.firstName} ${user.lastName}`
+            if (user._id !== fromManager.id) {
+                requester += ` (on behalf of ${fromManager.firstName} ${fromManager.lastName})`
+            }
+
+            if (createdRequest.status === RequestStatus.Approved) {
+                const description = `${employee.firstName} ${employee.lastName}'s position was changed from ${savedRequest.previousPosition} to ${savedRequest.newPosition} by ` + requester
+                notifications.push(new this.notificationModel({ employeeId: employee._id, title: 'Employee Position Change', description:description}));
+                notifications.push(new this.notificationModel({ employeeId: fromManager._id, title: 'Employee Position Change', description:description}));
+                if (user._id !== fromManager.id) {
+                    notifications.push(new this.notificationModel({ employeeId: user._id, title: 'Employee Position Change', description:description}));
+                }
+            } else {
+                let description = requester + ` is requesting to transfer ${employee.firstName} ${employee.lastName} to ${toManager.firstName} ${toManager.lastName}`;
+                if (savedRequest.previousPosition !== savedRequest.newPosition) {
+                    description += ` with a position change of ${savedRequest.previousPosition} to ${savedRequest.newPosition}`
+                }
+                notifications.push(new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
+                notifications.push(new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
+                notifications.push(new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
+                if (user._id !== fromManager.id) {
+                    notifications.push(new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
+                }
+            }
+    
+            await this.notificationModel.create(notifications, {session:session});
 
             await session.commitTransaction();
-            return createdRequest;
+            return savedRequest;
         } catch (error) {
             await session.abortTransaction();
-            throw new NotFoundException('Create request failed');
+            throw error;
         } finally {
             session.endSession();
         }
@@ -81,7 +99,7 @@ export class ManagerService {
     //then we update the 'status' and 'updatedTime' and 'the managerId' that should be updated too.
     //also update the employee info where their managerId should be updated
 
-    async approveRequest(requestId: number): Promise<ManagerRequest> {
+    async approveRequest(requestId: number, user: Employee): Promise<ManagerRequest> {
 
         const session = await this.managerRequestModel.db.startSession();
 
@@ -90,7 +108,11 @@ export class ManagerService {
         try {
             //find this request first
             //I set some error check in the findRequestById which help us catch the error
-            const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').session(session).exec();
+            const pendingRequest = await this.managerRequestModel.findById(requestId).session(session).exec();
+
+            if (user._id !== pendingRequest.toManager) {
+                throw new UnauthorizedException('User is not authorized to accept this transfer request');
+            }
 
             //if the status is not pending, means that this request has been processed
             //we throw exception
@@ -105,22 +127,30 @@ export class ManagerService {
 
             //update employee's managerId
             //convert the id to the object,  otherwise it won't be able to pass to the second argument of updateEmployeeData
-            const employee = await this.employeeModel.findById(pendingRequest.employee).populate('manages').populate('projects').session(session).exec();
-            const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).populate('manages').populate('projects').session(session).exec();
-            const toManager = await this.employeeModel.findById(pendingRequest.toManager).populate('manages').populate('projects').session(session).exec();
+            const employee = await this.employeeModel.findById(pendingRequest.employee).session(session).exec();
+            const fromManager = await this.employeeModel.findById(pendingRequest.fromManager).session(session).exec();
+            const toManager = await this.employeeModel.findById(pendingRequest.toManager).session(session).exec();
 
-            employee.managerId = toManager._id;
+            employee.manager = toManager._id;
+            employee.positionTitle = pendingRequest.newPosition;
             toManager.manages.push(employee);
             fromManager.manages = fromManager.manages.filter((emp: Employee) => emp._id !== employee._id)
 
             await fromManager.save();
             await toManager.save()
             await employee.save();
+
+            const description = `${employee.firstName} ${employee.firstName} was transferred from ${fromManager.firstName} ${fromManager.lastName} to ${toManager.firstName} ${toManager.lastName}`;
+            const notificationEmployee = new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer', description:description});
+            const notificationToManager = new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer', description:description});
+            const notificationFromManager = new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer', description:description});
+            await this.notificationModel.create([notificationEmployee, notificationToManager, notificationFromManager],{session:session});
+
             await session.commitTransaction();
             return pendingRequest;
-        } catch (erorr) {
+        } catch (error) {
             await session.abortTransaction();
-            throw new ConflictException('Fail to appove the request');
+            throw error;
         } finally {
             session.endSession();
         }
@@ -128,8 +158,12 @@ export class ManagerService {
 
     //Reject the request
     //return the updatedRequest
-    async rejectedRequest(requestId: number): Promise<ManagerRequest> {
-        const pendingRequest = await this.managerRequestModel.findById(requestId).populate('fromManager').populate('toManager').populate('employee').exec();
+    async rejectedRequest(requestId: number, user: Employee): Promise<ManagerRequest> {
+        const pendingRequest = await this.managerRequestModel.findById(requestId).exec();
+
+        if (user._id !== pendingRequest.toManager) {
+            throw new UnauthorizedException('User is not authorized to reject this transfer request');
+        }
 
         //if the status is not pending, means that this request has been processed
         //we throw exception
@@ -137,6 +171,27 @@ export class ManagerService {
 
         //set the status to rejected
         pendingRequest.status = RequestStatus.Rejcted;
+
+        //update to the database
+        await pendingRequest.save()
+        return pendingRequest;
+    }
+
+        //Reject the request
+    //return the updatedRequest
+    async cancelRequest(requestId: number, user: Employee): Promise<ManagerRequest> {
+        const pendingRequest = await this.managerRequestModel.findById(requestId).exec();
+
+        if ((user._id !== pendingRequest.fromManager) && !user.isAdmin) {
+            throw new UnauthorizedException('User is not authorized to cancel this transfer request');
+        }
+
+        //if the status is not pending, means that this request has been processed
+        //we throw exception
+        if (pendingRequest.status !== RequestStatus.Pending) { throw new ConflictException('This request has been processed already') };
+
+        //set the status to rejected
+        pendingRequest.status = RequestStatus.Canceled;
 
         //update to the database
         await pendingRequest.save()
@@ -188,23 +243,25 @@ export class ManagerService {
     }
 
 
+    // We do not need to update a request since there's not many fields that can safely be updated except for previous and new position. Cancelling will suffice
+
     //updates a single field of an managerRequest model found
     //if we want to use this function make sure we cal the findRequestById
     //to check the existence of the request
-    async updateRequest(requestId: number, update: ManagerRequest): Promise<ManagerRequest> {
-        // this takes a requestId parameter to find the request to change, and the request of type ManagerRequest is an object with the
-        // modified fields already in place, so the service simply replaces the db entry
-        try {
-            return await this.managerRequestModel.findByIdAndUpdate(requestId, update, { new: true, useFindAndModify: false }).exec();
-        } catch (error) {
+    // async updateRequest(requestId: number, update: ManagerRequest): Promise<ManagerRequest> {
+    //     // this takes a requestId parameter to find the request to change, and the request of type ManagerRequest is an object with the
+    //     // modified fields already in place, so the service simply replaces the db entry
+    //     try {
+    //         return await this.managerRequestModel.findByIdAndUpdate(requestId, update, { new: true, useFindAndModify: false }).exec();
+    //     } catch (error) {
 
-            throw new NotFoundException('the request does not exist');
-        }
-    }
+    //         throw new NotFoundException('the request does not exist');
+    //     }
+    // }
 
 
     //get requests by employeeId
     async getRequestByEmployeeId(employeeId: number): Promise<ManagerRequest[]> {
-        return await this.managerRequestModel.find({ employeeId: employeeId }).populate('fromManager').populate('toManager').populate('employee').exec();
+        return await this.managerRequestModel.find({ employee: employeeId }).populate('fromManager').populate('toManager').populate('employee').exec();
     }
 }

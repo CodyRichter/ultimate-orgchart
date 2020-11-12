@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {EmployeeService} from "../../../services/employee.service";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'organization-chart',
@@ -8,7 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ChartContainerComponent implements OnInit {
 
   @Input() datasource;
-  @Input() pan = false;
+  @Input() pan = true;
   @Input() zoom = false;
   @Input() zoomOutLimit = 0.5;
   @Input() zoomInLimit = 5;
@@ -20,12 +22,23 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor() {
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService) {
+  }
+
+  ngOnChanges (changes: SimpleChanges){
+    if (changes.datasource){
+      console.log('container data source changed to: ', this.datasource);
+    }
   }
 
   ngOnInit(): void {
     console.log(window.innerHeight);
-    this.setChartScale(700 / window.innerHeight);
+    if (window.innerHeight > 750) {
+      this.setChartScale(window.innerHeight / 850);
+    } else {
+      this.setChartScale(window.innerHeight / 750);
+    }
   }
 
   panEndHandler(): void {
@@ -123,5 +136,19 @@ export class ChartContainerComponent implements OnInit {
         }
       }
     }
+  }
+
+  async findMe(): Promise<void> {
+    if (!this.authService.profile) {
+      await this.authService.getProfile();
+    }
+    if (this.authService.profile.manages.length > 0) {
+      console.log('go down');
+      await this.employeeService.goDownInChart(this.authService.profile);
+    } else {
+      console.log('go up');
+      await this.employeeService.goUpInChart(this.authService.profile);
+    }
+    console.log(this.employeeService.curSubtree);
   }
 }

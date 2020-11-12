@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models/index';
 import { StackListComponent } from './stack-list/stack-list.component';
@@ -21,6 +21,13 @@ export class ChartStackComponent implements OnInit {
     this.dialog.open(StackListComponent, {
         data: { stackData: this.datasource }
     });
+  }
+
+  
+  ngOnChanges (changes: SimpleChanges){
+    if (changes.datasource){
+      console.log('stack data data source changed to: ', this.datasource);
+    }
   }
 
   getColor(pos): string {

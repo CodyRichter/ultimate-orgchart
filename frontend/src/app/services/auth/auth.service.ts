@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private readonly httpClient: HttpClient) { }
 
   private authToken: string;
-  private profile: Employee;
+  public profile: Employee;
 
   public async login(email: string, password: string): Promise<Employee> {
     const response = await this.httpClient.post('http://localhost:3000/auth/signin', {email, password}).toPromise() as any;

@@ -13,33 +13,38 @@ export class EmployeeService {
 
   ) { }
 
-  async createEmployee(newEmployee: Employee & EmployeeAuth & { employeeId?: number }): Promise<Employee> {
+  async createEmployee(newEmployee: Employee & EmployeeAuth & { employeeId?: number, managerId?: number }): Promise<Employee> {
 
     //await this.waitForMongooseConnection(mongoose);
     const session = await this.employeeModel.db.startSession();
      session.startTransaction();
     try {
       if (!newEmployee._id && newEmployee.employeeId) {
-        newEmployee._id = newEmployee.employeeId
+        newEmployee._id = newEmployee.employeeId;
+      }
+
+      if (!newEmployee.manager && newEmployee.managerId) {
+        newEmployee.manager = newEmployee.managerId;
       }
       newEmployee.password = await bcrypt.hash(newEmployee.password, 10);
 
       const createdEmployee = new this.employeeModel(newEmployee);
       const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-      const manager = await this.employeeModel.findById(newEmployee.managerId).populate('manages').populate('projects').session(session).exec();
-
-
-      if (manager) {
-        manager.manages.push(createdEmployee);
-        await manager.save();
-      }
+      const manager = await this.employeeModel.findById(newEmployee.manager).session(session).exec();
       
       await this.employeeAuthModel.create([createdEmployeeAuth],{session:session});
-      const employee=await this.employeeModel.create([createdEmployee],{session:session});
+      const employees=await this.employeeModel.create([createdEmployee],{session:session});
+      const employee = employees[0]
       
+      if (manager) {
+        manager.manages.push(employee);
+        await manager.save();
+      } else if (newEmployee.manager) {
+        throw new NotFoundException(`Manager not found for employee ${employee.firstName} ${employee.lastName}`);
+      }
 
       await session.commitTransaction();
-      return employee[0];
+      return employee;
     } 
     catch (error) {
 
@@ -47,9 +52,10 @@ export class EmployeeService {
      
       if (error.code === 11000) {
         throw new ConflictException("Employee already exists");
-      }
+      } 
 
-      throw new NotFoundException('The employee creation failed');
+      throw error;
+
     } finally {
 
       session.endSession();
@@ -60,7 +66,7 @@ export class EmployeeService {
   }
 
   
-  async createEmployees(newEmployees: (Employee & EmployeeAuth & { employeeId?: number })[]): Promise<Employee[]> {
+  async createEmployees(newEmployees: (Employee & EmployeeAuth & { employeeId?: number, managerId?: number })[]): Promise<Employee[]> {
     
     const session =await this.employeeModel.db.startSession();
 
@@ -74,7 +80,7 @@ export class EmployeeService {
       
       const updatedEmployees = await Promise.all(newEmployees.map(
         async (employee) => {
-          return { ...employee, _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password, 10) };
+          return { ...employee, manager: (!employee.manager && employee.managerId ? employee.managerId : employee.manager), _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password, 10) };
           // const createdEmployee = new this.employeeModel(newEmployee);
           // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
           // await this.employeeAuthModel.create(createdEmployeeAuth)
@@ -83,15 +89,19 @@ export class EmployeeService {
         }));
       await this.employeeAuthModel.create(updatedEmployees,{session:session});
       const savedEmployees = await this.employeeModel.create(updatedEmployees,{session:session});
-      const allEmployees = await this.employeeModel.find().populate('manages').populate('projects').session(session).exec();
+      const allEmployees = await this.employeeModel.find().session(session).exec();
 
       // console.log(savedEmployees);
       // console.log(allEmployees);
 
       await Promise.all(savedEmployees.map(emp1 => {
-        if (emp1.managerId) {
-          const index = allEmployees.findIndex(emp2 => emp2._id === emp1.managerId);
-          allEmployees[index].manages.push(emp1);
+        if (emp1.manager) {
+          const index = allEmployees.findIndex(emp2 => emp2._id === emp1.manager);
+          if (index) {
+            allEmployees[index].manages.push(emp1);
+          } else {
+            throw new NotFoundException(`Manager not found for employee ${emp1.firstName} ${emp1.lastName}`);
+          }
         }
       }));
 
@@ -123,31 +133,31 @@ export class EmployeeService {
   }
 
   async findAllEmployees(): Promise<Employee[]> {
-    return await this.employeeModel.find().populate('projects').populate('manages').exec();
+    return await this.employeeModel.find().populate('projects').populate('manages').populate('manager').exec();
   }
 
-  async getManagersManager(employeeId: number, managerHeight: number, populateDepth: number): Promise<Employee> {
-    let employee = await this.employeeModel.findById(employeeId).exec()
-    for (let i = 0; i < managerHeight; i++) {
-      if (employee.managerId) {
-        employee = await this.employeeModel.findById(employee.managerId).exec()
-      } else {
-        break;
-      }
-    }
-    employee.manages = await this.getManages(employee._id, populateDepth);
-    return employee;
-  }
+  // async getManagersManager(employeeId: number, managerHeight: number, populateDepth: number): Promise<Employee> {
+  //   let employee = await this.employeeModel.findById(employeeId).exec()
+  //   for (let i = 0; i < managerHeight; i++) {
+  //     if (employee.manager) {
+  //       employee = await this.employeeModel.findById(employee.manager).exec()
+  //     } else {
+  //       break;
+  //     }
+  //   }
+  //   employee.manages = await this.getManages(employee._id, populateDepth);
+  //   return employee;
+  // }
 
   async getManages(managerId: number, depth: number): Promise<Employee[]> {
 
-    let populate = { path: 'projects' };
+    let populate = { path: 'projects manager' };
 
     for (let i = 0; i < depth; i++) {
-      const temp = { path: 'manages projects', populate: populate }
+      const temp = { path: 'manages projects manager', populate: populate }
       populate = temp;
     }
-    return await this.employeeModel.find({ managerId }).populate(populate).exec();
+    return await this.employeeModel.find({ manager: managerId }).populate(populate).exec();
   }
 
   // async findEmployee(employee: Partial<Employee>): Promise<Employee> {
@@ -156,17 +166,19 @@ export class EmployeeService {
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
-    return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').exec();
+    return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').populate('manager').exec();
   }
 
 
-  // updating a reference does not work using this method, do manually using .save();
-  // updates a single field of an employee model found
-  async updateEmployeeData(employeeId: number, update: any): Promise<Employee | null> {
-    // this takes a employeId parameter to find the employee to change, and the employee of type Employee is an object with the
-    // modified fields already in place, so the service simply replaces the db entry
+  // updates details fields of an employee model 
+  async updateEmployeeData(employeeId: number, update: Employee): Promise<Employee> {
+    const employee = await this.employeeModel.findById(employeeId).exec(); 
+    // verify only allowed fields are updated (ToDo):
 
-    return await this.employeeModel.findByIdAndUpdate(employeeId, update, { new: true }).exec();  // return the updated employee
+    // check manager is the same, manages is the same, projects is the same
+
+    await employee.save();
+    return employee
   }
 
   // removes a single employee from db if request is valid
@@ -181,13 +193,15 @@ export class EmployeeService {
     const employee = await this.employeeModel.findById(employeeId).session(session).exec();
     // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     if (employee) {
-      const manager = await this.employeeModel.findById(employee.managerId).populate('manages').populate('projects').session(session).exec();
+      const manager = await this.employeeModel.findById(employee.manager).session(session).exec();
       if (manager) {
-        manager.manages = manager.manages.filter((emp: Employee) => emp._id !== employee._id);
+        manager.manages = manager.manages.filter((emp: number) => emp !== employee._id);
         await manager.save();
       }
       employee.deleteOne();
       await this.employeeAuthModel.findByIdAndDelete(employeeId).session(session).exec();
+    } else {
+      throw new NotFoundException('Employee not found')
     }
    
     await session.commitTransaction();
@@ -196,7 +210,7 @@ export class EmployeeService {
   {
     session.abortTransaction();
 
-    throw new NotFoundException('Employee does not exist or fail to deleted');
+    throw error
   }finally{
     session.endSession();
   }  
@@ -211,7 +225,7 @@ export class EmployeeService {
         query = {};
       }
       //if the key is mismatching the field, then we will return empty array
-      return await this.employeeModel.find(query).populate('manages').populate('projects').exec();
+      return await this.employeeModel.find(query).populate('manages').populate('manager').populate('projects').exec();
   }
 
   async generalSearch(query: string, skip = 0, limit = 10): Promise<Employee[]>{
@@ -222,7 +236,7 @@ export class EmployeeService {
               { email: { $regex: '.*' + query + '.*', $options: 'i' } },
             ] }
 
-    return await this.employeeModel.find(queri).populate('manages').populate('projects').skip(skip).limit(limit).exec();
+    return await this.employeeModel.find(queri).populate('manages').populate('manager').populate('projects').skip(skip).limit(limit).exec();
   }
 
 }

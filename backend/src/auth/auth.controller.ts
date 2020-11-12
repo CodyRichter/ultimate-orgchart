@@ -31,16 +31,16 @@ export class AuthController
                 projects:[],
         });
     }
-   
+    
+    // Local strategy @user will be employee auth
     @UseGuards(LocalAuthGuard)
     @Post('signin')
     async signIn(@User() user:EmployeeAuth)
     {   
-            //Caution: the request will store the info in User object
-            //I was using req.employeeAuth to retrieve the data! 
             return this.authService.signIn(user);
     }
-
+ 
+    // JWT strategy @user will be employee details
     @UseGuards(JwtAuthGuard)
     @Get('profile')
     async getUser(@User() user:Employee)

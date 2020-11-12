@@ -1,7 +1,7 @@
 import { ProjectsEmployee } from './projectsEmployee.model';
 
 export class Employee {
-    _id: number;
+    _id?: number;
     firstName: string;
     lastName: string;
     companyId: number;
@@ -9,11 +9,14 @@ export class Employee {
     companyName: string;
     isManager: boolean;
     isAdmin: boolean;
-    managerId?: number;
+    manager?: Employee | number;
     email: string;
     startDate: Date;
-    manages: Employee[];
-    projects: ProjectsEmployee[];
+    manages: (Employee | number)[];
+    projects: (ProjectsEmployee |number)[];
     createdAt?: Date;
     updatedAt?: Date;
+
+    // frontend only feature
+    highlight?: boolean;
 }
