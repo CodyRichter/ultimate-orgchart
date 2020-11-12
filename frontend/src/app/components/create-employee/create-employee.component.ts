@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'create-employee',
@@ -8,13 +8,27 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class CreateEmployeeComponent implements OnInit {
 
-  id = new FormControl('', [Validators.required])
+  id = new FormControl('', Validators.required)
   email = new FormControl('', [Validators.required, Validators.email])
   constructor() { }
 
   newEmployee: FormGroup;
 
   ngOnInit(): void {
+  }
+
+  getEmailErrorMessage() {
+    if(this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.email.hasError('email')? 'Not a valid email': '';
+  }
+
+  getErrorMessage() {
+    if (this.id.hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.id.hasError('required')? 'You must nter a value':'';
   }
 
 }
