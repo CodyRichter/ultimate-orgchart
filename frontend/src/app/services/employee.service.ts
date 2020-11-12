@@ -132,10 +132,6 @@ export class EmployeeService {
     return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise() as Employee[];
   }
 
-  async searchEmployee(query: any): Promise<Employee[]>{
-    return await this.httpClient.get(`http://localhost:3000/search/employee/?query=${query}`).toPromise() as Employee[];
-  }
-
   async uploadJSON(file: File): Promise<Employee[]> {
     const formData = new FormData();
     formData.append('file', file);

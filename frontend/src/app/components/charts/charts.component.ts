@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ProjectDetailComponent } from '../project-detail/project-detail.component';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { NotificationModel } from 'src/app/models';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-charts',
@@ -26,6 +27,7 @@ export class ChartsComponent implements OnInit {
     private readonly authService: AuthService,
     public readonly employeeService: EmployeeService,
     private dialog: MatDialog, private readonly projectService: ProjectService,
+    private readonly searchService: SearchService,
     private readonly notificationService: NotificationsService) {
 
     this.employeeService.initializeChart();
@@ -47,7 +49,7 @@ export class ChartsComponent implements OnInit {
 
   async openDialog(): Promise<void> {
     const currentVal = (document.getElementById('mySearch') as HTMLInputElement).value;
-    const result = await this.employeeService.searchEmployee(currentVal);
+    const result = await this.searchService.searchGeneral(currentVal);
     this.dialog.open(SearchDialog, {
       data: { searchResult: result }
     });

@@ -28,8 +28,14 @@ export class ProjectListComponent implements OnInit {
 
   async onNavigateClick(project: Project): Promise<void> {
     const projectManager = (project.manager as ProjectsEmployee).employee as Employee;
-    projectManager.manages = (project.employees as ProjectsEmployee[]).map((projEmployee: ProjectsEmployee) => projEmployee.employee);
+    projectManager.manager = undefined;
+    projectManager.manages = (project.employees as ProjectsEmployee[]).map((projEmployee: ProjectsEmployee) => {
+      const employee = projEmployee.employee as Employee;
+      employee.manages = [];
+      return employee;
+    });
     this.employeeService.curSubtree = projectManager;
+    console.log(this.employeeService.curSubtree);
     this.dialog.closeAll();
   }
 
