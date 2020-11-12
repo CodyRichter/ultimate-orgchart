@@ -10,9 +10,9 @@
         </div>
 
     <span class="spacer"></span>
-    <button mat-button (click)="openProjectDialog()">
+    <!-- <button mat-button (click)="openProjectDialog()">
         Project Detail
-    </button>
+    </button> -->
     <button mat-button color="accent">
         <mat-icon>help</mat-icon>
     </button>
@@ -36,12 +36,7 @@
     </mat-menu>
 </div>
 
-
-
-
-
 <mat-drawer-container>
-
     <section id="chart-container" *ngIf="employeeService.curSubtree">
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
@@ -52,8 +47,9 @@
         </button>
         <h2 class="notification-header">Notifications</h2>
         <br>
-        <notification-card type="incoming" employee="Steve" prevManager="Bill" destManager="Joe"></notification-card> 
-        <notification-card type="outgoing" employee="Steve" prevManager="Bill" destManager="Joe" status="Pending"></notification-card>
+        <div *ngFor="let notif of notifs">
+            <notification-card [notification]="notif"></notification-card>
+        </div>
     </mat-drawer>
 </mat-drawer-container>
 
