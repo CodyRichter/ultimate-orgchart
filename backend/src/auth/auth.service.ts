@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 
 import {JwtService} from '@nestjs/jwt';
 import { Employee } from 'src/employee/employee.model';
+import { env } from 'process';
 @Injectable()
 export class AuthService 
 {
@@ -24,7 +25,7 @@ export class AuthService
       const payload={email:employeeAuth.email,sub:employeeAuth._id};
       return {
           accessToken:this.jwtService.sign(payload),
-          refreshToken:this.jwtService.sign(payload,{expiresIn:'24h'})
+          refreshToken:this.jwtService.sign(payload,{expiresIn:'24h',secret:process.env.JWT_SECRET2})
       };
   }
 
