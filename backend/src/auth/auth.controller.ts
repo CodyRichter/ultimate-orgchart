@@ -47,6 +47,14 @@ export class AuthController
     {
             return user;
     }
+
+    //RefreshToken endpoint
+    @UseGuards(JwtAuthGuard)
+    @Post('refresh')
+    async refresh(@User()user:EmployeeAuth)
+    {
+            return this.authService.refreshToken(user);
+    }
 }
 
 
