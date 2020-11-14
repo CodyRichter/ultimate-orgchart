@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
+import { environment } from 'src/environments/environment';
 import { Employee, EmployeeAuth } from '../models';
 
 @Injectable({
@@ -14,11 +15,11 @@ export class EmployeeService {
   constructor(private readonly httpClient: HttpClient) {  }
 
   async getAllEmployees(): Promise<Employee[]> {
-    return await this.httpClient.get('http://localhost:3000/employee/').toPromise() as Employee[];
+    return await this.httpClient.get(environment.SERVER_URL + 'employee/').toPromise() as Employee[];
   }
 
   async getAllManagers(): Promise<Employee[]> {
-    return await this.httpClient.get('http://localhost:3000/employee/?isManager=true').toPromise() as Employee[];
+    return await this.httpClient.get(environment.SERVER_URL + 'employee/?isManager=true').toPromise() as Employee[];
   }
 
   getCurSubtree(): Employee {
@@ -94,7 +95,7 @@ export class EmployeeService {
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
     console.log('get manages ', manager, ' depth ', depth);
-    let url = 'http://localhost:3000/employee/getManages/';
+    let url = environment.SERVER_URL + 'employee/getManages/';
     if (manager) {
       url += manager;
     }
@@ -125,21 +126,21 @@ export class EmployeeService {
   }
 
   async createEmployee(employee: Employee & EmployeeAuth): Promise<Employee> {
-    return await this.httpClient.post('http://localhost:3000/employee/create', employee).toPromise() as Employee;
+    return await this.httpClient.post(environment.SERVER_URL + 'employee/create', employee).toPromise() as Employee;
   }
 
   async createManyEmployees(employees: (Employee & EmployeeAuth)[]): Promise<any> {
-    return await this.httpClient.post('http://localhost:3000/employee/create', employees).toPromise() as Employee[];
+    return await this.httpClient.post(environment.SERVER_URL + 'employee/create', employees).toPromise() as Employee[];
   }
 
   async uploadJSON(file: File): Promise<Employee[]> {
     const formData = new FormData();
     formData.append('file', file);
-    return await this.httpClient.post('http://localhost:3000/employee/uploadJSON', formData).toPromise() as Employee[];
+    return await this.httpClient.post(environment.SERVER_URL + 'employee/uploadJSON', formData).toPromise() as Employee[];
   }
 
   downloadJSON(): void {
-     this.httpClient.get('http://localhost:3000/employee/JSON', {responseType: 'blob', observe: 'response'}).subscribe(
+     this.httpClient.get(environment.SERVER_URL + 'employee/JSON', {responseType: 'blob', observe: 'response'}).subscribe(
        response => {
         const blob = new Blob([response.body], {type: response.headers.get('Content-Type')});
         const fileName = response.headers.get('Content-Disposition').split('filename="')[1].split('"')[0];
