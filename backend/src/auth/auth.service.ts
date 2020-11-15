@@ -47,6 +47,22 @@ export class AuthService
     return null;
   }
 
+  //change pwd
+  async changePwd(employeeAuth:EmployeeAuth,newPassword:any):Promise<void>
+  {
+      //find the employee from database
+      //we don't need to validate their validation because there will be a guard in controller
+      const savedemployeeAuth=await this.employeeAuthModel.findOne({employeeAuth}).exec();
+     
+      //encrypt the new password
+      savedemployeeAuth.password=await bcrypt.hash(newPassword.password,10);
+  
+      //save in database
+      await savedemployeeAuth.save();
+
+      return 
+  }
+
 
   
 
