@@ -1,5 +1,5 @@
-<div class="oc-stack" (click)="onStackClick()" *ngIf="datasource[0]">
-    <mat-card class="oc-node card0" *ngIf="datasource[2]" style="{{getColor(datasource[2].positionTitle)}}" >
+<div class="oc-stack" (click)="onStackClick()" *ngIf="datasource[0]" >
+    <mat-card class="oc-node card0" *ngIf="datasource[2]" style="{{getColor(datasource[2].positionTitle)}}"  matBadge={{this.datasource.length}} matBadgePosition='above before'>
         <mat-card-content>
             <div class="inline">
                 <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
@@ -14,7 +14,7 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <mat-card class="oc-node card1" *ngIf="datasource[1]" style="{{getColor(datasource[1].positionTitle)}}">
+    <mat-card class="oc-node card1" *ngIf="datasource[1]" style="{{getColor(datasource[1].positionTitle)}}" >
         <mat-card-content>
             <div class="inline">
                 <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
@@ -45,3 +45,4 @@
         </mat-card-content>
     </mat-card>
 </div>
+
