@@ -9,10 +9,11 @@ import { EmployeeAuth } from './auth.model';
 import {JwtStrategy} from './strategies/jwt-auth.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { EmployeeModule } from 'src/employee/employee.module';
+import { Employee } from 'src/employee/employee.model';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypegooseModule.forFeature([EmployeeAuth]),
+    TypegooseModule.forFeature([EmployeeAuth,Employee]),
     PassportModule,
     EmployeeModule,
     JwtModule.register(
