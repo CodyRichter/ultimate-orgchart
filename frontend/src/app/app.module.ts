@@ -35,6 +35,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import {MatTabsModule} from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatSelectModule,
     MatFormFieldModule,
     MatDividerModule,
+    MatGridListModule,
     RouterModule.forRoot([
       {
         path: '',

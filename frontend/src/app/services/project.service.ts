@@ -20,6 +20,23 @@ export class ProjectService {
   async addProjectEmployee(projectId: number, projectEmployees: ProjectsEmployee[]): Promise<void>{
     await this.httpClient.patch('http://localhost:3000/project/addEmployees/' + projectId, projectEmployees).toPromise();
   }
+
+  async updateProjectDescription(projectId: number, projectDescription: string): Promise<void> {
+    await this.httpClient.patch('http://localhost:3000/project/' + projectId, {
+      description: projectDescription
+    }).toPromise();
+  }
+
+  async getProject(projectId: number): Promise<Project> {
+    return await this.httpClient.get('http://localhost:3000/project/' + projectId).toPromise() as Project;
+  }
+
+  async updateProjectName(projectId: number, projectName: string): Promise<void> {
+    await this.httpClient.patch('http://localhost:3000/project/' + projectId, {
+      name: projectName
+    }).toPromise();
+  }
+
 }
 
 

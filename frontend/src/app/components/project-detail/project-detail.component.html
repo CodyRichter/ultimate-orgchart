@@ -1,15 +1,53 @@
 <div class="project-container">
-    <h2 mat-dialog-title>{{project.name}}</h2>
+    <div *ngIf="!editProjectName" (click)="editProjectName=true">
+        <h2 mat-dialog-title>{{project.name}}</h2>
+    </div>
+    <div *ngIf="editProjectName">
+        <mat-form-field class="project-title-editor">
+            <input matInput [(ngModel)]="projectName" (focusout)="onSaveTitle()" (keydown.enter)="onSaveTitle()">
+        </mat-form-field>
+    </div>
     <mat-dialog-content class="mat-typography">
-        <h3><strong>Description</strong></h3>
-        <p>{{project.description}}</p>
+        <mat-grid-list cols="4" rowHeight="500" style="height: 100vh">
+            <mat-grid-tile colspan="3">
+                <div class="project-detail">
+                    <h3><strong>Description</strong></h3>
+                    <div *ngIf="!editDescription" (click)="editDescription=true">
+                        <p *ngIf="project.description !== ''">{{project.description}}</p>
+                        <p *ngIf="project.description === ''">
+                            <i>Add a more detailed description...</i>
+                        </p>
+                    </div>
+                    <div *ngIf="editDescription">
+                        <mat-form-field appearance="fill" class="project-description-editor">
+                            <textarea matInput class="project-description-textarea" [(ngModel)]="projectDescription"></textarea>
+                        </mat-form-field>
+                        <div class="save-btn-container">
+                            <button mat-button class="save-btn" color="primary" (click)="onSaveDescription()">Save</button>
+                        </div>
+                    </div>
 
-        <h3><strong>Manager</strong></h3>
-        <p>{{getManagerName()}}</p>
+                    <h3><strong>Manager</strong></h3>
+                    <p>{{getManagerName()}}</p>
 
-        <h3><strong>Assignees</strong></h3>
-        <ng-container *ngFor="let assignee of project.employees">
-            <p>{{assignee.employee.firstName}} {{assignee.employee.lastName}}</p>
-        </ng-container>
+                    <h3><strong>Assignees</strong></h3>
+                    <p>{{getAssigneesName()}}</p>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <div class="side-btn-container">
+                    <button mat-stroked-button class="side-btn" [matMenuTriggerFor]="menu">
+                        <mat-icon class="icon">people</mat-icon> Assignees
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>Item 1</button>
+                        <button mat-menu-item>Item 2</button>
+                    </mat-menu>
+                    <button mat-stroked-button class="side-btn" (click)="onDeleteProject()">
+                        <mat-icon class="icon">delete</mat-icon> Delete
+                    </button>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
     </mat-dialog-content>
 </div>
