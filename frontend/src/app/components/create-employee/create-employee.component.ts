@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Employee } from 'src/app/models';
+import { EmployeeService } from 'src/app/services/employee.service';
+import { ManagerService } from 'src/app/services/manager.service';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+
+
 
 @Component({
   selector: 'create-employee',
@@ -8,11 +15,56 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class CreateEmployeeComponent implements OnInit {
 
-  id = new FormControl('', [Validators.required]);
-  email = new FormControl('', [Validators.required, Validators.email])
-  constructor() { }
+  manager: Employee;
+  empID: number;
+  firstName: string;
+  lastName: string;
+  companyId: number;
+  positionTitle: string;
+  companyName: string;
+  isManager: boolean;
+  isAdmin: boolean;
+  startDate: Date;
+  password: string;
+  employees: Employee[] = [];
+
+  managers = this.getAllManagers()
+  
+  id = new FormControl('', Validators.required);
+  email = new FormControl('', [Validators.required, Validators.email]);
+
+
+  constructor(private readonly employeeService: EmployeeService) { 
+  }
 
   ngOnInit(): void {
+  }
+
+  async createEmp(): Promise<void> {
+    const newEmployee = {
+      _id: this.empID,
+      firstName : this.firstName,
+      lastName: this.lastName,
+      companyId: this.companyId,
+      positionTitle: this.positionTitle,
+      companyName: this.companyName,
+      isManager: this.isManager,
+      isAdmin: this.isAdmin,
+      manager: this.manager,
+      email: this.email.value,
+      startDate: this.startDate,
+      manages: [],
+      projects: [],
+      password: this.password
+    };
+
+    console.log(await this.employeeService.createEmployee(newEmployee))
+  }
+
+  async getAllManagers(): Promise<void> {
+    for (let i=0; i<100;i++) {
+      this.employees.push(await this.employeeService.getEmployeeById(i));
+    }
   }
 
   getEmailErrorMessage() {
@@ -23,7 +75,7 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   getErrorMessage() {
-    return this.id.hasError('required')? 'You must nter a value':'';
+    return this.id.hasError('required')? 'You must enter a value':'';
   }
 
 }

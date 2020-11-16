@@ -1,15 +1,87 @@
-<p>create-employee works!</p>
 <p>
-    <mat-form-field>
+    <mat-form-field appearance="fill">
         <mat-label>Employee ID</mat-label>
-        <input matInput placeHolder = "1" required>
+        <input matInput placeHolder = "Emp Id" [(ngModel)] = "empID" required>
+        <mat-error>ID is required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput placeHolder = "First Name" [(ngModel)] = "firstName"required>
         <mat-error>{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
-    <mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeHolder = "Last Name" [(ngModel)] = "lastName" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Company ID</mat-label>
+        <input matInput placeHolder = "1" [(ngModel)] = "companyId" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Position Title</mat-label>
+        <input matInput placeHolder = "Software Engineer" [(ngModel)] = "positionTitle" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input matInput placeHolder = "1" [(ngModel)] = "companyName" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Manager?</mat-label>
+        <mat-select [(ngModel)] = "isManager" required>
+            <mat-option value="true">Yes</mat-option>
+            <mat-option value="false">No</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Is Admin?</mat-label>
+        <mat-select [(ngModel)] = "isAdmin" required>
+            <mat-option value="true">Yes</mat-option>
+            <mat-option value="false">No</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Manager Name</mat-label>
+        <mat-select [(ngModel)]="manager" required>
+            <mat-option *ngFor="let employee of employees" [value]="employee">
+                {{employee.firstName}} {{employee.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="pat@email.com" [formControl]="email" required>
+        <input matInput placeholder="user@email.com" [formControl]="email" [(ngModel)]="manager" required>
         <mat-error>{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput placeHolder = "1" [(ngModel)]="password" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <!-- 
+            <input matInput [matDatepicker]="picker" [(ngModel)]="startDate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker> 
+        -->
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="createEmp()" mat-dialog-close>
+        Create Employee
+    </button>
 </p>
