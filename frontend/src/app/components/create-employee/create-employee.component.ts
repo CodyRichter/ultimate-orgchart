@@ -6,8 +6,6 @@ import { ManagerService } from 'src/app/services/manager.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 
-
-
 @Component({
   selector: 'create-employee',
   templateUrl: './create-employee.component.html',
@@ -34,8 +32,7 @@ export class CreateEmployeeComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
 
 
-  constructor(private readonly employeeService: EmployeeService) { 
-  }
+  constructor(private readonly employeeService: EmployeeService) { }
 
   ngOnInit(): void {
   }
@@ -57,7 +54,6 @@ export class CreateEmployeeComponent implements OnInit {
       projects: [],
       password: this.password
     };
-
     console.log(await this.employeeService.createEmployee(newEmployee))
   }
 

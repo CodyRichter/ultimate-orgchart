@@ -36,6 +36,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
   ],
   imports: [
     BrowserModule,
+    MatDatepickerModule,
     MatTabsModule,
     MatPaginatorModule,
     FormsModule,
