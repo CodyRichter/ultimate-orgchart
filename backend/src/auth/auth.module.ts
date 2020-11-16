@@ -19,7 +19,7 @@ import { RefreshJwtStrategy } from './strategies/refresh-auth.strategy';
     JwtModule.register(
       {
         secret:process.env.JWT_SECRET,
-        signOptions:{expiresIn:'1m'},
+        signOptions:{expiresIn:'5m'},
         
       })
 ],
