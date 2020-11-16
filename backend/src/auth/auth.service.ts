@@ -47,7 +47,8 @@ export class AuthService {
   async changePwd(employeeAuth: EmployeeAuth, passWordInfo: any): Promise<boolean> {
     //find the employee from database
     //we don't need to validate their validation because there will be a guard in controller
-    const savedemployeeAuth = await this.employeeAuthModel.findOne({ employeeAuth }).exec();
+    try {
+      const savedemployeeAuth = await this.employeeAuthModel.findOne({ employeeAuth }).exec();
 
     const isPasswordMatching: boolean = await bcrypt.compare(passWordInfo.oldPassword, savedemployeeAuth.password);
 
@@ -63,6 +64,10 @@ export class AuthService {
     await savedemployeeAuth.save();
 
     return true;
+    } catch (error) {
+        throw new ConflictException('Password does not match or not found');
+    }
+    
   }
 
   //change email
