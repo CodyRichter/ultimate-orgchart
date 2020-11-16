@@ -17,6 +17,18 @@ export class EmployeeService {
     if (!newEmployee._id && newEmployee.employeeId) {
       newEmployee._id = newEmployee.employeeId
     }
+    if(!newEmployee._id && !newEmployee.employeeId){
+      let list = await this.findAllEmployees();
+      let employee:any
+      let lastemployeeid=0
+      for (employee in list){
+        if (list[employee]._id>lastemployeeid){
+          lastemployeeid=list[employee]._id
+        }
+      }
+      newEmployee._id=lastemployeeid+1;
+      newEmployee.employeeId=lastemployeeid+1;
+    }
     newEmployee.password = await bcrypt.hash(newEmployee.password,10);
 
     const createdEmployee = new this.employeeModel(newEmployee);
