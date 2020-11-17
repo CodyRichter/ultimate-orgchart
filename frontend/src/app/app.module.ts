@@ -17,7 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
@@ -32,11 +32,11 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [

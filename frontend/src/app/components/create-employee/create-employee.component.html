@@ -95,14 +95,39 @@
 
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Favorite food</mat-label>
-      <input matInput placeHolder="Emp Id" name="Blah" [(ngModel)] = "empID" required>
+      <mat-label>Employee ID</mat-label>
+      <input matInput placeHolder="Emp Id" name="empid" [(ngModel)]="empID" required>
       <mat-error>ID is required</mat-error>
     </mat-form-field>
     <br>
-    <mat-form-field class="example-full-width" >
-      <mat-label>Leave a comment</mat-label>
-      <textarea matInput placeholder="Ex. It makes me feel..." name="Blah"></textarea>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput placeHolder="Denver" name="fname" [(ngModel)]="firstName" required>
+        <mat-error>First Name is required</mat-error>
     </mat-form-field>
-  </form>
-  
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeHolder="Parker" name="lname" [(ngModel)]="lastName" required>
+        <mat-error>Last Name is required</mat-error>
+    </mat-form-field>
+    <br><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Company ID</mat-label>
+        <input matInput placeHolder="Integer value" name="cid" [(ngModel)]="companyId" required>
+        <mat-error>Company ID is required</mat-error>
+    </mat-form-field>
+    <br><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Position Title</mat-label>
+        <input matInput placeHolder="Software Engineer" name="ptitle" [(ngModel)]="positionTitle" required>
+        <mat-error>Position Title is required</mat-error>
+    </mat-form-field>
+    <br><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input matInput placeHolder="Apple" name="Blah" [(ngModel)]="companyName" required>
+        <mat-error>Company Name is required</mat-error>
+    </mat-form-field>
+    <br>
+   <!--  <div class="example-full-width">
+        <mat-checkbox class="example-margin">Check me!</mat-checkbox>
+    </div> -->
+</form>
