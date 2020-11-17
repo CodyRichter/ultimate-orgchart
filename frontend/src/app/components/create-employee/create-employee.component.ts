@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models';
 import { EmployeeService } from 'src/app/services/employee.service';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'create-employee',
@@ -10,7 +9,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
-
+  date: string;
   hide = true;
   manager: Employee;
   empID: number;
@@ -24,6 +23,7 @@ export class CreateEmployeeComponent implements OnInit {
   startDate: Date;
   password: string;
   employees: Employee[] = [];
+  roomsFilter: any = {};
 
   managers = this.getAllManagers()
   
@@ -53,7 +53,26 @@ export class CreateEmployeeComponent implements OnInit {
       projects: [],
       password: this.password
     };
-    console.log(await this.employeeService.createEmployee(newEmployee))
+    //console.log(await this.employeeService.createEmployee(newEmployee))
+  }
+/* 
+  onDate(event){
+    console.log(event);  
+  } */
+
+  public onDate(event: any): void {
+    this.roomsFilter.date = event.value;
+    console.log(this.roomsFilter.date);
+  }
+
+  changeIsManagerValue(event){
+    console.log(this.date);
+    this.isManager = event.checked;
+    console.log(this.isManager);
+  }
+
+  changeIsAdminValue(event){
+    this.isAdmin = event.checked;
   }
 
   async getAllManagers(): Promise<void> {
