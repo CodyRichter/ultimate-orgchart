@@ -37,6 +37,8 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   imports: [
     BrowserModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatTabsModule,
     MatPaginatorModule,
     FormsModule,

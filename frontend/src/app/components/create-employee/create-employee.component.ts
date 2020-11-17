@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { ManagerService } from 'src/app/services/manager.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'create-employee',
@@ -13,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 })
 export class CreateEmployeeComponent implements OnInit {
 
+  hide = true;
   manager: Employee;
   empID: number;
   firstName: string;
@@ -65,9 +64,9 @@ export class CreateEmployeeComponent implements OnInit {
 
   getEmailErrorMessage() {
     if(this.email.hasError('required')) {
-      return 'You must enter a value';
+      return 'Email is required';
     }
-    return this.email.hasError('email')? 'Not a valid email': '';
+    return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
   getErrorMessage() {
