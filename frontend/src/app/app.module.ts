@@ -35,6 +35,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import {MatTabsModule} from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
@@ -81,6 +82,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatFormFieldModule,
     MatBadgeModule,
     MatDividerModule,
+    MatGridListModule,
     RouterModule.forRoot([
       {
         path: '',
