@@ -60,3 +60,7 @@ div.inline {
     float:left;
 }
 
+.mat-badge-content{
+    background : blue;
+    color: white;
+}
