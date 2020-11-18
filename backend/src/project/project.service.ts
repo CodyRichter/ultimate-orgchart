@@ -126,7 +126,7 @@ export class ProjectService {
         {
                 await session.abortTransaction();
 
-                throw error;
+                throw new ConflictException('Create project failed');
         }finally{
             session.endSession();
         }
@@ -209,7 +209,7 @@ export class ProjectService {
     }catch(error)
     {
         await session.abortTransaction();
-        throw error;
+        throw new ConflictException('Delete project failed');
     }finally{
          session.endSession();
     }
@@ -280,7 +280,7 @@ export class ProjectService {
         }catch(error)
         {
             await session.abortTransaction();
-            throw error;  
+            throw new ConflictException('Add project employee failed');  
         }finally{
              session.endSession();
         }
@@ -334,7 +334,7 @@ export class ProjectService {
         }catch(error)
         {
             await session.abortTransaction();
-            throw error;
+            throw new ConflictException('delete project employee failed');
         }finally{
              session.endSession();
         }
