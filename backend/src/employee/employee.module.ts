@@ -12,13 +12,6 @@ import {JwtModule} from '@nestjs/jwt';
   imports: [
     TypegooseModule.forFeature([Employee, EmployeeAuth]),
     ConfigModule.forRoot(),
-    PassportModule,
-    JwtModule.register(
-      {
-        secret:process.env.JWT_SECRET,
-        signOptions:{expiresIn:'1h'},
-      }
-    ),
   ],
   providers: [EmployeeService,JwtStrategy],
   controllers: [EmployeeController],

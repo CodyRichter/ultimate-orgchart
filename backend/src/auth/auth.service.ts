@@ -4,8 +4,8 @@ import {EmployeeAuth} from '../auth/auth.model';
 import { InjectModel } from "nestjs-typegoose";
 import { ReturnModelType } from "@typegoose/typegoose";
 import * as bcrypt from 'bcrypt';
-
 import {JwtService} from '@nestjs/jwt';
+
 @Injectable()
 export class AuthService 
 {
@@ -21,9 +21,22 @@ export class AuthService
   {
     
       const payload={email:employeeAuth.email,sub:employeeAuth._id};
+      const date=new Date();
+      date.setMinutes(date.getMinutes()+1);
       return {
-          accessToken:this.jwtService.sign(payload)
-      };
+          accessToken:this.jwtService.sign(payload),
+          refreshToken:this.jwtService.sign(payload,{expiresIn:'24h',secret:process.env.JWT_SECRET2}),
+          expiresIn:date
+        
+        };
+  }
+
+  async refreshToken(employeeAuth:EmployeeAuth)
+  {
+    const payload={email:employeeAuth.email,sub:employeeAuth._id};
+      return {
+          accessToken:this.jwtService.sign(payload),
+          };
   }
 
   //validate the user email and password
