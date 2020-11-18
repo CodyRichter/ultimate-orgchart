@@ -27,7 +27,7 @@ export class ProjectService {
     }).toPromise();
   }
 
-  async getProject(projectId: number): Promise<Project> {
+  async getProjectById(projectId: number): Promise<Project> {
     return await this.httpClient.get('http://localhost:3000/project/' + projectId).toPromise() as Project;
   }
 
@@ -35,6 +35,10 @@ export class ProjectService {
     await this.httpClient.patch('http://localhost:3000/project/' + projectId, {
       name: projectName
     }).toPromise();
+  }
+
+  async deleteProjectById(projectId: number): Promise<void> {
+    await this.httpClient.delete('http://localhost:3000/project/' + projectId).toPromise();
   }
 
 }

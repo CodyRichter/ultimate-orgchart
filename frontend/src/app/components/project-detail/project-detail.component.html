@@ -36,14 +36,17 @@
             </mat-grid-tile>
             <mat-grid-tile colspan="1">
                 <div class="side-btn-container">
-                    <button mat-stroked-button class="side-btn" [matMenuTriggerFor]="menu">
+                    <button mat-stroked-button class="side-btn">
                         <mat-icon class="icon">people</mat-icon> Assignees
                     </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item>Item 1</button>
-                        <button mat-menu-item>Item 2</button>
-                    </mat-menu>
-                    <button mat-stroked-button class="side-btn" (click)="onDeleteProject()">
+<!--                    <mat-menu #menu="matMenu">-->
+<!--                        <mat-select [formControl]="formControl" [(value)]="assignees" multiple>-->
+<!--                            <mat-option *ngFor="let employee of employees" [value]="employee">-->
+<!--                                {{employee.firstName}} {{employee.lastName}}-->
+<!--                            </mat-option>-->
+<!--                        </mat-select>-->
+<!--                    </mat-menu>-->
+                    <button mat-stroked-button class="side-btn" (click)="onDeleteProject()" mat-dialog-close>
                         <mat-icon class="icon">delete</mat-icon> Delete
                     </button>
                 </div>
