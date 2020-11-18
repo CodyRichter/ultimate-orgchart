@@ -3,6 +3,7 @@ import { Employee } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeDetailComponent } from './node-detail/node-detail.component';
 
+
 @Component({
   selector: 'chart-node',
   templateUrl: './chart-node.component.html',
