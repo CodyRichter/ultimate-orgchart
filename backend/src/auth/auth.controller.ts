@@ -1,4 +1,4 @@
-import { Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { Employee } from 'src/employee/employee.model';
 import { EmployeeService } from 'src/employee/employee.service';
 import { EmployeeAuth } from './auth.model';
