@@ -209,7 +209,7 @@ export class ProjectService {
     }catch(error)
     {
         await session.abortTransaction();
-        throw error;
+        throw new NotFoundException('The project does not exist or failed to delete');
     }finally{
          session.endSession();
     }
