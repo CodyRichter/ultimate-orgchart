@@ -9,6 +9,7 @@ import { EmployeeAuth } from './auth.model';
 import {JwtStrategy} from './strategies/jwt-auth.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { EmployeeModule } from 'src/employee/employee.module';
+import { RefreshJwtStrategy } from './strategies/refresh-auth.strategy';
 import { Employee } from 'src/employee/employee.model';
 @Module({
   imports: [
@@ -19,11 +20,12 @@ import { Employee } from 'src/employee/employee.model';
     JwtModule.register(
       {
         secret:process.env.JWT_SECRET,
-        signOptions:{expiresIn:'1h'},
+        signOptions:{expiresIn:'5m'},
+        
       })
-
 ],
-  providers: [AuthService,LocalStrategy,JwtStrategy],
+
+  providers: [AuthService,LocalStrategy,JwtStrategy,RefreshJwtStrategy],
   controllers: [AuthController],
   exports:[AuthService],
 })

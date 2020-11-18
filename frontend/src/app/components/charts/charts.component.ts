@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { setIntervalAsync } from 'set-interval-async/dynamic'
+import { clearIntervalAsync } from 'set-interval-async'
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
@@ -16,11 +18,17 @@ import { SearchService } from 'src/app/services/search.service';
 })
 export class ChartsComponent implements OnInit {
 
+  intervalId;
   notifs: NotificationModel[] = [];
 
   async ngOnInit(): Promise<void> {
     await this.authService.getProfile();
     await this.getNotifications();
+    this.intervalId = setIntervalAsync(async () => { await this.getNotifications() }, 10000);
+  }
+
+  ngOnDestroy() {
+    clearIntervalAsync(this.intervalId);
   }
 
   constructor(private router: Router,
