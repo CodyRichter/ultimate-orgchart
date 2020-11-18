@@ -4,7 +4,7 @@ import {ExtractJwt, Strategy} from 'passport-jwt';
 import { EmployeeService } from 'src/employee/employee.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy,"access_token")
+export class RefreshJwtStrategy extends PassportStrategy(Strategy,"refresh_token")
 {
     
     constructor(private readonly employeeService: EmployeeService){
@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,"access_token")
         super({
             jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration:false,
-            secretOrKey:process.env.JWT_SECRET,
+            secretOrKey:process.env.JWT_SECRET2,
         });
             
     }

@@ -1,10 +1,11 @@
-import { Controller, Get, Post,Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { Employee } from 'src/employee/employee.model';
 import { EmployeeService } from 'src/employee/employee.service';
 import { EmployeeAuth } from './auth.model';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 import {User} from './guards/user.decorator';
 @Controller('auth')
 export class AuthController 
@@ -46,6 +47,14 @@ export class AuthController
     async getUser(@User() user:Employee)
     {
             return user;
+    }
+
+    //RefreshToken endpoint
+    @UseGuards(RefreshAuthGuard)
+    @Post('refresh')
+    async refresh(@User()user:EmployeeAuth)
+    {
+            return this.authService.refreshToken(user);
     }
 }
 
