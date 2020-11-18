@@ -35,6 +35,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import {MatTabsModule} from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatBadgeModule,
     MatDividerModule,
     RouterModule.forRoot([
       {

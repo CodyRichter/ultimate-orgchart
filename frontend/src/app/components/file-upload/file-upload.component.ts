@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
-
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
@@ -14,7 +14,7 @@ export class FileUploadComponent implements OnInit {
   file: File = null;
   fileMsg = 'No File Selected';
 
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService, private dialogRef: MatDialog) { }
 
   ngOnInit() {}
 
@@ -36,7 +36,9 @@ export class FileUploadComponent implements OnInit {
   async uploadFile(): Promise<void> {
     if (this.file != null) {
       console.log(await this.employeeService.uploadJSON(this.file));
+      this.dialogRef.closeAll();
     }
+
   }
 
 }
