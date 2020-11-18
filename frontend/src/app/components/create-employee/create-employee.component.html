@@ -37,19 +37,19 @@
     <br>
     <div class="example-full-width">
         <mat-checkbox (change)="changeIsManagerValue($event)" class="example-margin" color="primary">Is Manager?</mat-checkbox>
-        <!-- <input type="checkbox" name="myData" [(ngModel)]="isManager"> -->
         <br>
         <mat-checkbox (change)="changeIsAdminValue($event)" class="example-margin" color="primary">Is Admin?</mat-checkbox>
     </div>
     <br>
-    <!-- <mat-form-field class="example-full-width" appearance="fill">
+    <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Manager Name</mat-label>
-        <mat-select [(ngModel)]="manager">
+        <mat-select [(ngModel)]="manager" required>
             <mat-option *ngFor="let employee of employees" [value]="employee">
                 {{employee.firstName}} {{employee.lastName}}
             </mat-option>
         </mat-select>
-    </mat-form-field> -->
+        <mat-error>Manager name is required</mat-error>
+    </mat-form-field>
     <br>
     <div class="example-full-width">
         <mat-form-field appearance="fill">

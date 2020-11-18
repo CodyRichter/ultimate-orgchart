@@ -25,13 +25,13 @@ export class CreateEmployeeComponent implements OnInit {
   employees: Employee[] = [];
   roomsFilter: any = {};
 
-  managers = this.getAllManagers()
+  //managers = this.getAllManagers()
   
-  id = new FormControl('', Validators.required);
   email = new FormControl('', [Validators.required, Validators.email]);
 
-
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService) { 
+    this.getAllEmployee().then();
+  }
 
   ngOnInit(): void {
   }
@@ -66,17 +66,25 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   changeIsManagerValue(event){
-    console.log(this.date);
+    //console.log(this.date);
     this.isManager = event.checked;
-    console.log(this.isManager);
+    //console.log(this.isManager);
+    /* var event1 = new Date(this.date);
+    let d = JSON.stringify(event1);
+    d = d.slice(1,11);
+    this.startDate = new Date(d);
+    console.log(typeof(this.startDate));
+    console.log(this.startDate);
+ */
   }
 
   changeIsAdminValue(event){
     this.isAdmin = event.checked;
   }
 
-  async getAllManagers(): Promise<void> {
-    for (let i=0; i<100;i++) {
+  async getAllEmployee(): Promise<void> {
+    // TODO
+    for (let i = 1; i < 100; i++) {
       this.employees.push(await this.employeeService.getEmployeeById(i));
     }
   }
@@ -87,9 +95,4 @@ export class CreateEmployeeComponent implements OnInit {
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
-
-  getErrorMessage() {
-    return this.id.hasError('required')? 'You must enter a value':'';
-  }
-
 }
