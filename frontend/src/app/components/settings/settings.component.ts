@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { Employee } from 'src/app/models/index';
+import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/chart-node/node-detail/node-detail.component';
 
 @Component({
   selector: 'settings',
@@ -10,6 +12,10 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class SettingsComponent implements OnInit {
 
+  @Input() nodeData: Employee;
+
+  @Output() nodeClick = new EventEmitter<any>();
+
   constructor(public dialog: MatDialog,
               private readonly employeeService: EmployeeService,
               public readonly authService: AuthService) { }
@@ -17,7 +23,12 @@ export class SettingsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.authService.getProfile();
   }
-
+  
+  onNodeClick(): void {
+    this.dialog.open(EditNodeDialog, {
+        data: { nodeData: this.nodeData }
+    });
+  }
   openJSONUploadDialog(): void {
     this.dialog.open(JSONUploadDialog);
   }

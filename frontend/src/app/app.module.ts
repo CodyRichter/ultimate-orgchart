@@ -35,6 +35,8 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import {MatTabsModule} from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {EditNodeDialogComponent} from './edit-node-dialog/edit-node-dialog.component';
+import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog,
-    ProjectListComponent
+    ProjectListComponent,
+    EditNodeDialogComponent,
+    EditNodeDialog
   ],
   imports: [
     BrowserModule,

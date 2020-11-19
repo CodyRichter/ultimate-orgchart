@@ -1,0 +1,26 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Employee Id</mat-label>
+      <input matInput placeHolder="emp" name="Blah" [(ngModel)]="empID" required>
+      <mat-error>ID is required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="First Name" name="Blah" value = "{{nodeData.firstName}}" [(ngModel)]="firstName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Last Name" name="Blah" value = "{{nodeData.lastName}}" [(ngModel)]="lastName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="user@email.com" name="Blah" value = "{{nodeData.email}}" [(ngModel)]="email" required />
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="editEmployee()" mat-dialog-close>
+        Edit Employee
+    </button>
+  </form>

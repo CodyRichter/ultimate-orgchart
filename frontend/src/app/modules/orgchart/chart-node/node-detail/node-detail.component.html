@@ -1,9 +1,15 @@
-<div class="dot" style="{{getColor(nodeData.positionTitle)}}"></div>
+<div class="dot" style="{{getColor(nodeData.positionTitle)}}">
+</div>
 <mat-dialog-content>
     <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 72px; margin-left: 2px"></div>
     <div style="margin-left: 96px; margin-top: 8px">
         <div style="font-size: large">
             <strong>{{nodeData.firstName}} {{nodeData.lastName}}</strong>
+            
+        <button mat-icon-button color="primary" (click)="openEditNodeDialog()" aria-label="Example icon button with a home icon">
+        <mat-icon>edit</mat-icon>
+        </button>
+           
         </div>
         <div style="margin-top: 20px">
             {{nodeData.positionTitle}}
