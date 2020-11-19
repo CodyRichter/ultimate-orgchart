@@ -3,8 +3,8 @@
     box-sizing: border-box;
     left: 50%;
     position: absolute;
-    bottom: 0;
-    height: 48px;
+    bottom: -16px;
+    height: 64px;
     border-color: #707070;
     border-style: solid;
     border-width: 0 2px 0 0;
@@ -58,4 +58,9 @@
 
 div.inline {
     float:left;
+}
+
+.mat-badge-content{
+    background : blue;
+    color: white;
 }
