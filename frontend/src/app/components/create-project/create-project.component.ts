@@ -4,6 +4,7 @@ import { ManagerService } from 'src/app/services/manager.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Employee } from 'src/app/models';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Project } from 'src/app/models';
 import { ProjectService } from 'src/app/services/project.service';
@@ -26,7 +27,8 @@ export class CreateProjectComponent implements OnInit {
 
   constructor(private readonly projectService: ProjectService,
               private readonly authService: AuthService,
-              private readonly employeeService: EmployeeService) {
+              private readonly employeeService: EmployeeService,
+              private dialogRef: MatDialog) {
     this.getAllEmployee().then();
   }
 
@@ -63,6 +65,8 @@ export class CreateProjectComponent implements OnInit {
 
     console.log(project);
     console.log(await this.projectService.createProject(project));
+
+    this.dialogRef.closeAll();
 
   }
 

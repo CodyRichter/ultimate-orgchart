@@ -38,7 +38,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatExpansionModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatBadgeModule,
     MatDividerModule,
+    MatGridListModule,
     RouterModule.forRoot([
       {
         path: '',

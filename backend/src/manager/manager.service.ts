@@ -38,7 +38,8 @@ export class ManagerService {
             if (!user.isAdmin && (!foundEmployee || fromManager._id !== user._id)) {
                 throw new UnauthorizedException('User is not authorized to move this employee');
             }
-
+            if (createdRequest.newPosition == null)
+                createdRequest.newPosition = employee.positionTitle;
             if (fromManager._id === toManager._id) {
                 createdRequest.status = RequestStatus.Approved;
                 employee.positionTitle = createdRequest.newPosition;

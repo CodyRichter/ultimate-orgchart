@@ -18,7 +18,13 @@
         </mat-select>
     </mat-form-field>
 </p>
+<p>
+    <mat-form-field appearance="fill">
+        <mat-label>New Position Title</mat-label>
+        <input matInput placeholder="Leave blank if unchanged" [(ngModel)]="newTitle">
+    </mat-form-field>
+</p>
 
-<button mat-raised-button color="primary" (click)="submitTransfer()">
+<button mat-raised-button color="primary" (click)="submitTransfer()" mat-dialog-close>
     Request Transfer
 </button>
