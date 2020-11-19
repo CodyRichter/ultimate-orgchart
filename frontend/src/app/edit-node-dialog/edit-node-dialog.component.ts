@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Employee } from 'src/app/models/index';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-edit-node-dialog',
@@ -21,7 +22,7 @@ export class EditNodeDialogComponent implements OnInit {
   email:string;
   selectedEmployeeFirstName: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
     this.nodeData = data.nodeData;
   }
 
@@ -32,9 +33,9 @@ export class EditNodeDialogComponent implements OnInit {
     // console.log(project);
     // console.log(await this.projectService.createProject(project));
 
-    async editEmployee(): Promise<void> {
+    async editEmployee(): Promise<any> {
       const editedEmp = {
-        _id: this.empID,
+      _id: this.empID,
       firstName: this.firstName,
       lastName: this.lastName,
       companyId: this.nodeData.companyId,
@@ -57,4 +58,7 @@ export class EditNodeDialogComponent implements OnInit {
       console.log(await this.employeeService.updateEmployee(editedEmp));
     }
 
+
 }
+
+

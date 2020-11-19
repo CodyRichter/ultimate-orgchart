@@ -37,6 +37,8 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {EditNodeDialogComponent} from './edit-node-dialog/edit-node-dialog.component';
 import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
+import {EditUserInfo} from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-det
     ProjectCreateDialog,
     ProjectListComponent,
     EditNodeDialogComponent,
-    EditNodeDialog
+    EditNodeDialog,
+    EditUserComponent,
+    EditUserInfo
   ],
   imports: [
     BrowserModule,

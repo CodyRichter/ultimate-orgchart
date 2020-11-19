@@ -25,7 +25,7 @@ export class SettingsComponent implements OnInit {
   }
   
   onNodeClick(): void {
-    this.dialog.open(EditNodeDialog, {
+    this.dialog.open(EditUserInfo, {
         data: { nodeData: this.nodeData }
     });
   }
@@ -63,3 +63,9 @@ export class EmployeeTransferDialog {}
   templateUrl: 'project-create-dialog.html',
 })
 export class ProjectCreateDialog {}
+
+@Component({
+  selector: 'edit-user-info',
+  templateUrl: 'edit-user-info.html',
+})
+export class EditUserInfo {}
