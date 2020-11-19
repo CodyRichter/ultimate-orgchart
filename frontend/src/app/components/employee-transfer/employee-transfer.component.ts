@@ -15,6 +15,7 @@ export class EmployeeTransferComponent implements OnInit {
   selectedManager: Employee;
   employees = [];
   managers = [];
+  newTitle: string;
 
   constructor(private readonly employeeService: EmployeeService, 
               private readonly managerService: ManagerService,
@@ -41,8 +42,8 @@ export class EmployeeTransferComponent implements OnInit {
       employee: this.selectedEmployee,
       fromManager: this.selectedEmployee.manager ? this.selectedEmployee.manager as Employee : this.authService.profile,
       toManager: this.selectedManager,
-      previousPosition: 'N/A',
-      newPosition: 'N/A'
+      previousPosition: this.selectedEmployee.positionTitle,
+      newPosition: this.newTitle
     };
     console.log(data);
     console.log(await this.managerService.createRequest(data));
