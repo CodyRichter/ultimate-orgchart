@@ -17,11 +17,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
-import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog } from './components/settings/settings.component';
+import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog, CreateEmployeeDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
@@ -32,9 +32,12 @@ import { OrgchartModule } from './modules/orgchart/orgchart.module';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
 
@@ -56,10 +59,14 @@ import {MatBadgeModule} from '@angular/material/badge';
     ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog,
-    ProjectListComponent
+    ProjectListComponent,
+    CreateEmployeeComponent,
+    CreateEmployeeDialog
   ],
   imports: [
     BrowserModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatTabsModule,
     MatPaginatorModule,
     FormsModule,
