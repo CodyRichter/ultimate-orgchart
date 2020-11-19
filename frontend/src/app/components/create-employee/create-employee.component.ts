@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
@@ -9,6 +10,10 @@ import { EmployeeService } from 'src/app/services/employee.service';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
+  originalCompanyID:number;
+  originalCompanyName:string;
+  selectedManager: Employee;
+  managers = [];
   date: string;
   hide = true;
   manager: Employee;
@@ -29,14 +34,38 @@ export class CreateEmployeeComponent implements OnInit {
   
   email = new FormControl('', [Validators.required, Validators.email]);
 
-  constructor(private readonly employeeService: EmployeeService) { 
-    this.getAllEmployee().then();
-  }
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService) { 
+                this.getAllEmployee().then();
+              }
 
   ngOnInit(): void {
+    if(this.authService.profile.isAdmin || this.authService.profile.isManager) {
+      this.fetchManagers();
+      this.isAdmin = false;
+      this.isManager = false;
+      this.companyId = this.originalCompanyID;
+      this.companyName = this.originalCompanyName;
+    }
+  }
+
+  public onDate(event: any): void {
+    this.roomsFilter.date = event.value;
+    console.log(this.roomsFilter.date);
+  }
+
+  async fetchManagers(): Promise<void> {
+    this.managers = await this.employeeService.getAllManagers();
+    /* this.employees.push(await this.employeeService.getEmployeeById(2));
+    let e = this.employees[0];
+    this.originalCompanyID = e.companyId;
+    this.originalCompanyName= e.companyName; */
   }
 
   async createEmp(): Promise<void> {
+    console.log(this.managers);
+    console.log(this.selectedManager);
+    this.startDate = new Date(this.date);
     const newEmployee = {
       _id: this.empID,
       firstName : this.firstName,
@@ -46,27 +75,19 @@ export class CreateEmployeeComponent implements OnInit {
       companyName: this.companyName,
       isManager: this.isManager,
       isAdmin: this.isAdmin,
-      manager: this.manager,
+      manager: this.selectedManager,
       email: this.email.value,
       startDate: this.startDate,
       manages: [],
       projects: [],
       password: this.password
     };
-    //console.log(await this.employeeService.createEmployee(newEmployee))
-  }
-/* 
-  onDate(event){
-    console.log(event);  
-  } */
-
-  public onDate(event: any): void {
-    this.roomsFilter.date = event.value;
-    console.log(this.roomsFilter.date);
+    console.log(newEmployee);
+    console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
   changeIsManagerValue(event){
-    //console.log(this.date);
+    console.log(this.date);
     this.isManager = event.checked;
     //console.log(this.isManager);
     /* var event1 = new Date(this.date);
@@ -87,6 +108,9 @@ export class CreateEmployeeComponent implements OnInit {
     for (let i = 1; i < 100; i++) {
       this.employees.push(await this.employeeService.getEmployeeById(i));
     }
+    let e = this.employees[1];
+    this.originalCompanyID = e.companyId;
+    this.originalCompanyName= e.companyName;
   }
 
   getEmailErrorMessage() {

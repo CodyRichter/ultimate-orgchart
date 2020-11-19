@@ -1,3 +1,4 @@
+<mat-dialog-content>
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>Employee ID</mat-label>
@@ -43,12 +44,13 @@
     <br>
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Manager Name</mat-label>
-        <mat-select [(ngModel)]="manager" required>
-            <mat-option *ngFor="let employee of employees" [value]="employee">
-                {{employee.firstName}} {{employee.lastName}}
+        <mat-select [(ngModel)]="selectedManager" name="blah2">
+            <mat-option *ngFor="let manager of managers" [value]="manager">
+                {{manager.firstName}} {{manager.lastName}}
             </mat-option>
         </mat-select>
-        <mat-error>Manager name is required</mat-error>
+<!--         <input matInput placeholder="Apple" name="Blah" [(ngModel)]="selectedManager" required>
+         <mat-error>Manager name is required</mat-error>-->
     </mat-form-field>
     <br>
     <div class="example-full-width">
@@ -82,3 +84,4 @@
         Create Employee
     </button>
 </form>
+</mat-dialog-content>
