@@ -1,15 +1,87 @@
-<p>create-employee works!</p>
-<p>
-    <mat-form-field>
-        <mat-label>Employee ID</mat-label>
-        <input matInput placeHolder = "1" required>
-        <mat-error>{{getErrorMessage()}}</mat-error>
+<mat-dialog-content>
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Employee ID</mat-label>
+      <input matInput placeholder="Emp Id" name="empid" [(ngModel)]="empID" required>
+      <mat-error>ID is required</mat-error>
     </mat-form-field>
     <br>
-    <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput placeholder="pat@email.com" [formControl]="email" required>
-        <mat-error>{{getEmailErrorMessage()}}</mat-error>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="Denver" name="fname" [(ngModel)]="firstName" required>
+        <mat-error>First Name is required</mat-error>
     </mat-form-field>
     <br>
-</p>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Parker" name="lname" [(ngModel)]="lastName" required>
+        <mat-error>Last Name is required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Company ID</mat-label>
+        <input matInput placeholder="Integer value" name="cid" [(ngModel)]="companyId" required>
+        <mat-error>Company ID is required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Position Title</mat-label>
+        <input matInput placeholder="Software Engineer" name="ptitle" [(ngModel)]="positionTitle" required>
+        <mat-error>Position Title is required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input matInput placeholder="Apple" name="Blah" [(ngModel)]="companyName" required>
+        <mat-error>Company Name is required</mat-error>
+    </mat-form-field>
+    <br>
+    <div class="example-full-width">
+        <mat-checkbox (change)="changeIsManagerValue($event)" class="example-margin" color="primary">Is Manager?</mat-checkbox>
+        <br>
+        <mat-checkbox (change)="changeIsAdminValue($event)" class="example-margin" color="primary">Is Admin?</mat-checkbox>
+    </div>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Manager Name</mat-label>
+        <mat-select [(ngModel)]="selectedManager" name="blah2">
+            <mat-option *ngFor="let manager of managers" [value]="manager">
+                {{manager.firstName}} {{manager.lastName}}
+            </mat-option>
+        </mat-select>
+<!--         <input matInput placeholder="Apple" name="Blah" [(ngModel)]="selectedManager" required>
+         <mat-error>Manager name is required</mat-error>-->
+    </mat-form-field>
+    <br>
+    <div class="example-full-width">
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="user@company.com" [formControl]="email" required>
+            <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+        </mat-form-field>    
+    </div>
+    <br>
+    <div class="example-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="password" name="pword" [type]="hide ? 'password' : 'text'" required>
+            <mat-error>Password is required</mat-error>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="mm/dd/yyyy" name="sdate" [(ngModel)]="date" required>
+        <mat-error>Start Date is required</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker" [ngModelOptions]="{standalone: true}" [(ngModel)]="date" ngDefaultControl (selectedChanged)="onDate($event.value)"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="createEmp()" mat-dialog-close>
+        Create Employee
+    </button>
+</form>
+</mat-dialog-content>
