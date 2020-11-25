@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -10,6 +10,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
+  isAdminLoggedIn = false;
   originalCompanyID:number;
   originalCompanyName:string;
   selectedManager: Employee;
@@ -30,8 +31,6 @@ export class CreateEmployeeComponent implements OnInit {
   employees: Employee[] = [];
   roomsFilter: any = {};
 
-  //managers = this.getAllManagers()
-  
   email = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(private readonly employeeService: EmployeeService,
@@ -40,13 +39,14 @@ export class CreateEmployeeComponent implements OnInit {
               }
 
   ngOnInit(): void {
-    if(this.authService.profile.isAdmin || this.authService.profile.isManager) {
-      this.fetchManagers();
-      this.isAdmin = false;
-      this.isManager = false;
-      this.companyId = this.originalCompanyID;
-      this.companyName = this.originalCompanyName;
+    if(this.authService.profile.isAdmin) {
+      this.isAdminLoggedIn = true;
     }
+    this.fetchManagers();
+    this.isAdmin = false;
+    this.isManager = false;
+    this.companyId = this.originalCompanyID;
+    this.companyName = this.originalCompanyName;
   }
 
   public onDate(event: any): void {
@@ -89,14 +89,6 @@ export class CreateEmployeeComponent implements OnInit {
   changeIsManagerValue(event){
     console.log(this.date);
     this.isManager = event.checked;
-    //console.log(this.isManager);
-    /* var event1 = new Date(this.date);
-    let d = JSON.stringify(event1);
-    d = d.slice(1,11);
-    this.startDate = new Date(d);
-    console.log(typeof(this.startDate));
-    console.log(this.startDate);
- */
   }
 
   changeIsAdminValue(event){
