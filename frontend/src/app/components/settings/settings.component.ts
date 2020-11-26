@@ -13,6 +13,7 @@ import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/ch
 export class SettingsComponent implements OnInit {
 
   @Input() nodeData: Employee;
+  @Input() profileData: Employee;
 
   @Output() nodeClick = new EventEmitter<any>();
 
@@ -26,7 +27,7 @@ export class SettingsComponent implements OnInit {
   
   onNodeClick(): void {
     this.dialog.open(EditUserInfo, {
-        data: { nodeData: this.nodeData }
+        data: { nodeData: this.nodeData, profileData:this.profileData }
     });
   }
   openJSONUploadDialog(): void {

@@ -1,26 +1,23 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Employee Id</mat-label>
-      <input matInput name="Blah" [(ngModel)]="empID" required>
-      <mat-error>ID is required</mat-error>
-    </mat-form-field>
-    <br>
+<form ngNativeValidate class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>First Name</mat-label>
-      <input matInput placeholder="{{nodeData.firstName}}" name="Blah" value = "{{nodeData.firstName}}" [(ngModel)]="firstName" required>
+      <input matInput placeholder="{{nodeData.firstName}}" name="Blah" [formControl]="controller" value = "{{nodeData.firstName}}" [(ngModel)]="firstName" required>
     </mat-form-field>
     <br>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>Last Name</mat-label>
-      <input matInput placeholder="{{nodeData.lastName}}" name="Blah" value = "{{nodeData.lastName}}" [(ngModel)]="lastName" required>
+      <input matInput placeholder="{{nodeData.lastName}}" name="Blah" [formControl]="controller" value = "{{nodeData.lastName}}" [(ngModel)]="lastName" required>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="{{nodeData.email}}" name="Blah" value = "{{nodeData.email}}" [(ngModel)]="email" required />
+        <input matInput placeholder="{{nodeData.email}}" name="Blah" [formControl]="controller" value = "{{nodeData.email}}" [(ngModel)]="email" required />
     </mat-form-field>
     <br>
     <button mat-raised-button color="primary" (click)="editEmployee()" mat-dialog-close>
         Edit Employee
     </button>
+    <mat-error *ngIf="controller.hasError('incorrect')">
+            All required fields have not been filled.
+        </mat-error>
   </form>

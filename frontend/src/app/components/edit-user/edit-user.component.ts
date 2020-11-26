@@ -22,27 +22,29 @@ export class EditUserComponent implements OnInit {
   isManager:boolean;
   isAdmin:boolean;
   email:string;
+  profileUser:Employee
+  
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
     this.nodeData = data.nodeData;
+    this.profileUser = data.profileUser;
   }
 
   ngOnInit(): void {
-    this.firstName=this.nodeData.firstName;
   }
 
     // console.log(project);
     // console.log(await this.projectService.createProject(project));
-    async getUser(): Promise<any>{
+    async getProfileDetails(): Promise<string> {
       const user = await this.authService.getProfile();
-      return user;
+      return user.firstName;
     }
 
     async editUser(): Promise<void> {
       const user = await this.authService.getProfile();
-      console.log(user);
+      var profileUser = this.authService.getProfile();
       const editedUser = {
-      _id: this.empID,
+      _id: user._id,
       firstName: this.firstName,
       lastName: this.lastName,
       companyId: user.companyId,
@@ -64,16 +66,4 @@ export class EditUserComponent implements OnInit {
       console.log(editedUser);
       console.log(await this.employeeService.updateEmployee(editedUser));
     }
-}
-
-export class emp{
-  firstName: string;
-  lastName: string;
-  empID:number;
-  companyId:number;
-  positionTitle:string;
-  companyName:string;
-  isManager:boolean;
-  isAdmin:boolean;
-  email:string;
 }
