@@ -32,14 +32,14 @@
     <br>
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Company Name</mat-label>
-        <input matInput placeholder="Apple" name="Blah" [(ngModel)]="companyName" required>
+        <input matInput placeholder="Apple" name="cname" [(ngModel)]="companyName" required>
         <mat-error>Company Name is required</mat-error>
     </mat-form-field>
     <br>
     <div class="example-full-width">
         <mat-checkbox (change)="changeIsManagerValue($event)" class="example-margin" color="primary">Is Manager?</mat-checkbox>
         <br>
-        <mat-checkbox (change)="changeIsAdminValue($event)" class="example-margin" color="primary">Is Admin?</mat-checkbox>
+        <mat-checkbox [hidden] = "!isAdminLoggedIn" (change)="changeIsAdminValue($event)" class="example-margin" color="primary">Is Admin?</mat-checkbox>
     </div>
     <br>
     <mat-form-field class="example-full-width" appearance="fill">
@@ -49,8 +49,6 @@
                 {{manager.firstName}} {{manager.lastName}}
             </mat-option>
         </mat-select>
-<!--         <input matInput placeholder="Apple" name="Blah" [(ngModel)]="selectedManager" required>
-         <mat-error>Manager name is required</mat-error>-->
     </mat-form-field>
     <br>
     <div class="example-full-width">
