@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { MatInputModule } from '@angular/material/input';
   exports: [
     ChartContainerComponent,
     ChartNodeComponent,
-    StackListComponent
+    StackListComponent,
+    MatBadgeModule
+
   ],
     imports: [
       CommonModule,
@@ -45,6 +48,7 @@ import { MatInputModule } from '@angular/material/input';
       MatRippleModule,
       MatGridListModule,
       MatInputModule,
+      MatBadgeModule
     ],
   providers: []
 })

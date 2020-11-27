@@ -38,6 +38,10 @@ export class SettingsComponent implements OnInit {
     this.dialog.open(EmployeeTransferDialog);
   }
 
+  openCreateEmployeeDialog(): void {
+    this.dialog.open(CreateEmployeeDialog);
+  }
+
   async downloadJSON(): Promise<void> {
     await this.employeeService.downloadJSON();
   }
@@ -58,6 +62,12 @@ export class JSONUploadDialog {}
   templateUrl: 'employee-transfer-dialog.html',
 })
 export class EmployeeTransferDialog {}
+
+@Component({
+  selector: 'create-employee-dialog',
+  templateUrl: 'create-employee-dialog.html',
+})
+export class CreateEmployeeDialog {}
 
 @Component({
   selector: 'project-create-dialog',
