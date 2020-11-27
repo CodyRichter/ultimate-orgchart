@@ -22,6 +22,8 @@ export class ProjectDetailComponent implements OnInit {
   editProjectName = false;
   projectName: string;
 
+  projectEmployees: any;
+
   formControl = new FormControl();
   assignees: any;
   employees: Employee[] = [];
@@ -34,6 +36,7 @@ export class ProjectDetailComponent implements OnInit {
       this.project = data.project;
       this.projectDescription = this.project.description;
       this.projectName = this.project.name;
+      this.projectEmployees = (this.project.employees as ProjectsEmployee[]).map(curr => curr.employee);
     }
     this.getAllEmployee().then();
   }

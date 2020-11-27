@@ -28,10 +28,12 @@
                     </div>
 
                     <h3><strong>Manager</strong></h3>
-                    <p>{{getManagerName()}}</p>
+                    The project is supervised by <b>{{getManagerName()}}</b>.<p></p>
 
                     <h3><strong>Assignees</strong></h3>
-                    <p>{{getAssigneesName()}}</p>
+                    <app-stack-list [stackData]="projectEmployees"></app-stack-list>
+<!--                    <p>{{getAssigneesName()}}</p>-->
+
                 </div>
             </mat-grid-tile>
             <mat-grid-tile colspan="1">
