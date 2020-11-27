@@ -36,18 +36,18 @@ export class EmployeeService {
   //   manager.manages = await this.getManagersEmployees(manager._id, 2);
   //   this.chartStack.push(manager);
   //   this.curSubtree = manager;
-  //   console.log(this.chart);
+  //   // console.log(this.chart);
   //   return this.chart;
   // }
 
   async goDownInChart(manager: Employee): Promise<Employee> {
-    console.log('go down:', manager);
+    // console.log('go down:', manager);
     manager.manages = await this.getManagersEmployees(manager._id, 1);
-    console.log('manages now: ', manager.manages);
+    // console.log('manages now: ', manager.manages);
     this.curSubtree = manager;
     this.curSubtree.highlight = true;
     this.trees[this.curTreeIndex] = this.curSubtree;
-    console.log('subtree', this.curSubtree);
+    // console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
@@ -73,14 +73,14 @@ export class EmployeeService {
       }
     }
     this.trees[this.curTreeIndex] = this.curSubtree;
-    // console.log('go up:', employee);
+    // // console.log('go up:', employee);
     // this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
-    // console.log('subtree', this.curSubtree);
+    // // console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
   // async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
-  //   console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
+  //   // console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
   //   let url = `http://localhost:3000/employee/getManagers/${employeeId}`;
   //   // ToDo: figure out string logic for case of one or the other
   //   if (depth) {
@@ -93,7 +93,7 @@ export class EmployeeService {
   // }
 
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
-    console.log('get manages ', manager, ' depth ', depth);
+    // console.log('get manages ', manager, ' depth ', depth);
     let url = 'http://localhost:3000/employee/getManages/';
     if (manager) {
       url += manager;

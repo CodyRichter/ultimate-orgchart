@@ -5,13 +5,13 @@
     <mat-divider></mat-divider>
     <mat-tab-group animationDuration="500ms" mat-stretch-tabs>
         <mat-tab label="People">
-            <app-stack-list [stackData]="searchResults.employees" find="true"></app-stack-list>
-            <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevEmployeeURL" (click)="prevEmployee()">
+            <app-stack-list [stackData]="searchResults.employees" find="true" [nextUrl]="searchResults.nextEmployeeURL"></app-stack-list>
+            <!-- <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevEmployeeURL" (click)="prevEmployee()">
                 <mat-icon>navigate_before</mat-icon>
             </button>
             <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.nextEmployeeURL" (click)="nextEmployee()">
                 <mat-icon>navigate_next</mat-icon>
-            </button>            
+            </button>             -->
             <!-- <mat-paginator [length]="100"
                            [pageSize]="10"
                            [pageSizeOptions]="[5, 10, 25, 100]">

@@ -51,7 +51,7 @@ export class CreateEmployeeComponent implements OnInit {
 
   public onDate(event: any): void {
     this.roomsFilter.date = event.value;
-    console.log(this.roomsFilter.date);
+    // // console.log(this.roomsFilter.date);
   }
 
   async fetchManagers(): Promise<void> {
@@ -63,8 +63,8 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   async createEmp(): Promise<void> {
-    console.log(this.managers);
-    console.log(this.selectedManager);
+    // // console.log(this.managers);
+    // // console.log(this.selectedManager);
     this.startDate = new Date(this.date);
     const newEmployee = {
       _id: this.empID,
@@ -82,20 +82,20 @@ export class CreateEmployeeComponent implements OnInit {
       projects: [],
       password: this.password
     };
-    console.log(newEmployee);
-    console.log(await this.employeeService.createEmployee(newEmployee));
+    // console.log(newEmployee);
+    // console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
   changeIsManagerValue(event){
-    console.log(this.date);
+    // console.log(this.date);
     this.isManager = event.checked;
-    //console.log(this.isManager);
+    //// console.log(this.isManager);
     /* var event1 = new Date(this.date);
     let d = JSON.stringify(event1);
     d = d.slice(1,11);
     this.startDate = new Date(d);
-    console.log(typeof(this.startDate));
-    console.log(this.startDate);
+    // console.log(typeof(this.startDate));
+    // console.log(this.startDate);
  */
   }
 

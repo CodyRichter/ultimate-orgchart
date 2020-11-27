@@ -18,6 +18,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -33,11 +34,13 @@ import {MatBadgeModule} from '@angular/material/badge';
     ChartContainerComponent,
     ChartNodeComponent,
     StackListComponent,
+    ScrollingModule,
     MatBadgeModule
 
   ],
     imports: [
       CommonModule,
+      ScrollingModule,
       BrowserAnimationsModule,
       MatCardModule,
       MatListModule,
