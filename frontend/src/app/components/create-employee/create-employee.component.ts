@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -56,15 +56,9 @@ export class CreateEmployeeComponent implements OnInit {
 
   async fetchManagers(): Promise<void> {
     this.managers = await this.employeeService.getAllManagers();
-    /* this.employees.push(await this.employeeService.getEmployeeById(2));
-    let e = this.employees[0];
-    this.originalCompanyID = e.companyId;
-    this.originalCompanyName= e.companyName; */
   }
 
   async createEmp(): Promise<void> {
-    console.log(this.managers);
-    console.log(this.selectedManager);
     this.startDate = new Date(this.date);
     const newEmployee = {
       _id: this.empID,
@@ -87,7 +81,6 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   changeIsManagerValue(event){
-    console.log(this.date);
     this.isManager = event.checked;
   }
 
@@ -96,7 +89,6 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   async getAllEmployee(): Promise<void> {
-    // TODO
     for (let i = 1; i < 100; i++) {
       this.employees.push(await this.employeeService.getEmployeeById(i));
     }

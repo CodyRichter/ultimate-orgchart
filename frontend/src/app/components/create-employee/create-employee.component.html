@@ -78,7 +78,7 @@
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <br>
-    <button mat-raised-button color="primary" (click)="createEmp()" mat-dialog-close>
+    <button mat-raised-button color="primary" (click)="createEmp()" mat-dialog-close [disabled]="!lastName||!firstName||!email||!password||!positionTitle||!companyName||!companyId||!empID||!email.value">
         Create Employee
     </button>
 </form>
