@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { JSONUploadDialog } from '../settings/settings.component';
 
 @Component({
   selector: 'create-employee',
@@ -15,13 +17,12 @@ export class CreateEmployeeComponent implements OnInit {
   originalCompanyName:string;
   selectedManager: Employee;
   managers = [];
-  date: string;
   hide = true;
   manager: Employee;
   empID: number;
   firstName: string;
   lastName: string;
-  companyId: number;
+  companyId  = 5;
   positionTitle: string;
   companyName: string;
   isManager: boolean;
@@ -29,12 +30,12 @@ export class CreateEmployeeComponent implements OnInit {
   startDate: Date;
   password: string;
   employees: Employee[] = [];
-  roomsFilter: any = {};
-
+  
   email = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(private readonly employeeService: EmployeeService,
-              private readonly authService: AuthService) { 
+              private readonly authService: AuthService, 
+              public dialog: MatDialog) { 
                 this.getAllEmployee().then();
               }
 
@@ -49,17 +50,11 @@ export class CreateEmployeeComponent implements OnInit {
     this.companyName = this.originalCompanyName;
   }
 
-  public onDate(event: any): void {
-    this.roomsFilter.date = event.value;
-    console.log(this.roomsFilter.date);
-  }
-
   async fetchManagers(): Promise<void> {
     this.managers = await this.employeeService.getAllManagers();
   }
 
   async createEmp(): Promise<void> {
-    this.startDate = new Date(this.date);
     const newEmployee = {
       _id: this.empID,
       firstName : this.firstName,
@@ -102,5 +97,10 @@ export class CreateEmployeeComponent implements OnInit {
       return 'Email is required';
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+
+  openJSONUploadDialog(): void {
+    this.dialog.closeAll();
+    this.dialog.open(JSONUploadDialog);
   }
 }
