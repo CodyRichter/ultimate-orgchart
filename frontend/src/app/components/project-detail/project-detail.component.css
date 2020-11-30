@@ -20,7 +20,7 @@
 }
 
 .save-btn {
-    position: absolute;
+    position: relative;
     right: 0;
 }
 
@@ -49,4 +49,21 @@
 
 .side-btn-container {
     height: 100%;
+}
+
+.menu-btn {
+
+}
+
+.dialog-title {
+    display: flex;
+    flex-direction: row;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    width: 150px;
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee } from 'src/app/models/index';
+import { Employee } from '../../../../models';
+import { EmployeeService } from '../../../../services/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'chart-node-detail',
@@ -11,7 +13,9 @@ export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private readonly employeeService: EmployeeService,
+              private readonly snackbar: MatSnackBar) {
     this.nodeData = data.nodeData;
   }
 
@@ -31,6 +35,12 @@ export class NodeDetailComponent implements OnInit {
           'Senior Software Engineer': '#E57373'
         };
     return 'background-color:' + color[pos] + ';';
+  }
+
+  async onDeleteEmployee(): Promise<void> {
+    await this.employeeService.deleteEmployeeById(this.nodeData._id);
+    this.snackbar.open(this.nodeData.firstName + ' ' + this.nodeData.lastName + ' has been removed.',
+        'Done', {horizontalPosition: 'end'});
   }
 
 }
