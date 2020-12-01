@@ -3,6 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders, Http
 import { AuthService } from './auth.service';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, take, filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
     private refreshTokenInProgress = false;
@@ -31,7 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
                   Authorization: 'Bearer ' + this.authService.refreshAccessToken()
               });
               console.log('refreshing');
-                return this.httpClient.post('http://localhost:3000/auth/refresh', {}, {headers: httpHeaders}).pipe(
+                return this.httpClient.post(environment.SERVER_URL + 'auth/refresh', {}, {headers: httpHeaders}).pipe(
                     switchMap((authResponse: any) => {
                       console.log(authResponse);
                         this.authService.saveAccessToken(authResponse);

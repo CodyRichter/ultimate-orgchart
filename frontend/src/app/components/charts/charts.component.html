@@ -37,20 +37,7 @@
 </div>
 
 <mat-drawer-container>
-    <button [disableRipple]="true" mat-icon-button [disabled]="employeeService.curTreeIndex <= 0" (click)="employeeService.navigateToLeftTree()">
-        <mat-icon>navigate_before</mat-icon>
-    </button>
-    <button *ngIf="employeeService.trees[employeeService.curTreeIndex]" (click)="employeeService.restartCurrentRoot()">
-        <mat-label *ngIf="employeeService.trees[employeeService.curTreeIndex]">{{ employeeService.trees[employeeService.curTreeIndex].name }}</mat-label>
-    </button>
-    <button [disableRipple]="true" mat-icon-button [disabled]="employeeService.curTreeIndex >= employeeService.trees.length - 1" (click)="employeeService.navigateToRightTree()">
-        <mat-icon >navigate_next</mat-icon>
-    </button>  
-    <button [disableRipple]="true" *ngIf="employeeService.trees[employeeService.curTreeIndex] && employeeService.trees[employeeService.curTreeIndex].deletable" mat-icon-button>
-        <mat-icon>highlight_off</mat-icon>
-    </button>  
-
-    <section id="chart-container" *ngIf="employeeService.curSubtree">
+    <section id="chart-container" *ngIf="employeeService.curSubtree">  
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
     </section>

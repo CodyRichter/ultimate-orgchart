@@ -68,6 +68,7 @@ export class StackListComponent implements OnInit {
             this.seenEmployees[employee._id] = this.stackData.length - 1;
           }
         });
+        this.stackData = this.stackData.map(x => x);
         console.log(this.stackData);
       }
     }

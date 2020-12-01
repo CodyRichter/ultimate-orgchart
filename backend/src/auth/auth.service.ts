@@ -29,7 +29,7 @@ export class AuthService {
         companyId: 1,
         positionTitle: "Software Engineer",
         companyName: "404 Brain Not Found",
-        _id: 0,
+        _id: 404123456789404,
         managerId: null,
         manages: [],
         email: "admin@admin.com", 

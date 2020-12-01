@@ -22,7 +22,7 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor(private readonly employeeService: EmployeeService,
+  constructor(public readonly employeeService: EmployeeService,
               private readonly authService: AuthService) {
   }
 
@@ -144,10 +144,10 @@ export class ChartContainerComponent implements OnInit {
     }
     if (this.authService.profile.manages.length > 0 || !this.authService.profile.manager) {
       // console.log('go down');
-      await this.employeeService.goDownInChart(this.authService.profile);
+      await this.employeeService.goDownInChart(this.authService.profile, true);
     } else {
       // console.log('go up');
-      await this.employeeService.goUpInChart(this.authService.profile);
+      await this.employeeService.goUpInChart(this.authService.profile, true);
     }
     // console.log(this.employeeService.curSubtree);
   }
