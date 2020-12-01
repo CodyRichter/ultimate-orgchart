@@ -31,10 +31,10 @@ export class CreateProjectComponent implements OnInit {
               private readonly employeeService: EmployeeService,
               private dialogRef: MatDialog,
               public dialog: MatDialog) {
-    this.getAllEmployee().then();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getAllEmployee();
   }
 
   async createProj(): Promise<void> {
@@ -65,8 +65,8 @@ export class CreateProjectComponent implements OnInit {
 
     // projEmployee.project = project;
 
-    // console.log(project);
-    // console.log(await this.projectService.createProject(project));
+    console.log(project);
+    console.log(await this.projectService.createProject(project));
 
     this.dialogRef.closeAll();
 

@@ -108,7 +108,9 @@ export class ProjectService {
         if (manager.manager) {
             notifications.push(new this.notificationModel({employeeId:manager.manager,title:'Project Created',description:description}));
         }
-        await this.notificationModel.create(notifications,{session:session});
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         // project.manager.employee = manager;
         // project.employees = project.employees.map(
@@ -125,7 +127,7 @@ export class ProjectService {
         }catch(error)
         {
                 await session.abortTransaction();
-
+                console.log(error);
                 throw new ConflictException('Create project failed');
         }finally{
             session.endSession();
@@ -201,7 +203,9 @@ export class ProjectService {
             notifications.push(new this.notificationModel({employeeId:managerEmployee.manager,title:'Project Deleted',description:description}));
         }
 
-        await this.notificationModel.create(notifications,{session:session});
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         await session.commitTransaction();
         return deletedProject;
@@ -271,8 +275,11 @@ export class ProjectService {
                 notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Employee Added to Project',description:description}));
             }
         }));
+
         await project.save();
-        await this.notificationModel.create(notifications,{session:session});
+         await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         await session.commitTransaction();
         return project;
@@ -326,8 +333,10 @@ export class ProjectService {
             }
         }));
         project.save();
-        await this.notificationModel.create(notifications,{session:session});
 
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
         await session.commitTransaction();
         return project;
 

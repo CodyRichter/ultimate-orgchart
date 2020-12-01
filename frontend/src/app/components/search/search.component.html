@@ -6,12 +6,12 @@
     <mat-tab-group animationDuration="500ms" mat-stretch-tabs>
         <mat-tab label="People">
             <app-stack-list [stackData]="searchResults.employees" find="true" [nextUrl]="searchResults.nextEmployeeURL" newRoot='true'></app-stack-list>
-            <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevEmployeeURL" (click)="prevEmployee()">
+            <!-- <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevEmployeeURL" (click)="prevEmployee()">
                 <mat-icon>navigate_before</mat-icon>
             </button>
             <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.nextEmployeeURL" (click)="nextEmployee()">
                 <mat-icon>navigate_next</mat-icon>
-            </button>            
+            </button>             -->
             <!-- <mat-paginator [length]="100"
                            [pageSize]="10"
                            [pageSizeOptions]="[5, 10, 25, 100]">
@@ -19,12 +19,12 @@
         </mat-tab>
         <mat-tab label="Projects">
             <app-project-list [projectData]="searchResults.projects"></app-project-list>
-            <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevProjectURL" (click)="prevProject()">
+            <!-- <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevProjectURL" (click)="prevProject()">
                 <mat-icon>navigate_before</mat-icon>
             </button>
             <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.nextProjectURL" (click)="nextProject()">
                 <mat-icon>navigate_next</mat-icon>
-            </button>            
+            </button>             -->
             <!-- <mat-paginator [length]="100"
                            [pageSize]="10"
                            [pageSizeOptions]="[5, 10, 25, 100]">

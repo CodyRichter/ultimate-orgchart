@@ -7,6 +7,7 @@ import { RequestStatus } from '../enums/request.enum';
 import { EmployeeService } from '../employee/employee.service';
 import { NotificationService } from "src/notification/notification.service";
 import { NotificationDoc } from "src/notification/notification.model";
+import { from } from "rxjs";
 
 @Injectable()
 export class ManagerService {
@@ -40,7 +41,7 @@ export class ManagerService {
             }
             if (createdRequest.newPosition == null)
                 createdRequest.newPosition = employee.positionTitle;
-            if (fromManager._id === toManager._id) {
+            if (fromManager._id === toManager._id || user._id === toManager._id) {
                 createdRequest.status = RequestStatus.Approved;
                 employee.positionTitle = createdRequest.newPosition;
                 employee.save();
@@ -56,7 +57,6 @@ export class ManagerService {
             const savedRequest = savedRequests[0];
             
      
-            const notifications: NotificationDoc[] = []
             let requester = `${user.firstName} ${user.lastName}`
             if (user._id !== fromManager.id) {
                 requester += ` (on behalf of ${fromManager.firstName} ${fromManager.lastName})`
@@ -64,25 +64,43 @@ export class ManagerService {
 
             if (createdRequest.status === RequestStatus.Approved) {
                 const description = `${employee.firstName} ${employee.lastName}'s position was changed from ${savedRequest.previousPosition} to ${savedRequest.newPosition} by ` + requester
-                notifications.push(new this.notificationModel({ employeeId: employee._id, title: 'Employee Position Change', description:description}));
-                notifications.push(new this.notificationModel({ employeeId: fromManager._id, title: 'Employee Position Change', description:description}));
-                if (user._id !== fromManager.id) {
-                    notifications.push(new this.notificationModel({ employeeId: user._id, title: 'Employee Position Change', description:description}));
+                
+
+                const employeeNotification = new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer Request', description:description});
+                await this.notificationModel.create([employeeNotification], {session:session});
+                if (fromManager._id !== employee._id) {
+                    const fromManagerNotification = new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer Request', description:description});
+                    await this.notificationModel.create([fromManagerNotification], {session:session});
                 }
+                if (toManager._id !== employee._id && toManager._id !== fromManager._id) {
+                    const toManagerNotification = new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description});
+                    await this.notificationModel.create([toManagerNotification], {session:session});
+                }
+                if (user._id !== fromManager.id && user._id !== toManager._id && user._id !== employee._id) {
+                    const userNotification = new this.notificationModel({ employeeId: user._id, title: 'Manager Transfer Request', description:description});
+                    await this.notificationModel.create([userNotification], {session:session});
+                }    
             } else {
                 let description = requester + ` is requesting to transfer ${employee.firstName} ${employee.lastName} to ${toManager.firstName} ${toManager.lastName}`;
                 if (savedRequest.previousPosition !== savedRequest.newPosition) {
                     description += ` with a position change of ${savedRequest.previousPosition} to ${savedRequest.newPosition}`
                 }
-                notifications.push(new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
-                notifications.push(new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
-                notifications.push(new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
-                if (user._id !== fromManager.id) {
-                    notifications.push(new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest}));
+                const employeeNotification = new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest});
+                await this.notificationModel.create([employeeNotification], {session:session});
+                if (fromManager._id !== employee._id) {
+                    const fromManagerNotification = new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest});
+                    await this.notificationModel.create([fromManagerNotification], {session:session});
                 }
+                if (toManager._id !== employee._id && toManager._id !== fromManager._id) {
+                    const toManagerNotification = new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest});
+                    await this.notificationModel.create([toManagerNotification], {session:session});
+                }
+                if (user._id !== fromManager.id && user._id !== toManager._id && user._id !== employee._id) {
+                    const userNotification = new this.notificationModel({ employeeId: user._id, title: 'Manager Transfer Request', description:description, managerRequest:savedRequest});
+                    await this.notificationModel.create([userNotification], {session:session});
+                }               
             }
     
-            await this.notificationModel.create(notifications, {session:session});
 
             await session.commitTransaction();
             return savedRequest;
@@ -141,11 +159,17 @@ export class ManagerService {
             await toManager.save()
             await employee.save();
 
-            const description = `${employee.firstName} ${employee.firstName} was transferred from ${fromManager.firstName} ${fromManager.lastName} to ${toManager.firstName} ${toManager.lastName}`;
-            const notificationEmployee = new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer', description:description});
-            const notificationToManager = new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer', description:description});
-            const notificationFromManager = new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer', description:description});
-            await this.notificationModel.create([notificationEmployee, notificationToManager, notificationFromManager],{session:session});
+            const description = `${employee.firstName} ${employee.lastName} was transferred from ${fromManager.firstName} ${fromManager.lastName} to ${toManager.firstName} ${toManager.lastName}`;
+            const employeeNotification = new this.notificationModel({ employeeId: employee._id, title: 'Manager Transfer Request', description:description});
+            await this.notificationModel.create([employeeNotification], {session:session});
+            if (fromManager._id !== employee._id) {
+                const fromManagerNotification = new this.notificationModel({ employeeId: fromManager._id, title: 'Manager Transfer Request', description:description});
+                await this.notificationModel.create([fromManagerNotification], {session:session});
+            }
+            if (toManager._id !== employee._id && toManager._id !== fromManager._id) {
+                const toManagerNotification = new this.notificationModel({ employeeId: toManager._id, title: 'Manager Transfer Request', description:description});
+                await this.notificationModel.create([toManagerNotification], {session:session});
+            }   
 
             await session.commitTransaction();
             return pendingRequest;
