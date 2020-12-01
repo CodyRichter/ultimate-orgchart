@@ -1,6 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee } from 'src/app/models/index';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Employee } from '../../../../models';
+import { EmployeeService } from '../../../../services/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChartColorComponent } from '../../chart-color/chart-color.component';
+import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
 
 @Component({
   selector: 'chart-node-detail',
@@ -11,7 +15,11 @@ export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private readonly employeeService: EmployeeService,
+              private readonly snackbar: MatSnackBar,
+              private readonly color: ChartColorComponent,
+              private readonly dialog: MatDialog) {
     this.nodeData = data.nodeData;
   }
 
@@ -19,18 +27,17 @@ export class NodeDetailComponent implements OnInit {
   }
 
   getColor(pos: string): string {
-    const color =
-        {
-          'Engineering Manager': '#FFBA00',
-          CEO: '#3C9329',
-          'Software Engineer II': '#0093FF',
-          'Tech Lead': '#019592',
-          'Software Engineer I': '#7F39FB',
-          'Research Manager': '#E57373',
-          'Software Architect': '#00BCD4',
-          'Senior Software Engineer': '#E57373'
-        };
-    return 'background-color:' + color[pos] + ';';
+    return this.color.getHexColor(pos);
+  }
+
+  async onDeleteEmployee(): Promise<void> {
+    await this.employeeService.deleteEmployeeById(this.nodeData._id);
+    this.snackbar.open(this.nodeData.firstName + ' ' + this.nodeData.lastName + ' has been removed.',
+          'Done', {horizontalPosition: 'end'});
+  }
+
+  async onTransferEmployee(): Promise<void> {
+    this.dialog.open(TransferRequestComponent);
   }
 
 }

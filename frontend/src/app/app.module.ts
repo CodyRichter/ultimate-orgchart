@@ -40,6 +40,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatBadgeModule } from '@angular/material/badge';
+import { ProjectEditComponent } from './components/project-detail/project-edit/project-edit.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     ProjectCreateDialog,
     ProjectListComponent,
     CreateEmployeeComponent,
-    CreateEmployeeDialog
+    CreateEmployeeDialog,
+    ProjectEditComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +93,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatBadgeModule,
     MatDividerModule,
     MatGridListModule,
+    MatSnackBarModule,
     RouterModule.forRoot([
       {
         path: '',
