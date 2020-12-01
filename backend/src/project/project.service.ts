@@ -1,4 +1,4 @@
-import { ConflictException, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, HttpCode, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { Employee } from "../employee/employee.model";
 import { DocumentType, mongoose, ReturnModelType } from "@typegoose/typegoose";
@@ -11,6 +11,7 @@ import { ProjectsEmployee } from "./projectsEmployee.model";
 import { Session } from "inspector";
 import { session } from "passport";
 import { NotificationDoc } from "src/notification/notification.model";
+import { exception } from "console";
 @Injectable()
 export class ProjectService {
     constructor(
@@ -29,6 +30,10 @@ export class ProjectService {
         try{
         //NOTE: get the manager from db
         const manager = await this.employeeModel.findById((newProject.manager as ProjectsEmployee).employee).session(session).exec();
+        if(manager===null||manager===undefined)
+        {
+            throw new NotFoundException('Manager is not existed');
+        }
 
         const managerRoleName: string = (newProject.manager as ProjectsEmployee).role;
 
@@ -51,6 +56,10 @@ export class ProjectService {
         const savedProjectsEmployees = await Promise.all(newProjectEmployees.map(
             async (projEmployee) => {
                 const employee = await this.employeeModel.findById(projEmployee.employee).session(session).exec();
+                if(employee===null||employee===undefined)
+                {
+                    throw new NotFoundException('Employee does not exist');
+                }
                 projEmployee.employee = employee._id;
                 projEmployee.project = project._id;
                 const savedProjEmployee = await this.projectsEmployeeModel.create([projEmployee],{session:session});
@@ -126,9 +135,10 @@ export class ProjectService {
         return project;
         }catch(error)
         {
-                await session.abortTransaction();
-                console.log(error);
-                throw new ConflictException('Create project failed');
+            await session.abortTransaction();
+            console.log(error);
+            throw new ConflictException('Create project failed');
+           
         }finally{
             session.endSession();
         }
@@ -146,8 +156,13 @@ export class ProjectService {
 
     
     async getProject(projtectId: number) {
-        return await this.projectModel.findById(projtectId).populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
+        const project= await this.projectModel.findById(projtectId).populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
+        if(project===null||project===undefined)
+        {
+            throw new NotFoundException("projet does not exist");
 
+        }
+        return project;
     }
 
     async getAllProjects() {
@@ -163,6 +178,10 @@ export class ProjectService {
         try{
             //get the project from db
             const deletedProject = await this.projectModel.findById(projectId).session(session).exec();
+            if(deletedProject===null||deletedProject===undefined)
+            {
+                throw new NotFoundException('Project does not exist');
+            }
             //delete the project employee of manager
             const managerProjEmployee = await this.projectsEmployeeModel.findById(deletedProject.manager).session(session).exec();
 
@@ -187,6 +206,7 @@ export class ProjectService {
             if (updatedEmployees.manager) {
                 notifications.push(new this.notificationModel({employeeId:updatedEmployees.manager,title: 'Project Deleted',description:description}));
             }
+            
 
         }));
 
@@ -213,7 +233,7 @@ export class ProjectService {
     }catch(error)
     {
         await session.abortTransaction();
-        throw new NotFoundException('The project does not exist or failed to delete');
+        throw error;
     }finally{
          session.endSession();
     }
@@ -248,7 +268,7 @@ export class ProjectService {
         await Promise.all(projectEmployees.map(async (projectEmployee) => {
             //find the employee
             const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).session(session).exec();
-
+            
             //if not exist throw error
             if (employee === null) {
                 throw new NotFoundException('Employee not found');
@@ -274,6 +294,7 @@ export class ProjectService {
             if (employee.manager) {
                 notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Employee Added to Project',description:description}));
             }
+            
         }));
 
         await project.save();
@@ -287,7 +308,9 @@ export class ProjectService {
         }catch(error)
         {
             await session.abortTransaction();
-            throw new ConflictException('Add project employee failed');  
+           
+            throw error;
+
         }finally{
              session.endSession();
         }
@@ -331,6 +354,7 @@ export class ProjectService {
             if (employee.manager) {
                 notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Employee Removed from Project',description:description}));
             }
+           
         }));
         project.save();
 
@@ -343,7 +367,8 @@ export class ProjectService {
         }catch(error)
         {
             await session.abortTransaction();
-            throw new ConflictException('delete project employee failed');
+            
+            throw error;
         }finally{
              session.endSession();
         }
