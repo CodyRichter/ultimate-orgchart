@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Edit Project</h2>
+<div class="container">
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Project Name</mat-label>
+            <input matInput [(ngModel)]="selectedProjectName">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Project Description</mat-label>
+            <textarea matInput [(ngModel)]="selectedProjectDescription"></textarea>
+        </mat-form-field>
+    </p>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Manager</mat-label>
+            <mat-select [(ngModel)]="manager">
+                <mat-option *ngFor="let employee of employees" [value]="employee">
+                    {{employee.firstName}} {{employee.lastName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Assignees</mat-label>
+            <mat-select [formControl]="formControl" [(value)]="assignees" multiple>
+                <mat-select-trigger>
+                    {{formControl.value ? (formControl.value[0] !== undefined ? formControl.value[0].firstName : '') : ''}}
+                    <span *ngIf="formControl.value?.length > 1" class="example-additional-selection">
+            (+{{formControl.value.length - 1}} {{formControl.value?.length === 2 ? 'other' : 'others'}})
+          </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let employee of employees" [value]="employee">
+                    {{employee.firstName}} {{employee.lastName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="createProj()" mat-dialog-close>
+        Update Project
+    </button>
+</div>

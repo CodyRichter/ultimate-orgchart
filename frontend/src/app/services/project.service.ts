@@ -41,6 +41,13 @@ export class ProjectService {
     await this.httpClient.delete('http://localhost:3000/project/' + projectId).toPromise();
   }
 
+  async updateProjectById(projectId: number, project: Project): Promise<void> {
+    await this.httpClient.patch('http://localhost:4200/project/' + projectId, {
+      name: project.name,
+      description: project.description
+    });
+  }
+
 }
 
 

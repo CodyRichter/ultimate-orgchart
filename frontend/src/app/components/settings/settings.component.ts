@@ -30,8 +30,12 @@ export class SettingsComponent implements OnInit {
     this.dialog.open(CreateEmployeeDialog);
   }
 
-  async downloadJSON(): Promise<void> {
+  async downloadEmployeeJSON(): Promise<void> {
     await this.employeeService.downloadJSON();
+  }
+
+  async downloadProjectJSON(): Promise<void> {
+    //TODO
   }
 
   openCreateProjectDialog(): void {

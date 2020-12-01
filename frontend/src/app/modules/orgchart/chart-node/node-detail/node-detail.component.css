@@ -34,3 +34,11 @@ div.inline {
     margin-top: 16px;
     margin-left: 10px;
 }
+
+::ng-deep .mat-snack-bar-container{
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+}
+::ng-deep .mat-simple-snackbar-action {
+    color: #509E2F;
+}

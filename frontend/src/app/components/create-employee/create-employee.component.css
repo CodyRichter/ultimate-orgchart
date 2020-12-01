@@ -1,0 +1,28 @@
+.last-name-field{
+    padding-left: 20px;
+}
+
+.company-name-field{
+    padding-left: 20px;
+}
+
+.password-field{
+    padding-left: 20px;
+}
+
+.startDate-field{
+    padding-left: 20px;
+}
+
+.position-field{
+    padding-left: 20px;
+}
+
+.isManager-checkbox {
+    font-size: 16px;
+}
+
+.isAdmin-checkbox {
+    font-size: 16px;
+    padding-left: 20px;
+}
