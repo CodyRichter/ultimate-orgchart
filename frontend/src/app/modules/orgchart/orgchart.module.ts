@@ -19,6 +19,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ChartColorComponent } from './chart-color/chart-color.component';
+import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { ChartColorComponent } from './chart-color/chart-color.component';
     ChartRootComponent,
     NodeDetailComponent,
     StackListComponent,
-    ChartColorComponent
+    ChartColorComponent,
+    TransferRequestComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -50,7 +54,9 @@ import { ChartColorComponent } from './chart-color/chart-color.component';
     MatRippleModule,
     MatGridListModule,
     MatInputModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
   providers: [
     ChartColorComponent

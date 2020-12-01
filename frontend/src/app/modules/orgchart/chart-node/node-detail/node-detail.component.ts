@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Employee } from '../../../../models';
 import { EmployeeService } from '../../../../services/employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartColorComponent } from '../../chart-color/chart-color.component';
+import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
 
 @Component({
   selector: 'chart-node-detail',
@@ -17,7 +18,8 @@ export class NodeDetailComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
               private readonly employeeService: EmployeeService,
               private readonly snackbar: MatSnackBar,
-              private readonly color: ChartColorComponent) {
+              private readonly color: ChartColorComponent,
+              private readonly dialog: MatDialog) {
     this.nodeData = data.nodeData;
   }
 
@@ -32,6 +34,10 @@ export class NodeDetailComponent implements OnInit {
     await this.employeeService.deleteEmployeeById(this.nodeData._id);
     this.snackbar.open(this.nodeData.firstName + ' ' + this.nodeData.lastName + ' has been removed.',
           'Done', {horizontalPosition: 'end'});
+  }
+
+  async onTransferEmployee(): Promise<void> {
+    this.dialog.open(TransferRequestComponent);
   }
 
 }

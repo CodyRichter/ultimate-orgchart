@@ -21,7 +21,7 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions class="actions">
-    <button mat-stroked-button class="button" color="primary" mat-dialog-close>TRANSFER</button>
+    <button mat-stroked-button class="button" color="primary" (click)="onTransferEmployee()" mat-dialog-close>TRANSFER</button>
     <span style="width: 32px;"></span>
     <button mat-stroked-button class="button" color="warn" (click)="onDeleteEmployee()" mat-dialog-close>REMOVE</button>
 </mat-dialog-actions>
