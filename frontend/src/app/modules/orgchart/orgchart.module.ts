@@ -17,7 +17,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ChartColorComponent } from './chart-color/chart-color.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     ChartManagerComponent,
     ChartRootComponent,
     NodeDetailComponent,
-    StackListComponent
+    StackListComponent,
+    ChartColorComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -36,20 +38,22 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatBadgeModule
 
   ],
-    imports: [
-      CommonModule,
-      BrowserAnimationsModule,
-      MatCardModule,
-      MatListModule,
-      DragDropModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatRippleModule,
-      MatGridListModule,
-      MatInputModule,
-      MatBadgeModule
-    ],
-  providers: []
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatListModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatRippleModule,
+    MatGridListModule,
+    MatInputModule,
+    MatBadgeModule
+  ],
+  providers: [
+    ChartColorComponent
+  ]
 })
 export class OrgchartModule { }

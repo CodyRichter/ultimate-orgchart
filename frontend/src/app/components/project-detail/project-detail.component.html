@@ -1,6 +1,7 @@
 <div class="project-container">
     <div class="dialog-title">
-        <div *ngIf="!editProjectName" (click)="editProjectName=true">
+        <img src="assets/icons/default-avatar.png" style="width: 50px; height: 50px; margin-right: 16px;">
+        <div *ngIf="!editProjectName" (click)="editProjectName=true" style="margin-top: 10px">
             <h2 mat-dialog-title>{{project.name}}</h2>
         </div>
         <div *ngIf="editProjectName">
