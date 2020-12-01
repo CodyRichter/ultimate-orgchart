@@ -35,7 +35,7 @@ export class ProjectListComponent implements OnInit {
       return employee;
     });
     this.employeeService.curSubtree = projectManager;
-    console.log(this.employeeService.curSubtree);
+    // console.log(this.employeeService.curSubtree);
     this.dialog.closeAll();
   }
 

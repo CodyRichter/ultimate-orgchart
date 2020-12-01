@@ -15,12 +15,12 @@ export class ChartRootComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.datasource);
+    // console.log(this.datasource);
   }
 
   ngOnChanges (changes: SimpleChanges){
     if (changes.datasource){
-      console.log('root data source changed to: ', this.datasource);
+      // console.log('root data source changed to: ', this.datasource);
     }
   }
   

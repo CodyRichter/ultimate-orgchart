@@ -5,7 +5,7 @@
     <mat-divider></mat-divider>
     <mat-tab-group animationDuration="500ms" mat-stretch-tabs>
         <mat-tab label="People">
-            <app-stack-list [stackData]="searchResults.employees" find="true" newRoot="true"></app-stack-list>
+            <app-stack-list [stackData]="searchResults.employees" find="true" [nextUrl]="searchResults.nextEmployeeURL" newRoot='true'></app-stack-list>
             <button [disableRipple]="true" mat-icon-button [disabled]="!searchResults.prevEmployeeURL" (click)="prevEmployee()">
                 <mat-icon>navigate_before</mat-icon>
             </button>
