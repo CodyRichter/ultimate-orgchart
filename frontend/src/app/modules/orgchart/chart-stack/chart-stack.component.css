@@ -1,3 +1,11 @@
+.mat-badge-content {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: black;
+    color: white;
+  }
+
 .oc-stack::before {
     content: "";
     box-sizing: border-box;
@@ -60,7 +68,5 @@ div.inline {
     float:left;
 }
 
-.mat-badge-content{
-    background : blue;
-    color: white;
-}
+
+

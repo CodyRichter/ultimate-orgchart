@@ -34,3 +34,24 @@ div.inline {
     margin-top: 16px;
     margin-left: 10px;
 }
+
+h3{
+    padding-top:20px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    width: 150px;
+}
+
+.menu-btn{
+    margin-left:320px;
+}
+
+.node-detail-dialog{
+    min-height:300px;
+    width: 331.66px;
+}

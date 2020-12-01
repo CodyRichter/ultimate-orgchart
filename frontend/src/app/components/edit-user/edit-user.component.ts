@@ -22,27 +22,34 @@ export class EditUserComponent implements OnInit {
   isManager:boolean;
   isAdmin:boolean;
   email:string;
-  profileUser:Employee
+  profileUser:any;
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
-    this.nodeData = data.nodeData;
-    this.profileUser = data.profileUser;
+  constructor(private readonly employeeService: EmployeeService, private readonly authService: AuthService, @Inject(MAT_DIALOG_DATA) private data: any) {
+    this.getProfileDetails();
+    // this.lastName = this.profileUser.lastName;
+    // this.email = this.profileUser.email;
   }
 
-  ngOnInit(): void {
+  ngOnInit():void {
+    this.getProfileDetails();
   }
 
     // console.log(project);
     // console.log(await this.projectService.createProject(project));
-    async getProfileDetails(): Promise<string> {
+    async getProfileDetails() {
       const user = await this.authService.getProfile();
-      return user.firstName;
+      console.log(user);
+      this.profileUser = user;
+      this.firstName = this.profileUser.firstName;
+      this.lastName = this.profileUser.lastName;
+      this.email = this.profileUser.email;
+      return user;
     }
 
+
     async editUser(): Promise<void> {
-      const user = await this.authService.getProfile();
-      var profileUser = this.authService.getProfile();
+      var user = await this.authService.getProfile();
       const editedUser = {
       _id: user._id,
       firstName: this.firstName,
@@ -65,5 +72,6 @@ export class EditUserComponent implements OnInit {
 
       console.log(editedUser);
       console.log(await this.employeeService.updateEmployee(editedUser));
+      user = await this.employeeService.updateEmployee(editedUser);
     }
 }

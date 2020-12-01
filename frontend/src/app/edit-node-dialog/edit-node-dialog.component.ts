@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Employee } from 'src/app/models/index';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -11,10 +11,9 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./edit-node-dialog.component.css']
 })
 export class EditNodeDialogComponent implements OnInit {
-  nodeData: Employee;
- 
-  firstName: string;
-  lastName: string;
+  nodeData : Employee;
+  firstName:string;
+  lastName:string;
   empID:number;
   companyId:number;
   positionTitle:string;
@@ -26,7 +25,9 @@ export class EditNodeDialogComponent implements OnInit {
   controller: FormControl;
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
     this.nodeData = data.nodeData;
-    this.controller = new FormControl();
+    this.lastName = this.nodeData.lastName;
+    this.email = this.nodeData.email;
+    this.firstName = this.nodeData.firstName;
   }
 
   ngOnInit(): void {
@@ -59,9 +60,8 @@ export class EditNodeDialogComponent implements OnInit {
 
       console.log(editedEmp);
       console.log(await this.employeeService.updateEmployee(editedEmp));
+      this.nodeData = await this.employeeService.updateEmployee(editedEmp);
     }
-
-
 }
 
 

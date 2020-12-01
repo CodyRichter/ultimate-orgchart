@@ -2,7 +2,7 @@ import { Component,EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Employee } from 'src/app/models/index';
+import { Employee, userProfile } from 'src/app/models/index';
 import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/chart-node/node-detail/node-detail.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/ch
 export class SettingsComponent implements OnInit {
 
   @Input() nodeData: Employee;
-  @Input() profileData: Employee;
+  @Input() profileData: userProfile;
 
   @Output() nodeClick = new EventEmitter<any>();
 
@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   
   onNodeClick(): void {
     this.dialog.open(EditUserInfo, {
-        data: { nodeData: this.nodeData, profileData:this.profileData }
+        data: { profileData: this.profileData }
     });
   }
   openJSONUploadDialog(): void {

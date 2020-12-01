@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
+ import { MatMenuModule} from '@angular/material/menu';
 
 @Component({
   selector: 'chart-node-detail',

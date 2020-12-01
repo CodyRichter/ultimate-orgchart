@@ -35,6 +35,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+//import {EditNodeDialogComponent} from './components/edit-node-dialog/edit-node-dialog.component';
 import {EditNodeDialogComponent} from './edit-node-dialog/edit-node-dialog.component';
 import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
@@ -44,6 +45,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 @NgModule({
   declarations: [
@@ -98,6 +101,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatFormFieldModule,
     MatBadgeModule,
     MatDividerModule,
+    MatTooltipModule,
     MatGridListModule,
     RouterModule.forRoot([
       {
