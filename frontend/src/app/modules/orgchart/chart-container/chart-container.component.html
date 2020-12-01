@@ -1,3 +1,19 @@
+<ng-container class="navigation-tabs">
+    <button [disableRipple]="true" mat-icon-button [disabled]="employeeService.curTreeIndex <= 0" (click)="employeeService.navigateToLeftTree()">
+        <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button *ngIf="employeeService.trees[employeeService.curTreeIndex]" (click)="employeeService.restartCurrentRoot()">
+        <mat-label *ngIf="employeeService.trees[employeeService.curTreeIndex]">{{ employeeService.trees[employeeService.curTreeIndex].name }}</mat-label>
+    </button>
+    <button [disableRipple]="true" mat-icon-button [disabled]="employeeService.curTreeIndex >= employeeService.trees.length - 1" (click)="employeeService.navigateToRightTree()">
+        <mat-icon >navigate_next</mat-icon>
+    </button>  
+    <button [disableRipple]="true" *ngIf="employeeService.trees[employeeService.curTreeIndex] && employeeService.trees[employeeService.curTreeIndex].deletable" mat-icon-button>
+        <mat-icon>highlight_off</mat-icon>
+    </button>  
+</ng-container>
+
+
 <div class="orgchart-container" (mouseup)="pan && panning ? panEndHandler() : true">
     <div class="orgchart" [ngStyle]="{'transform': transformVal, 'cursor': cursorVal}"
          (mousedown)="pan ? panStartHandler($event) : true" (mousemove)="pan && panning ? panHandler($event) : true">

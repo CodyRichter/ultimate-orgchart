@@ -34,7 +34,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   async uploadFile(): Promise<void> {
-    if (this.file != null) {
+    if (this.file !== null) {
       console.log(await this.employeeService.uploadJSON(this.file));
       this.dialogRef.closeAll();
     }

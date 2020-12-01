@@ -24,7 +24,7 @@ import { ChartsComponent, SettingsDialog, SearchDialog } from './components/char
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog, CreateEmployeeDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
+import { TokenInterceptor } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer.component';
 import { SearchComponent } from './components/search/search.component';
@@ -39,6 +39,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ProjectEditComponent } from './components/project-detail/project-edit/project-edit.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -122,7 +123,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
+      useClass: TokenInterceptor,
       multi: true
     }
   ],

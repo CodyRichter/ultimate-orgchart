@@ -24,7 +24,7 @@ export class ChartManagerComponent implements OnInit {
 
   ngOnChanges (changes: SimpleChanges){
     if (changes.datasource){
-      console.log('manager data source changed to: ', this.datasource);
+      // console.log('manager data source changed to: ', this.datasource);
     }
   }
 

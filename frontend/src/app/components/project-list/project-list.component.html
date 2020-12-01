@@ -1,6 +1,6 @@
-<mat-dialog-content>
+<cdk-virtual-scroll-viewport itemSize="5" class='example-viewport' (scrolledIndexChange)="nextProject($event)">
     <mat-list>
-        <mat-list-item *ngFor="let project of projectData">
+        <mat-list-item *cdkVirtualFor="let project of projectData">
             <div class="inline">
                 <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
             </div>
@@ -17,4 +17,4 @@
         </mat-list-item>
            
     </mat-list>
-</mat-dialog-content>
+</cdk-virtual-scroll-viewport>

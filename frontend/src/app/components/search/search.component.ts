@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
     private readonly httpClient: HttpClient,
     @Inject(MAT_DIALOG_DATA) private data: any) {
       this.searchResults = data.searchResult;
-      console.log(this.searchResults);
+      // console.log(this.searchResults);
     }
 
   ngOnInit(): void {

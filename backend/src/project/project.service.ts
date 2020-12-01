@@ -117,7 +117,9 @@ export class ProjectService {
         if (manager.manager) {
             notifications.push(new this.notificationModel({employeeId:manager.manager,title:'Project Created',description:description}));
         }
-        await this.notificationModel.create(notifications,{session:session});
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         // project.manager.employee = manager;
         // project.employees = project.employees.map(
@@ -133,9 +135,10 @@ export class ProjectService {
         return project;
         }catch(error)
         {
-                await session.abortTransaction();
+            await session.abortTransaction();
+            console.log(error);
+            throw new ConflictException('Create project failed');
            
-            throw error;
         }finally{
             session.endSession();
         }
@@ -220,7 +223,9 @@ export class ProjectService {
             notifications.push(new this.notificationModel({employeeId:managerEmployee.manager,title:'Project Deleted',description:description}));
         }
 
-        await this.notificationModel.create(notifications,{session:session});
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         await session.commitTransaction();
         return deletedProject;
@@ -291,8 +296,11 @@ export class ProjectService {
             }
             
         }));
+
         await project.save();
-        await this.notificationModel.create(notifications,{session:session});
+         await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
 
         await session.commitTransaction();
         return project;
@@ -323,9 +331,9 @@ export class ProjectService {
 
         await Promise.all(projectEmployees.map(async (projectEmployee) => {
             //find the employee
-            console.log(projectEmployee)
+            //console.log(projectEmployee)
             const projEmployee=await this.projectsEmployeeModel.findById(projectEmployee._id).session(session).exec();
-            console.log(projEmployee);
+            //console.log(projEmployee);
             const employee = await this.employeeModel.findById(projEmployee.employee).session(session).exec();
 
             //if not exist throw error
@@ -349,8 +357,10 @@ export class ProjectService {
            
         }));
         project.save();
-        await this.notificationModel.create(notifications,{session:session});
 
+        await Promise.all(notifications.map(async notification => {
+            await this.notificationModel.create([notification],{session:session});
+        }));
         await session.commitTransaction();
         return project;
 

@@ -71,8 +71,8 @@ export class CreateEmployeeComponent implements OnInit {
       projects: [],
       password: this.password
     };
-    console.log(newEmployee);
-    console.log(await this.employeeService.createEmployee(newEmployee));
+    // console.log(newEmployee);
+    // console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
   changeIsManagerValue(event){
