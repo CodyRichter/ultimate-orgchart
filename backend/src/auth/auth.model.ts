@@ -11,3 +11,8 @@ export class EmployeeAuth  extends TimeStamps {
     @prop({ required: true,  })
     password: string;
 }
+
+export class CreatedAdmin  extends TimeStamps {
+    @prop({ required: true, default: false  })
+    adminCreated: boolean;
+}

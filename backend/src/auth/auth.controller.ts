@@ -13,7 +13,7 @@ export class AuthController
     constructor(private authService:AuthService, private employeeService: EmployeeService){}
 
 
-    @Post('createAdmin') 
+//     @Post('createAdmin') 
     async createAdminAccount() {
         return await this.employeeService.createEmployee({
                 isManager: true, 
@@ -23,7 +23,7 @@ export class AuthController
                 companyId: 1,
                 positionTitle: "Software Engineer",
                 companyName: "404 Brain Not Found",
-                _id: 404123456789404,
+                _id: 1,
                 managerId: null,
                 manages: [],
                 email: "admin@admin.com", 

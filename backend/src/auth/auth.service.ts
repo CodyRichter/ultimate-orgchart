@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { EmployeeService } from '../employee/employee.service';
-import { EmployeeAuth } from '../auth/auth.model';
+import { CreatedAdmin, EmployeeAuth } from '../auth/auth.model';
 import { InjectModel } from "nestjs-typegoose";
 import { ReturnModelType } from "@typegoose/typegoose";
 import * as bcrypt from 'bcrypt';
@@ -12,30 +12,62 @@ export class AuthService {
   constructor(
     @InjectModel(EmployeeAuth) private readonly employeeAuthModel: ReturnModelType<typeof EmployeeAuth>
     , @InjectModel(Employee) private readonly employeeModel: ReturnModelType<typeof Employee>, private jwtService: JwtService
+    , @InjectModel(CreatedAdmin) private readonly createdAdmin: ReturnModelType<typeof CreatedAdmin>, private readonly employeeService: EmployeeService,
+
   ) { };
 
 
+  async createAdmin(): Promise<void> {
+    console.log('create admin');
+    const isAdmin = await this.createdAdmin.find({}).sort({updatedAt: "desc"}).exec();
+    if (isAdmin.length < 1) {
+      const admin = await this.employeeService.createEmployee({
+        isManager: true, 
+        isAdmin: true, 
+        firstName: "Admin",
+        lastName: "Developer", 
+        companyId: 1,
+        positionTitle: "Software Engineer",
+        companyName: "404 Brain Not Found",
+        _id: 0,
+        managerId: null,
+        manages: [],
+        email: "admin@admin.com", 
+        password: "password", 
+        startDate: new Date(),
+        projects:[],
+    });
+    console.log(admin);
+    await this.createdAdmin.create([{adminCreated: true}]);
+    } 
+  }
 
 
-  async signIn(employeeAuth:EmployeeAuth)
+  async signIn(employeeAuth:EmployeeAuth): Promise<any>
   {
-    
+      console.log(employeeAuth);
       const payload={email:employeeAuth.email,sub:employeeAuth._id};
-      const date=new Date();
-      date.setMinutes(date.getMinutes()+1);
+      const accessTokenDate=new Date();
+      const refreshTokenDate=new Date();
+      accessTokenDate.setMinutes(accessTokenDate.getMinutes()+5);
+      refreshTokenDate.setHours(refreshTokenDate.getHours() + 24);
       return {
           accessToken:this.jwtService.sign(payload),
           refreshToken:this.jwtService.sign(payload,{expiresIn:'24h',secret:process.env.JWT_SECRET2}),
-          expiresIn:date
+          accessTokenExpires:accessTokenDate,
+          refreshTokenExpires: refreshTokenDate
         
         };
   }
 
   async refreshToken(employeeAuth:EmployeeAuth)
   {
+    const accessTokenDate=new Date();
+    accessTokenDate.setMinutes(accessTokenDate.getMinutes()+5);
     const payload={email:employeeAuth.email,sub:employeeAuth._id};
       return {
           accessToken:this.jwtService.sign(payload),
+          accessTokenExpires:accessTokenDate,
           };
   }
 

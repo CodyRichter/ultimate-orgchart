@@ -8,7 +8,7 @@ import { Employee, EmployeeAuth } from '../models';
 })
 export class EmployeeService {
   public curSubtree: Employee;
-  public trees: Employee[];
+  public trees: {root: Employee, curNav: Employee, deletable: boolean, name: string}[] = [];
   public curTreeIndex: number;
 
   constructor(private readonly httpClient: HttpClient) {  }
@@ -26,10 +26,27 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<Employee> {
-    this.trees = await this.getManagersEmployees(undefined, 2) as Employee[];
-    this.curTreeIndex = this.trees.findIndex(emp => emp._id !== 404123456789404);
-    this.curSubtree = this.trees[this.curTreeIndex];
+    const temp = await this.getManagersEmployees(undefined, 2) as Employee[];
+    temp.forEach(emp => this.trees.push({root: emp, curNav: emp, deletable: false, 
+      name: 'Tree root: ' + emp.firstName + ' ' + emp.lastName}));
+    this.curTreeIndex = 0;
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
     return this.curSubtree;
+  }
+
+  navigateToRightTree(): void {
+    this.curTreeIndex += 1;
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
+  }
+
+  restartCurrentRoot(): void {
+    this.trees[this.curTreeIndex].curNav = this.trees[this.curTreeIndex].root;
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
+  }
+
+  navigateToLeftTree(): void {
+    this.curTreeIndex -= 1;
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
   }
 
   // async increaseChartDepth(manager: any): Promise<any> {
@@ -40,23 +57,36 @@ export class EmployeeService {
   //   return this.chart;
   // }
 
-  async goDownInChart(manager: Employee): Promise<Employee> {
+  async goDownInChart(manager: Employee, newRoot: boolean  = false): Promise<Employee> {
     console.log('go down:', manager);
     manager.manages = await this.getManagersEmployees(manager._id, 1);
     console.log('manages now: ', manager.manages);
-    this.curSubtree = manager;
+    if (newRoot) {
+      this.trees.push({root: manager, curNav: manager, deletable: true, name: ''});
+      this.curTreeIndex = this.trees.length - 1;
+    } else {
+      this.trees[this.curTreeIndex].curNav = manager;
+    }
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
     this.curSubtree.highlight = true;
-    this.trees[this.curTreeIndex] = this.curSubtree;
+    this.trees[this.curTreeIndex].curNav = this.curSubtree;
     console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
-  async goUpInChart(employee: Employee): Promise<Employee> {
+  async goUpInChart(employee: Employee, newRoot: boolean  = false): Promise<Employee> {
     if (employee.manager) {
       const manager = (employee.manager as Employee);
       if (manager.manager) {
         const secondManagerId = manager.manager as number;
-        this.curSubtree = await this.getEmployeeByIdWithDepth(secondManagerId, 2);
+        const tempTree = await this.getEmployeeByIdWithDepth(secondManagerId, 2);
+        if (newRoot) {
+          this.trees.push({root: tempTree, curNav: tempTree, deletable: true, name: ''});
+          this.curTreeIndex = this.trees.length - 1;
+        } else {
+          this.trees[this.curTreeIndex].curNav = tempTree;
+        }
+        this.curSubtree = this.trees[this.curTreeIndex].curNav;
         const firstManager = this.curSubtree.manages.find((emp: Employee) => emp._id === manager._id) as Employee;
         const employeeIndex = firstManager.manages.findIndex((emp: Employee) => emp._id === employee._id);
         const temp = firstManager.manages[employeeIndex] as Employee;
@@ -64,7 +94,14 @@ export class EmployeeService {
         firstManager.manages[employeeIndex] = firstManager.manages[0];
         firstManager.manages[0] = temp;
       } else {
-        this.curSubtree = await this.getEmployeeByIdWithDepth(manager._id, 2);
+        const tempTree = await this.getEmployeeByIdWithDepth(manager._id, 2);
+        if (newRoot) {
+          this.trees.push({root: tempTree, curNav: tempTree, deletable: true, name: ''});
+          this.curTreeIndex = this.trees.length - 1;
+        } else {
+          this.trees[this.curTreeIndex].curNav = tempTree;
+        }
+        this.curSubtree = this.trees[this.curTreeIndex].curNav;
         const employeeIndex = this.curSubtree.manages.findIndex((emp: Employee) => emp._id === employee._id);
         const temp = this.curSubtree.manages[employeeIndex] as Employee;
         temp.highlight = true;
@@ -72,7 +109,7 @@ export class EmployeeService {
         this.curSubtree.manages[0] = temp;
       }
     }
-    this.trees[this.curTreeIndex] = this.curSubtree;
+    this.trees[this.curTreeIndex].curNav = this.curSubtree;
     // console.log('go up:', employee);
     // this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
     // console.log('subtree', this.curSubtree);

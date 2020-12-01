@@ -16,6 +16,7 @@ export class StackListComponent implements OnInit {
   @Input() stackData: Employee[] = [];
   @Input() details = true;
   @Input() find = false;
+  @Input() newRoot = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly dialog: MatDialog,
               private readonly employeeService: EmployeeService) {
@@ -28,6 +29,9 @@ export class StackListComponent implements OnInit {
     if (data.find !== undefined) {
       this.find = data.find;
     }
+    if (data.newRoot !== undefined) {
+      this.newRoot = data.newRoot;
+    }
   }
 
   onDetailsClick(node: Employee): void {
@@ -37,12 +41,12 @@ export class StackListComponent implements OnInit {
   }
 
   async onNavigateClick(node: Employee): Promise<void> {
-    await this.employeeService.goDownInChart(node);
+    await this.employeeService.goDownInChart(node, this.newRoot);
     this.dialog.closeAll();
   }
 
   async navigateToManager(node: Employee): Promise<void> {
-    await this.employeeService.goUpInChart(node);
+    await this.employeeService.goUpInChart(node, this.newRoot);
     this.dialog.closeAll();
   }
 

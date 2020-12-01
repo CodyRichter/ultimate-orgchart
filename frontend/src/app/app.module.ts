@@ -24,7 +24,7 @@ import { ChartsComponent, SettingsDialog, SearchDialog } from './components/char
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog, CreateEmployeeDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
+import { TokenInterceptor } from './services/auth/auth-interceptor.service';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { EmployeeTransferComponent } from './components/employee-transfer/employee-transfer.component';
 import { SearchComponent } from './components/search/search.component';
@@ -118,7 +118,7 @@ import {MatBadgeModule} from '@angular/material/badge';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
+      useClass: TokenInterceptor,
       multi: true
     }
   ],
