@@ -39,7 +39,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
