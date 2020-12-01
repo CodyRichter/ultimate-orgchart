@@ -6,7 +6,10 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
+
+
 export class FileUploadComponent implements OnInit {
+  loading: boolean = true;
 
   @ViewChild('fileInput')
   fileInput;
@@ -16,7 +19,9 @@ export class FileUploadComponent implements OnInit {
 
   constructor(private readonly employeeService: EmployeeService, private dialogRef: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loading = false;
+  }
 
   onClick(): void {
     this.file = null;
@@ -35,10 +40,15 @@ export class FileUploadComponent implements OnInit {
 
   async uploadFile(): Promise<void> {
     if (this.file != null) {
+      //display progress spinner
+      this.loading = true;
       console.log(await this.employeeService.uploadJSON(this.file));
+      //close progress spinner
+      this.loading = false;
       this.dialogRef.closeAll();
     }
 
   }
+
 
 }
