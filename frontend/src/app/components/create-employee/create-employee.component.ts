@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { JSONUploadDialog } from '../settings/settings.component';
 
 @Component({
   selector: 'create-employee',
@@ -10,17 +12,17 @@ import { EmployeeService } from 'src/app/services/employee.service';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
+  isAdminLoggedIn = false;
   originalCompanyID:number;
   originalCompanyName:string;
   selectedManager: Employee;
   managers = [];
-  date: string;
   hide = true;
   manager: Employee;
   empID: number;
   firstName: string;
   lastName: string;
-  companyId: number;
+  companyId  = 5;
   positionTitle: string;
   companyName: string;
   isManager: boolean;
@@ -28,44 +30,31 @@ export class CreateEmployeeComponent implements OnInit {
   startDate: Date;
   password: string;
   employees: Employee[] = [];
-  roomsFilter: any = {};
-
-  //managers = this.getAllManagers()
   
   email = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(private readonly employeeService: EmployeeService,
-              private readonly authService: AuthService) { 
+              private readonly authService: AuthService, 
+              public dialog: MatDialog) { 
                 this.getAllEmployee().then();
               }
 
   ngOnInit(): void {
-    if(this.authService.profile.isAdmin || this.authService.profile.isManager) {
-      this.fetchManagers();
-      this.isAdmin = false;
-      this.isManager = false;
-      this.companyId = this.originalCompanyID;
-      this.companyName = this.originalCompanyName;
+    if(this.authService.profile.isAdmin) {
+      this.isAdminLoggedIn = true;
     }
-  }
-
-  public onDate(event: any): void {
-    this.roomsFilter.date = event.value;
-    console.log(this.roomsFilter.date);
+    this.fetchManagers();
+    this.isAdmin = false;
+    this.isManager = false;
+    this.companyId = this.originalCompanyID;
+    this.companyName = this.originalCompanyName;
   }
 
   async fetchManagers(): Promise<void> {
     this.managers = await this.employeeService.getAllManagers();
-    /* this.employees.push(await this.employeeService.getEmployeeById(2));
-    let e = this.employees[0];
-    this.originalCompanyID = e.companyId;
-    this.originalCompanyName= e.companyName; */
   }
 
   async createEmp(): Promise<void> {
-    console.log(this.managers);
-    console.log(this.selectedManager);
-    this.startDate = new Date(this.date);
     const newEmployee = {
       _id: this.empID,
       firstName : this.firstName,
@@ -87,16 +76,7 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   changeIsManagerValue(event){
-    console.log(this.date);
     this.isManager = event.checked;
-    //console.log(this.isManager);
-    /* var event1 = new Date(this.date);
-    let d = JSON.stringify(event1);
-    d = d.slice(1,11);
-    this.startDate = new Date(d);
-    console.log(typeof(this.startDate));
-    console.log(this.startDate);
- */
   }
 
   changeIsAdminValue(event){
@@ -104,7 +84,6 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   async getAllEmployee(): Promise<void> {
-    // TODO
     for (let i = 1; i < 100; i++) {
       this.employees.push(await this.employeeService.getEmployeeById(i));
     }
@@ -118,5 +97,10 @@ export class CreateEmployeeComponent implements OnInit {
       return 'Email is required';
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+
+  openJSONUploadDialog(): void {
+    this.dialog.closeAll();
+    this.dialog.open(JSONUploadDialog);
   }
 }
