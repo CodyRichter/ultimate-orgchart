@@ -2,6 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models/index';
 import { StackListComponent } from './stack-list/stack-list.component';
+import { ChartColorComponent } from '../chart-color/chart-color.component';
 
 @Component({
   selector: 'chart-stack',
@@ -12,7 +13,8 @@ export class ChartStackComponent implements OnInit {
 
   @Input() datasource: Employee[];
 
-  constructor(private readonly dialog: MatDialog) { }
+  constructor(private readonly dialog: MatDialog,
+              private readonly color: ChartColorComponent) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +25,7 @@ export class ChartStackComponent implements OnInit {
     });
   }
 
-  
+
   ngOnChanges (changes: SimpleChanges){
     if (changes.datasource){
       // console.log('stack data data source changed to: ', this.datasource);
@@ -31,18 +33,7 @@ export class ChartStackComponent implements OnInit {
   }
 
   getColor(pos): string {
-    const color =
-        {
-          'Engineering Manager': '#FFBA00',
-          CEO: '#3C9329',
-          'Software Engineer II': '#0093FF',
-          'Tech Lead': '#019592',
-          'Software Engineer I': '#7F39FB',
-          'Research Manager': '#E57373',
-          'Software Architect': '#00BCD4',
-          'Senior Software Engineer': '#E57373'
-        };
-    return 'background: linear-gradient(0deg, white 80%,' + color[pos] +  ' 20%);';
+    return this.color.getCardColor(pos);
   }
 
 }

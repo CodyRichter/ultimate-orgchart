@@ -39,8 +39,10 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatBadgeModule} from '@angular/material/badge';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ProjectEditComponent } from './components/project-detail/project-edit/project-edit.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ProjectCreateDialog,
     ProjectListComponent,
     CreateEmployeeComponent,
-    CreateEmployeeDialog
+    CreateEmployeeDialog,
+    ProjectEditComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +94,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatBadgeModule,
     MatDividerModule,
     MatGridListModule,
+    MatSnackBarModule,
     RouterModule.forRoot([
       {
         path: '',

@@ -19,6 +19,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ChartColorComponent } from './chart-color/chart-color.component';
+import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ChartManagerComponent,
     ChartRootComponent,
     NodeDetailComponent,
-    StackListComponent
+    StackListComponent,
+    ChartColorComponent,
+    TransferRequestComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -38,21 +44,25 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatBadgeModule
 
   ],
-    imports: [
-      CommonModule,
-      ScrollingModule,
-      BrowserAnimationsModule,
-      MatCardModule,
-      MatListModule,
-      DragDropModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatRippleModule,
-      MatGridListModule,
-      MatInputModule,
-      MatBadgeModule
-    ],
-  providers: []
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    ScrollingModule,
+    MatListModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatRippleModule,
+    MatGridListModule,
+    MatInputModule,
+    MatBadgeModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
+  ],
+  providers: [
+    ChartColorComponent
+  ]
 })
 export class OrgchartModule { }
