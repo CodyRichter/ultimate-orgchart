@@ -57,10 +57,7 @@ export class EditNodeDialogComponent implements OnInit {
     // frontend only feature
       highlight: this.nodeData.highlight
       };
-
-      console.log(editedEmp);
-      console.log(await this.employeeService.updateEmployee(editedEmp));
-      this.nodeData = await this.employeeService.updateEmployee(editedEmp);
+    await this.employeeService.updateEmployee(editedEmp);
     }
 }
 

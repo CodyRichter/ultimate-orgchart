@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee } from 'src/app/models/index';
+import { Employee, Project } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
  import { MatMenuModule} from '@angular/material/menu';
 import { EmployeeService } from '../../../../services/employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartColorComponent } from '../../chart-color/chart-color.component';
 import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
-
+import { ProjectService } from 'src/app/services/project.service';
 @Component({
   selector: 'chart-node-detail',
   templateUrl: './node-detail.component.html',
@@ -16,20 +16,25 @@ import { TransferRequestComponent } from '../transfer-request/transfer-request.c
 export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
-  projects:any;
+  projects: Project[];
   
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
               private readonly employeeService: EmployeeService,
               private readonly snackbar: MatSnackBar,
               private readonly color: ChartColorComponent,
-              private readonly dialog: MatDialog) {
+              private readonly dialog: MatDialog, private readonly projectService:ProjectService) {
     this.nodeData = data.nodeData;
-    this.projects = this.nodeData.projects;
-    console.log(this.nodeData.projects);
+    this.fetchprojects();
+    console.log(this.projects);
   }
 
   ngOnInit(): void {
+  }
+
+  async fetchprojects(): Promise<void>{
+    this.projects = await this.projectService.getProjectsByEmployeeId(this.nodeData._id);
+    console.log(this.projects);
   }
 
   openEditNodeDialog(): void {

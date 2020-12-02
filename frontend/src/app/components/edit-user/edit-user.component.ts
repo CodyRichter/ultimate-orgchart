@@ -68,9 +68,7 @@ export class EditUserComponent implements OnInit {
     // frontend only feature
       highlight: this.profileUser.highlight
       };
-
-      console.log(editedUser);
-      console.log(await this.employeeService.updateEmployee(editedUser));
-      this.profileUser = await this.employeeService.updateEmployee(editedUser);
+      
+      await this.employeeService.updateEmployee(editedUser);
     }
 }

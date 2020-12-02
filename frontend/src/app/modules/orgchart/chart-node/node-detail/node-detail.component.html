@@ -11,7 +11,7 @@
     <span>Edit</span>
 </button>
 <button mat-menu-item (click)="onTransferEmployee()">
-    <mat-icon>multiple_stop</mat-icon>
+    <mat-icon>transfer_within_a_station</mat-icon>
     <span>Transfer</span>
 </button>
 <button mat-menu-item (click)="onDeleteEmployee()">
@@ -41,9 +41,9 @@
         <mat-icon class="icon">person</mat-icon>
         <span>Employee Id: {{nodeData._id}}</span>
     </div>
-   <div *ngIf="nodeData.projects.length!=0">
+   <div *ngIf="projects.length!==0">
     <h3><strong>Projects</strong></h3>
-    <app-project-list [projectData]="nodeData.projects"></app-project-list>
+    <app-project-list [projectData]="projects"></app-project-list>
     </div>
     <!-- <div>
        Make ng-if here for nodeData.projects length
