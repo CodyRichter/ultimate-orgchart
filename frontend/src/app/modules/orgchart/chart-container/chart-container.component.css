@@ -25,6 +25,10 @@
     color: #707070;
 }
 
+.navigation-tabs {
+    position: absolute;
+}
+
 .find-me-container {
     position: fixed;
     right: 24px;

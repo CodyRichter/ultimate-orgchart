@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Project } from 'src/app/models';
 import { ProjectService } from 'src/app/services/project.service';
 import { ProjectsEmployee } from 'src/app/models';
+import { JSONUploadDialog } from '../settings/settings.component';
 
 @Component({
   selector: 'create-project',
@@ -28,11 +29,12 @@ export class CreateProjectComponent implements OnInit {
   constructor(private readonly projectService: ProjectService,
               private readonly authService: AuthService,
               private readonly employeeService: EmployeeService,
-              private dialogRef: MatDialog) {
-    this.getAllEmployee().then();
+              private dialogRef: MatDialog,
+              public dialog: MatDialog) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getAllEmployee();
   }
 
   async createProj(): Promise<void> {
@@ -77,4 +79,8 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
+  openJSONUploadDialog(): void {
+    this.dialog.closeAll();
+    this.dialog.open(JSONUploadDialog);
+  }
 }

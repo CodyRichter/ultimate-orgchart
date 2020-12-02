@@ -55,3 +55,12 @@ h3{
     min-height:300px;
     width: 331.66px;
 }
+
+::ng-deep .mat-snack-bar-container{
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+}
+
+::ng-deep .mat-simple-snackbar-action {
+    color: #509E2F;
+}

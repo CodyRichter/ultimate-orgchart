@@ -1,16 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
 import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Project } from './project.model';
 import { ProjectService } from './project.service';
 import { ProjectsEmployee } from './projectsEmployee.model';
 import * as multer from 'multer';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import {Role} from '../enums/roles.enum'
+import { Roles } from 'src/auth/guards/roles.decorator';
 @Controller('project')
+@UseGuards(JwtAuthGuard,RolesGuard)
 export class ProjectController { 
     constructor(private readonly projectService:ProjectService){}
 
-
+    
     @Post('create')
+    @Roles(Role.ADMIN,Role.MANAGER)
     async createProject(@Body()project:Project )
     {
         return await this.projectService.createProject(project);
@@ -19,6 +25,7 @@ export class ProjectController {
     // Creates multiple employees in the db - used only by upload JSON function
   // Guard admin
   @Post('create/multiple')
+  @Roles(Role.ADMIN,Role.MANAGER)
   //@Roles(Role.ADMIN, Role.MANAGER)
   async createEmployees(@Body() newProjects: Project[]): Promise<Project[]> {
     return await this.projectService.createProjects(newProjects);
@@ -27,7 +34,7 @@ export class ProjectController {
   // Posts a JSON to the backend to be uploaded into the db
   // Guard admin
   @Post('uploadJSON')
-  //@Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   @UseInterceptors(FileInterceptor('file', {
     storage: multer.memoryStorage()
   }))
@@ -50,6 +57,7 @@ export class ProjectController {
      }
 
      @Delete(':projectId')
+     @Roles(Role.ADMIN,Role.MANAGER)
      async deleteProject(@Param('projectId') projectId:number):Promise<Project>
      {
          return await this.projectService.deleteProject(projectId);
@@ -57,6 +65,7 @@ export class ProjectController {
 
      //update project name or description
      @Patch(':projectId')
+     @Roles(Role.ADMIN,Role.MANAGER)
      async updateProject(@Param('projectId') projectId:number, @Body() updatedField:Project):Promise<Project>
      {
           return await this.projectService.updateProjectDetail(projectId,updatedField);
@@ -64,6 +73,7 @@ export class ProjectController {
     
       //add employee to the project
       @Patch('addEmployee/:projectId')
+      @Roles(Role.ADMIN,Role.MANAGER)
       async addEmployee(@Param('projectId') projectId: number, @Body() employee: ProjectsEmployee[]):Promise<Project>
       {
           return await this.projectService.addProjectEmployee(projectId,employee);
@@ -71,6 +81,7 @@ export class ProjectController {
 
     //  //delete employee from the project
      @Patch('removeEmployee/:projectId')
+     @Roles(Role.ADMIN,Role.MANAGER)
      async  deleteEmployee(@Param('projectId') projectId: number,@Body() employee: ProjectsEmployee[]):Promise<Project>
      {
         return await this.projectService.deleteProjectEmployee(projectId,employee);

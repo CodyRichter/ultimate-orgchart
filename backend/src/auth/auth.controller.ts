@@ -13,25 +13,25 @@ export class AuthController
     constructor(private authService:AuthService, private employeeService: EmployeeService){}
 
 
-    @Post('createAdmin') 
-    async createAdminAccount() {
-        return await this.employeeService.createEmployee({
-                isManager: true, 
-                isAdmin: true, 
-                firstName: "Admin",
-                lastName: "Developer", 
-                companyId: 1,
-                positionTitle: "Software Engineer",
-                companyName: "404 Brain Not Found",
-                _id: 404123456789404,
-                managerId: null,
-                manages: [],
-                email: "admin@admin.com", 
-                password: "password", 
-                startDate: new Date(),
-                projects:[],
-        });
-    }
+//     @Post('createAdmin') 
+//     async createAdminAccount() {
+//         return await this.employeeService.createEmployee({
+//                 isManager: true, 
+//                 isAdmin: true, 
+//                 firstName: "Admin",
+//                 lastName: "Developer", 
+//                 companyId: 1,
+//                 positionTitle: "Software Engineer",
+//                 companyName: "404 Brain Not Found",
+//                 _id: 1,
+//                 managerId: null,
+//                 manages: [],
+//                 email: "admin@admin.com", 
+//                 password: "password", 
+//                 startDate: new Date(),
+//                 projects:[],
+//         });
+//     }
     
     // Local strategy @user will be employee auth
     @UseGuards(LocalAuthGuard)

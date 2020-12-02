@@ -177,6 +177,11 @@ export class EmployeeService {
 
     // check manager is the same, manages is the same, projects is the same
 
+    employee.firstName = update.firstName;
+    employee.lastName = update.lastName;
+    employee.companyId = update.companyId;
+    employee.companyName = update.companyName;
+    employee.startDate = update.startDate;
     await employee.save();
     return employee
   }
