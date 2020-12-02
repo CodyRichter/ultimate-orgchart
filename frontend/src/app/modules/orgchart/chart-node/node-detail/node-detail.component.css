@@ -47,12 +47,12 @@ h3{
 }
 
 .menu-btn{
-    margin-left:320px;
+    margin-left:330px;
 }
 
 .node-detail-dialog{
-    min-height:250px;
-    width: 331.66px;
+    min-height:220px;
+    width: 350px;
 }
 
 ::ng-deep .mat-snack-bar-container{

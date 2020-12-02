@@ -136,7 +136,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    ProjectDetailComponent
   ],
   bootstrap: [AppComponent]
 })

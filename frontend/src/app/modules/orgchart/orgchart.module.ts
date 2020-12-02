@@ -25,6 +25,7 @@ import { TransferRequestComponent } from './chart-node/transfer-request/transfer
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
+import { EmployeeProjectListComponent } from './chart-node/node-detail/employee-project-list/employee-project-list.component';
 @NgModule({
   declarations: [
     ChartContainerComponent,
@@ -35,7 +36,8 @@ import { MatMenuModule } from '@angular/material/menu';
     NodeDetailComponent,
     StackListComponent,
     ChartColorComponent,
-    TransferRequestComponent
+    TransferRequestComponent,
+    EmployeeProjectListComponent
   ],
   exports: [
     ChartContainerComponent,

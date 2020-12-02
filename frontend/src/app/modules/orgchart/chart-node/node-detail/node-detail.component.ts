@@ -25,7 +25,6 @@ export class NodeDetailComponent implements OnInit {
               private readonly dialog: MatDialog, private readonly projectService:ProjectService) {
     this.nodeData = data.nodeData;
     this.fetchProjects().then();
-    console.log(this.projects);
   }
 
   ngOnInit(): void {
@@ -33,7 +32,6 @@ export class NodeDetailComponent implements OnInit {
 
   async fetchProjects(): Promise<void>{
     this.projects = await this.projectService.getProjectsByEmployeeId(this.nodeData._id);
-    console.log(this.projects);
   }
 
   openEditNodeDialog(): void {
