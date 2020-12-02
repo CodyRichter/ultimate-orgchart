@@ -44,8 +44,6 @@ export class NodeDetailComponent implements OnInit {
   }
 
   getColor(pos: string): string {
-    console.log(pos);
-    console.log(this.color.getHexColor(pos));
     return 'background-color: ' + this.color.getHexColor(pos) + ';';
   }
 

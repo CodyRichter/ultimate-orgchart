@@ -41,7 +41,7 @@
         <mat-icon class="icon">person</mat-icon>
         <span>Employee Id: {{nodeData._id}}</span>
     </div>
-   <div *ngIf="projects.length!==0">
+   <div *ngIf="projects">
     <h3><strong>Projects</strong></h3>
     <app-project-list [projectData]="projects"></app-project-list>
     </div>
