@@ -40,11 +40,13 @@ export class NodeDetailComponent implements OnInit {
   openEditNodeDialog(): void {
     this.dialog.open(EditNodeDialog, {
       data: { nodeData: this.nodeData }
-  })
+  });
   }
 
   getColor(pos: string): string {
-    return this.color.getHexColor(pos);
+    console.log(pos);
+    console.log(this.color.getHexColor(pos));
+    return 'background-color: ' + this.color.getHexColor(pos) + ';';
   }
 
   async onDeleteEmployee(): Promise<void> {
