@@ -35,8 +35,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-//import {EditNodeDialogComponent} from './components/edit-node-dialog/edit-node-dialog.component';
-import {EditNodeDialogComponent} from './edit-node-dialog/edit-node-dialog.component';
+import {EditNodeDialogComponent} from './components/edit-node-dialog/edit-node-dialog.component';
 import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import {EditUserInfo} from './components/settings/settings.component';
