@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { MatDialog } from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
+
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
@@ -17,7 +20,7 @@ export class FileUploadComponent implements OnInit {
   file: File = null;
   fileMsg = 'No File Selected';
 
-  constructor(private readonly employeeService: EmployeeService, private dialogRef: MatDialog) { }
+  constructor(private readonly employeeService: EmployeeService, private dialogRef: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loading = false;
@@ -40,12 +43,14 @@ export class FileUploadComponent implements OnInit {
 
   async uploadFile(): Promise<void> {
     if (this.file != null) {
-      //display progress spinner
       this.loading = true;
-      console.log(await this.employeeService.uploadJSON(this.file));
-      //close progress spinner
-      this.loading = false;
       this.dialogRef.closeAll();
+      console.log(await this.employeeService.uploadJSON(this.file));
+      this.snackBar.open("JSON uploaded!", "OK", {
+        duration: 2000,
+      });
+      this.loading = false;
+
     }
 
   }
