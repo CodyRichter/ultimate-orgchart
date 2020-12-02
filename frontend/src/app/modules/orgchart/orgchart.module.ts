@@ -24,7 +24,7 @@ import { ChartColorComponent } from './chart-color/chart-color.component';
 import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     ChartContainerComponent,
@@ -61,7 +61,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatBadgeModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [
     ChartColorComponent
