@@ -34,7 +34,7 @@
     </div>
    <div *ngIf="nodeData.projects.length!=0">
     <h3><strong>Projects</strong></h3>
-    <app-stack-list [stackData]="nodeData.projects"></app-stack-list>
+    <app-project-list [projectData]="nodeData.projects"></app-project-list>
     </div>
     <!-- <div>
        Make ng-if here for nodeData.projects length
@@ -47,4 +47,3 @@
     <span style="width: 32px;"></span>
     <button *ngIf="nodeData.isAdmin || nodeData.isManager" mat-stroked-button class="button" color="warn" mat-dialog-close>REMOVE</button>
 </mat-dialog-actions>
-</div>

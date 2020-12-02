@@ -43,35 +43,34 @@ export class EditUserComponent implements OnInit {
       this.profileUser = user;
       this.firstName = this.profileUser.firstName;
       this.lastName = this.profileUser.lastName;
-      this.email = this.profileUser.email;
+      this.companyName = this.profileUser.companyName;
       return user;
     }
 
 
     async editUser(): Promise<void> {
-      var user = await this.authService.getProfile();
       const editedUser = {
-      _id: user._id,
+      _id: this.profileUser._id,
       firstName: this.firstName,
       lastName: this.lastName,
-      companyId: user.companyId,
-      positionTitle: user.companyName,
-      companyName: user.companyName,
-      isManager: user.isManager,
-      isAdmin: user.isAdmin,
-      manager: user.manager,
-      email: this.email,
-      startDate: user.startDate,
-      manages: user.manages,
-      projects: user.projects,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      companyId: this.profileUser.companyId,
+      positionTitle: this.profileUser.companyName,
+      companyName: this.companyName,
+      isManager: this.profileUser.isManager,
+      isAdmin: this.profileUser.isAdmin,
+      manager: this.profileUser.manager,
+      email: this.profileUser.email,
+      startDate: this.profileUser.startDate,
+      manages: this.profileUser.manages,
+      projects: this.profileUser.projects,
+      createdAt: this.profileUser.createdAt,
+      updatedAt: this.profileUser.updatedAt,
     // frontend only feature
-      highlight: user.highlight
+      highlight: this.profileUser.highlight
       };
 
       console.log(editedUser);
       console.log(await this.employeeService.updateEmployee(editedUser));
-      user = await this.employeeService.updateEmployee(editedUser);
+      this.profileUser = await this.employeeService.updateEmployee(editedUser);
     }
 }

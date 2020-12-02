@@ -12,10 +12,13 @@ import { MatDialog } from '@angular/material/dialog';
 export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
+  projects:any;
   
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private dialog: MatDialog) {
     this.nodeData = data.nodeData;
+    this.projects = this.nodeData.projects;
+    console.log(this.nodeData.projects);
   }
 
   ngOnInit(): void {

@@ -26,7 +26,7 @@ export class EditNodeDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
     this.nodeData = data.nodeData;
     this.lastName = this.nodeData.lastName;
-    this.email = this.nodeData.email;
+    this.companyName = this.nodeData.companyName;
     this.firstName = this.nodeData.firstName;
   }
 
@@ -44,11 +44,11 @@ export class EditNodeDialogComponent implements OnInit {
       lastName: this.lastName,
       companyId: this.nodeData.companyId,
       positionTitle: this.nodeData.companyName,
-      companyName: this.nodeData.companyName,
+      companyName: this.companyName,
       isManager: this.nodeData.isManager,
       isAdmin: this.nodeData.isAdmin,
       manager: this.nodeData.manager,
-      email: this.email,
+      email: this.nodeData.email,
       startDate: this.nodeData.startDate,
       manages: this.nodeData.manages,
       projects: this.nodeData.projects,
