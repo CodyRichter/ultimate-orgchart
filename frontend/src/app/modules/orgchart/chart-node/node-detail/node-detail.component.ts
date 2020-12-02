@@ -16,8 +16,7 @@ import { ProjectService } from 'src/app/services/project.service';
 export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
-  projects: Project[];
-  
+  projects: Project[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
               private readonly employeeService: EmployeeService,
@@ -25,14 +24,14 @@ export class NodeDetailComponent implements OnInit {
               private readonly color: ChartColorComponent,
               private readonly dialog: MatDialog, private readonly projectService:ProjectService) {
     this.nodeData = data.nodeData;
-    this.fetchprojects();
+    this.fetchProjects().then();
     console.log(this.projects);
   }
 
   ngOnInit(): void {
   }
 
-  async fetchprojects(): Promise<void>{
+  async fetchProjects(): Promise<void>{
     this.projects = await this.projectService.getProjectsByEmployeeId(this.nodeData._id);
     console.log(this.projects);
   }
