@@ -11,6 +11,10 @@
     z-index: -1;
 }
 
+.highlight {
+    border: 5px solid green;
+}
+
 .card0 {
     position: absolute;
     top: 208px;

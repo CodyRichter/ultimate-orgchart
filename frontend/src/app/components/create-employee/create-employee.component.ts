@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { JSONUploadDialog } from '../settings/settings.component';
+import { SearchService } from 'src/app/services/search.service';
+import { HttpClient } from '@angular/common/http';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+
 
 @Component({
   selector: 'create-employee',
@@ -12,6 +16,9 @@ import { JSONUploadDialog } from '../settings/settings.component';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
+
+ 
   isAdminLoggedIn = false;
   originalCompanyID:number;
   originalCompanyName:string;
@@ -32,27 +39,73 @@ export class CreateEmployeeComponent implements OnInit {
   employees: Employee[] = [];
   
   email = new FormControl('', [Validators.required, Validators.email]);
+  nextUrl: string;
+  seenEmployees = {};
 
   constructor(private readonly employeeService: EmployeeService,
+              private readonly searchService: SearchService,
+              private readonly httpClient: HttpClient,
               private readonly authService: AuthService, 
               public dialog: MatDialog) { 
-                this.getAllEmployee().then();
               }
 
-  ngOnInit(): void {
-    if(this.authService.profile.isAdmin) {
+  async ngOnInit(): Promise<void> {
+    if (this.authService.profile.isAdmin) {
       this.isAdminLoggedIn = true;
     }
-    this.fetchManagers();
+    this.search('.');
     this.isAdmin = false;
     this.isManager = false;
+    this.originalCompanyID = (await this.authService.getProfile()).companyId;
+    this.originalCompanyName = (await this.authService.getProfile()).companyName;
     this.companyId = this.originalCompanyID;
     this.companyName = this.originalCompanyName;
   }
 
-  async fetchManagers(): Promise<void> {
-    this.managers = await this.employeeService.getAllManagers();
+  async search(query?: string): Promise<void> {
+    if (!query) {
+      query = (document.getElementById('addEmployeeSearch') as HTMLInputElement).value;
+    }
+    console.log(query);
+    this.managers = [];
+    this.seenEmployees = {};
+    const response = await this.searchService.searchManagers(query);
+    this.managers = response.employees;
+    this.managers.forEach((element, index) => {this.seenEmployees[element._id] = index; });
+    this.nextUrl = response.nextEmployeeURL;
   }
+
+  trackByIdx(i) {
+    console.log(i);
+    return i;
+  }
+
+  async nextEmployee(event: any): Promise <void > {
+    console.log('next');
+    if(this.nextUrl) {
+      const end = this.virtualScroll.getRenderedRange().end;
+      console.log(end);
+      const total = this.managers.length;
+      console.log(end);
+      console.log(`${end}, '>=', ${total}`);
+      if (end === total) {
+        console.log(this.nextUrl);
+        const result = await this.httpClient.get(`http://${this.nextUrl}`).toPromise() as any;
+        this.nextUrl = result.nextEmployeeURL;
+        (result.employees as Employee[]).forEach(employee => {
+          if (this.seenEmployees[employee._id]) {
+            this.managers[this.seenEmployees[employee._id]] = employee;
+          } else {
+            this.managers.push(employee);
+            this.seenEmployees[employee._id] = this.managers.length - 1;
+          }
+        });
+        this.managers = this.managers.map(x => x);
+        console.log(this.managers);
+      }
+    }
+  }
+
 
   async createEmp(): Promise<void> {
     const newEmployee = {
@@ -71,8 +124,8 @@ export class CreateEmployeeComponent implements OnInit {
       projects: [],
       password: this.password
     };
-    // console.log(newEmployee);
-    // console.log(await this.employeeService.createEmployee(newEmployee));
+    console.log(newEmployee);
+    console.log(await this.employeeService.createEmployee(newEmployee));
   }
 
   changeIsManagerValue(event){
@@ -81,15 +134,6 @@ export class CreateEmployeeComponent implements OnInit {
 
   changeIsAdminValue(event){
     this.isAdmin = event.checked;
-  }
-
-  async getAllEmployee(): Promise<void> {
-    for (let i = 1; i < 100; i++) {
-      this.employees.push(await this.employeeService.getEmployeeById(i));
-    }
-    let e = this.employees[1];
-    this.originalCompanyID = e.companyId;
-    this.originalCompanyName= e.companyName;
   }
 
   getEmailErrorMessage() {
@@ -101,6 +145,6 @@ export class CreateEmployeeComponent implements OnInit {
 
   openJSONUploadDialog(): void {
     this.dialog.closeAll();
-    this.dialog.open(JSONUploadDialog);
+    this.dialog.open(JSONUploadDialog, {data: {}});
   }
 }

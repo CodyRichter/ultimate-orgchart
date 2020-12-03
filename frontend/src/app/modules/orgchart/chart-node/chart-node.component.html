@@ -1,4 +1,4 @@
-<mat-card class="oc-node" style="{{getColor(nodeData.positionTitle)}}" (click)="onNodeClick()" matRipple >
+<mat-card class="oc-node" [ngClass]="{highlight: nodeData.highlight}" style="{{getColor(nodeData.positionTitle)}}" (click)="onNodeClick()" matRipple >
     <mat-card-content>
         <div class="inline">
             <img class="node-pic" src="assets/icons/default-avatar.png" alt="">

@@ -74,7 +74,7 @@ export class SearchController {
   }
 
   @Get('employee')
-  async generalSearchEmployee(@Request() req, @Query('query') query: string, @Query('skip') skip: number, @Query('limit') limit: number): Promise<any>{//Promise<{employees: Employee[], projects: Project[]}> {
+  async generalSearchEmployee(@Request() req, @Query('query') query: string, @Query('skip') skip: number, @Query('limit') limit: number, @Query('isManager') isManager?: string, @Query('isAdmin') isAdmin?: string): Promise<any>{//Promise<{employees: Employee[], projects: Project[]}> {
 
     if(isNaN(skip)){
       skip = 0;
@@ -88,6 +88,14 @@ export class SearchController {
     }
 
     let nextEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${skip + limit}`;
+    
+    if (isManager) {
+      nextEmployeeURL += `&isManager=${isManager}`;
+    }
+    if (isAdmin) {
+      nextEmployeeURL += `&isAdmin=${isAdmin}`;
+    }
+    
     let prevSkip = skip - limit;
     if(prevSkip < 0 && skip !== 0){
       prevSkip = 0;
@@ -95,11 +103,18 @@ export class SearchController {
     }
     let prevEmployeeURL = req.headers.host + req.baseUrl + `/search/employee?query=${query}&limit=${limit}&skip=${prevSkip}`;
 
+    if (isManager) {
+      prevEmployeeURL += `&isManager=${isManager}`;
+    }
+    if (isAdmin) {
+      prevEmployeeURL += `&isAdmin=${isAdmin}`;
+    }
+
     if (skip === 0) {
       prevEmployeeURL = undefined;
     }
 
-    const employeeMatches = await this.employeeService.generalSearch(query, skip, limit);
+    const employeeMatches = await this.employeeService.generalSearch(query, skip, limit, isAdmin, isManager);
 
     if(employeeMatches.length < limit){
       nextEmployeeURL = undefined;

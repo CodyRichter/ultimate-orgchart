@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, Response, UseGuards } from '@nestjs/common';
 import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Project } from './project.model';
@@ -49,6 +49,21 @@ export class ProjectController {
     {
         return await this.projectService.getAllProjects();
     }
+
+      // returns a single JSON file of the current db status
+  @Get("JSON")
+  async getJSON(@Response() res): Promise<any> {
+    const data = await this.projectService.getAllProjects();
+    const date = new Date().toUTCString();
+
+    res.set({
+      'Content-Disposition': `attachment; filename="project_data_${date}.json"`,
+      'Content-Type': 'application/json',
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    });
+    res.send(data);
+    res.end();
+  }
 
      @Get(':projectId')
      async getProject(@Param("projectId")projectId:number):Promise<Project>
