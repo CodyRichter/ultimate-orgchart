@@ -34,9 +34,6 @@ export class EditNodeDialogComponent implements OnInit {
 
   }
 
-    // console.log(project);
-    // console.log(await this.projectService.createProject(project));
-
     async editEmployee(): Promise<any> {
       const editedEmp = {
       _id: this.nodeData._id,

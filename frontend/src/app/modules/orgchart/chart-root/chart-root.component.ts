@@ -15,16 +15,8 @@ export class ChartRootComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.datasource);
-  }
-
-  ngOnChanges (changes: SimpleChanges){
-    if (changes.datasource){
-      // console.log('root data source changed to: ', this.datasource);
-    }
   }
   
-
   filterEmployees(node: Employee): boolean {
     return node.manages.length === 0;
   }

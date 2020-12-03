@@ -79,7 +79,6 @@ export class ProjectListComponent implements OnInit {
     this.employeeService.pushNewRoot({root: projectManager, curNav: projectManager, 
       name: 'Project Search: ' + project.name, deletable: true});
 
-    // console.log(this.employeeService.curSubtree);
     this.dialog.closeAll();
   }
 

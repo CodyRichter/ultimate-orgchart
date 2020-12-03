@@ -25,13 +25,6 @@ export class ChartStackComponent implements OnInit {
     });
   }
 
-
-  ngOnChanges (changes: SimpleChanges){
-    if (changes.datasource){
-      // console.log('stack data data source changed to: ', this.datasource);
-    }
-  }
-
   getColor(pos): string {
     return this.color.getCardColor(pos);
   }

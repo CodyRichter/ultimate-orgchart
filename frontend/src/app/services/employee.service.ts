@@ -50,14 +50,6 @@ export class EmployeeService {
     this.curSubtree = this.trees[this.curTreeIndex].curNav;
   }
 
-  // async increaseChartDepth(manager: any): Promise<any> {
-  //   manager.manages = await this.getManagersEmployees(manager._id, 2);
-  //   this.chartStack.push(manager);
-  //   this.curSubtree = manager;
-  //   // console.log(this.chart);
-  //   return this.chart;
-  // }
-
   pushNewRoot(root: {curNav: Employee, root: Employee, name: string, deletable: boolean}) {
     this.trees.push(root);
     this.curTreeIndex = this.trees.length - 1;
@@ -127,36 +119,10 @@ export class EmployeeService {
         this.curSubtree.manages[0] = temp;
       }
     }
-    // const tempTree = await this.getEmployeeByIdWithDepth(employee._id, 2);
-    // if (newRoot) {
-    //   this.trees.push({root: tempTree, curNav: tempTree, deletable: true, 
-    //     name: 'Employee Search: ' + employee.firstName + ' ' + employee.lastName});
-    //   this.curTreeIndex = this.trees.length - 1;
-    // } else {
-    //   this.trees[this.curTreeIndex].curNav = tempTree;
-    // }
-    // this.curSubtree = this.trees[this.curTreeIndex].curNav;
-    // console.log('go up:', employee);
-    // this.curSubtree = await this.getManagers(employee._id, managerHeight, 2);
-    // // console.log('subtree', this.curSubtree);
     return this.curSubtree;
   }
 
-  // async getManagers(employeeId: number, managerHeight?: number, depth?: number): Promise<any> {
-  //   // console.log('get manager ', employeeId, ' height ', managerHeight, ' depth ', depth);
-  //   let url = environment.SERVER_URL + `employee/getManagers/${employeeId}`;
-  //   // ToDo: figure out string logic for case of one or the other
-  //   if (depth) {
-  //     url += `?managerHeight=${managerHeight}`;
-  //   }
-  //   if (depth) {
-  //     url += `&depth=${depth}`;
-  //   }
-  //   return await this.httpClient.get(url).toPromise();
-  // }
-
   async getManagersEmployees(manager?: number, depth?: number): Promise<any> {
-    // console.log('get manages ', manager, ' depth ', depth);
     let url = environment.SERVER_URL + 'employee/getManages/';
     if (manager) {
       url += manager;

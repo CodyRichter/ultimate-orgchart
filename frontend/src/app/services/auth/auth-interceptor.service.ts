@@ -11,7 +11,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     constructor(public authService: AuthService, private readonly httpClient: HttpClient) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // console.log(request.url);
         const accessExpired = this.authService.isAccessTokenExpired();
         const refreshExpired = this.authService.isRefreshTokenExpired();
 
