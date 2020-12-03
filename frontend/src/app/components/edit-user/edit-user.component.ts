@@ -35,8 +35,6 @@ export class EditUserComponent implements OnInit {
     this.getProfileDetails();
   }
 
-    // console.log(project);
-    // console.log(await this.projectService.createProject(project));
     async getProfileDetails() {
       const user = await this.authService.getProfile();
       console.log(user);

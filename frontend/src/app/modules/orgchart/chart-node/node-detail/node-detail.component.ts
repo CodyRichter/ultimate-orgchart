@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartColorComponent } from '../../chart-color/chart-color.component';
 import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
 import { ProjectService } from 'src/app/services/project.service';
+import { EmployeeTransferComponent } from 'src/app/components/employee-transfer/employee-transfer.component';
 @Component({
   selector: 'chart-node-detail',
   templateUrl: './node-detail.component.html',
@@ -51,7 +52,7 @@ export class NodeDetailComponent implements OnInit {
   }
 
   async onTransferEmployee(): Promise<void> {
-    this.dialog.open(TransferRequestComponent);
+    this.dialog.open(EmployeeTransferComponent);
   }
 
 }

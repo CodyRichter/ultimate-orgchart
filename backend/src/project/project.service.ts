@@ -331,9 +331,7 @@ export class ProjectService {
 
         await Promise.all(projectEmployees.map(async (projectEmployee) => {
             //find the employee
-            //console.log(projectEmployee)
             const projEmployee=await this.projectsEmployeeModel.findById(projectEmployee._id).session(session).exec();
-            //console.log(projEmployee);
             const employee = await this.employeeModel.findById(projEmployee.employee).session(session).exec();
 
             //if not exist throw error

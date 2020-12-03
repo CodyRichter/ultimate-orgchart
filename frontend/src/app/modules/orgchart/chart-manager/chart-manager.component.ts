@@ -22,12 +22,6 @@ export class ChartManagerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngOnChanges (changes: SimpleChanges){
-    if (changes.datasource){
-      // console.log('manager data source changed to: ', this.datasource);
-    }
-  }
-
   checkDepth(nodes: Employee[]): boolean {
     return nodes.some(node => node.manages.length > 0);
   }
