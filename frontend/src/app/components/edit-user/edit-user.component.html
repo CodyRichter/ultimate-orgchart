@@ -1,0 +1,21 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder = "First Name" id="first" 
+      class="first" name="first" [(ngModel)]="firstName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input matInput  placeholder="Last Name" name="last" [(ngModel)]="lastName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input matInput placeholder="user@email.com" name="email" [(ngModel)]="companyName" required />
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="editUser()" mat-dialog-close>
+        Edit User
+    </button>
+</form>

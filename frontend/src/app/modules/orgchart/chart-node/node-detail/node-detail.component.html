@@ -1,4 +1,26 @@
-<div class="dot" style="{{getColor(nodeData.positionTitle)}}"></div>
+<div class = "node-detail-dialog">
+<div>
+<div class="dot" style="{{getColor(nodeData.positionTitle)}}">
+<span class="spacer"></span>
+<button mat-icon-button class="menu-btn" [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+<button mat-menu-item (click)="openEditNodeDialog()">
+    <mat-icon>edit</mat-icon>
+    <span>Edit</span>
+</button>
+<button mat-menu-item (click)="onTransferEmployee()">
+    <mat-icon>transfer_within_a_station</mat-icon>
+    <span>Transfer</span>
+</button>
+<button mat-menu-item (click)="onDeleteEmployee()">
+    <mat-icon>delete</mat-icon>
+    <span>Delete</span>
+</button>
+</mat-menu>
+</div>
+</div>
 <mat-dialog-content>
     <div class="inline"><img src="assets/icons/default-avatar.png" alt="" style="width: 72px; margin-left: 2px"></div>
     <div style="margin-left: 96px; margin-top: 8px">
@@ -19,9 +41,13 @@
         <mat-icon class="icon">person</mat-icon>
         <span>Employee Id: {{nodeData._id}}</span>
     </div>
+   <div *ngIf="projects.length !== 0">
+    <h3><strong>Projects</strong></h3>
+    <app-employee-project-list [projectData]="projects"></app-employee-project-list>
+    </div>
+    <!-- <div>
+       Make ng-if here for nodeData.projects length
+        <mat-icon class="icon">article</mat-icon>
+        <span>Projects: {{nodeData.projects}}</span>
+    </div> -->
 </mat-dialog-content>
-<mat-dialog-actions class="actions">
-    <button mat-stroked-button class="button" color="primary" mat-dialog-close>TRANSFER</button>
-    <span style="width: 32px;"></span>
-    <button mat-stroked-button class="button" color="warn" mat-dialog-close>REMOVE</button>
-</mat-dialog-actions>

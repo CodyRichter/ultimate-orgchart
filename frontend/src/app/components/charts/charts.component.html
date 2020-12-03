@@ -5,7 +5,7 @@
     <div class="search-bar">
             <mat-form-field appearance = "legacy" class = "example-full-width">
             <input matInput type = "search" id = "mySearch" placeholder="Search" (keydown.enter) = openDialog()>
-            <mat-icon matSuffix>search</mat-icon> 
+            <mat-icon matSujffix>search</mat-icon> 
             </mat-form-field>
         </div>
 
@@ -13,10 +13,10 @@
 <!--    <button mat-button (click)="openProjectDialog()">-->
 <!--        Project Detail-->
 <!--    </button>-->
-    <button mat-button color="accent" (click)="openHelpDialog()">
+    <button mat-button matTooltip="Help" (click)="openHelpDialog()" color="accent">
         <mat-icon>help</mat-icon>
     </button>
-    <button mat-button color="accent" (click)="notifications.toggle()">
+    <button mat-button matTooltip="Notifications"  color="accent" (click)="notifications.toggle()">
         <mat-icon>notifications</mat-icon>
     </button>
     <button mat-fab [matMenuTriggerFor]="menu" class="mat-elevation-z2" style="width: 3em; height: 3em; margin-left: 2em">
@@ -37,7 +37,7 @@
 </div>
 
 <mat-drawer-container>
-    <section id="chart-container" *ngIf="employeeService.curSubtree">
+    <section id="chart-container" *ngIf="employeeService.curSubtree">  
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
     </section>

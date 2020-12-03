@@ -18,7 +18,14 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ChartColorComponent } from './chart-color/chart-color.component';
+import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { EmployeeProjectListComponent } from './chart-node/node-detail/employee-project-list/employee-project-list.component';
 @NgModule({
   declarations: [
     ChartContainerComponent,
@@ -27,29 +34,40 @@ import {MatBadgeModule} from '@angular/material/badge';
     ChartManagerComponent,
     ChartRootComponent,
     NodeDetailComponent,
-    StackListComponent
+    StackListComponent,
+    ChartColorComponent,
+    TransferRequestComponent,
+    EmployeeProjectListComponent
   ],
   exports: [
     ChartContainerComponent,
     ChartNodeComponent,
     StackListComponent,
+    ScrollingModule,
     MatBadgeModule
 
   ],
-    imports: [
-      CommonModule,
-      BrowserAnimationsModule,
-      MatCardModule,
-      MatListModule,
-      DragDropModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatRippleModule,
-      MatGridListModule,
-      MatInputModule,
-      MatBadgeModule
-    ],
-  providers: []
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    ScrollingModule,
+    MatListModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatRippleModule,
+    MatGridListModule,
+    MatInputModule,
+    MatBadgeModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatMenuModule
+  ],
+  providers: [
+    ChartColorComponent
+  ]
 })
 export class OrgchartModule { }

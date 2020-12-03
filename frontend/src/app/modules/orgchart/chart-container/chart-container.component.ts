@@ -22,18 +22,18 @@ export class ChartContainerComponent implements OnInit {
   startY = 0;
   transformVal = '';
 
-  constructor(private readonly employeeService: EmployeeService,
+  constructor(public readonly employeeService: EmployeeService,
               private readonly authService: AuthService) {
   }
 
   ngOnChanges (changes: SimpleChanges){
     if (changes.datasource){
-      console.log('container data source changed to: ', this.datasource);
+      // console.log('container data source changed to: ', this.datasource);
     }
   }
 
   ngOnInit(): void {
-    console.log(window.innerHeight);
+    // console.log(window.innerHeight);
     if (window.innerHeight > 750) {
       this.setChartScale(window.innerHeight / 850);
     } else {
@@ -143,12 +143,12 @@ export class ChartContainerComponent implements OnInit {
       await this.authService.getProfile();
     }
     if (this.authService.profile.manages.length > 0 || !this.authService.profile.manager) {
-      console.log('go down');
-      await this.employeeService.goDownInChart(this.authService.profile);
+      // console.log('go down');
+      await this.employeeService.goDownInChart(this.authService.profile, true);
     } else {
-      console.log('go up');
-      await this.employeeService.goUpInChart(this.authService.profile);
+      // console.log('go up');
+      await this.employeeService.goUpInChart(this.authService.profile, true);
     }
-    console.log(this.employeeService.curSubtree);
+    // console.log(this.employeeService.curSubtree);
   }
 }

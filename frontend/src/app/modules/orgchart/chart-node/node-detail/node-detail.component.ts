@@ -1,7 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee } from 'src/app/models/index';
-
+import { Employee, Project } from 'src/app/models/index';
+import { MatDialog } from '@angular/material/dialog';
+ import { MatMenuModule} from '@angular/material/menu';
+import { EmployeeService } from '../../../../services/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChartColorComponent } from '../../chart-color/chart-color.component';
+import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
+import { ProjectService } from 'src/app/services/project.service';
 @Component({
   selector: 'chart-node-detail',
   templateUrl: './node-detail.component.html',
@@ -10,27 +16,61 @@ import { Employee } from 'src/app/models/index';
 export class NodeDetailComponent implements OnInit {
 
   nodeData: Employee;
+  projects: Project[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private readonly employeeService: EmployeeService,
+              private readonly snackbar: MatSnackBar,
+              private readonly color: ChartColorComponent,
+              private readonly dialog: MatDialog, private readonly projectService:ProjectService) {
     this.nodeData = data.nodeData;
+    this.fetchProjects().then();
   }
 
   ngOnInit(): void {
   }
 
+  async fetchProjects(): Promise<void>{
+    this.projects = await this.projectService.getProjectsByEmployeeId(this.nodeData._id);
+  }
+
+  openEditNodeDialog(): void {
+    this.dialog.open(EditNodeDialog, {
+      data: { nodeData: this.nodeData }
+  });
+  }
+
   getColor(pos: string): string {
-    const color =
-        {
-          'Engineering Manager': '#FFBA00',
-          CEO: '#3C9329',
-          'Software Engineer II': '#0093FF',
-          'Tech Lead': '#019592',
-          'Software Engineer I': '#7F39FB',
-          'Research Manager': '#E57373',
-          'Software Architect': '#00BCD4',
-          'Senior Software Engineer': '#E57373'
-        };
-    return 'background-color:' + color[pos] + ';';
+    return 'background-color: ' + this.color.getHexColor(pos) + ';';
+  }
+
+  async onDeleteEmployee(): Promise<void> {
+    await this.employeeService.deleteEmployeeById(this.nodeData._id);
+    this.snackbar.open(this.nodeData.firstName + ' ' + this.nodeData.lastName + ' has been removed.',
+          'Done', {horizontalPosition: 'end'});
+  }
+
+  async onTransferEmployee(): Promise<void> {
+    this.dialog.open(TransferRequestComponent);
   }
 
 }
+
+export class emp {
+  firstName: string;
+  lastName: string;
+  empID:number;
+  companyId:number;
+  positionTitle:string;
+  companyName:string;
+  isManager:boolean;
+  isAdmin:boolean;
+  email:string;
+}
+
+
+@Component({
+  selector: 'edit-node-dialog',
+  templateUrl: 'edit-node-dialog.html',
+})
+export class EditNodeDialog {}

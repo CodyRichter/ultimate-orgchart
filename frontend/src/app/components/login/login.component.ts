@@ -30,7 +30,10 @@ export class LoginComponent implements AfterViewInit {
     const password = (document.getElementById('password') as HTMLInputElement).value;
     try {
       await this.authService.login(email, password);
-      this.router.navigateByUrl('/charts').then();
+      await this.router.navigateByUrl('/charts');
+      if (email === 'admin@admin.com' && password === 'password') {
+        console.log('change login');
+      }
     } catch (error) {
       this.errorHandler(error);
     }

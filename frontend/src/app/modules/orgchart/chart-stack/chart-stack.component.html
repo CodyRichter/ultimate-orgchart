@@ -1,5 +1,5 @@
 <div class="oc-stack" (click)="onStackClick()" *ngIf="datasource[0]" >
-    <mat-card class="oc-node card0" *ngIf="datasource[2]" style="{{getColor(datasource[2].positionTitle)}}"  matBadge={{this.datasource.length}} matBadgePosition='above before' >
+    <mat-card class="oc-node card0" *ngIf="datasource[2]" [ngClass]="{highlight: datasource[2].highlight}" style="{{getColor(datasource[2].positionTitle)}}" >
         <mat-card-content>
             <div class="inline">
                 <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
@@ -14,7 +14,7 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <mat-card class="oc-node card1" *ngIf="datasource[1]" style="{{getColor(datasource[1].positionTitle)}}" >
+    <mat-card class="oc-node card1" *ngIf="datasource[1]" [ngClass]="{highlight: datasource[1].highlight}" style="{{getColor(datasource[1].positionTitle)}}" >
         <mat-card-content>
             <div class="inline">
                 <img class="node-pic" src="assets/icons/default-avatar.png" alt="">
@@ -29,7 +29,7 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <mat-card class="oc-node card2" *ngIf="datasource[0]" style="{{getColor(datasource[0].positionTitle)}}" matRipple>
+    <mat-card class="oc-node card2" *ngIf="datasource[0]" [ngClass]="{highlight: datasource[0].highlight}" style="{{getColor(datasource[0].positionTitle)}}" matBadge={{this.datasource.length}} matBadgePosition='before' matBadgeColor="accent">
         <mat-card-content>
             <div class="inline">
                 <img class="node-pic" src="assets/icons/default-avatar.png" alt="">

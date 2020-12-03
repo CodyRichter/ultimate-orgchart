@@ -2,10 +2,11 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Project } from '../../models';
 import { Employee } from '../../models';
 import { ProjectsEmployee} from '../../models';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ProjectService } from '../../services/project.service';
 import { FormControl } from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
+import {ProjectEditComponent} from './project-edit/project-edit.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -22,18 +23,24 @@ export class ProjectDetailComponent implements OnInit {
   editProjectName = false;
   projectName: string;
 
+  projectEmployees: any;
+
   formControl = new FormControl();
   assignees: any;
   employees: Employee[] = [];
   manager: Employee;
+  projectManager: Employee[];
 
   constructor(@Inject(MAT_DIALOG_DATA) private data,
               private readonly projectService: ProjectService,
-              private readonly employeeService: EmployeeService) {
+              private readonly employeeService: EmployeeService,
+              private readonly dialog: MatDialog) {
     if (data.project) {
       this.project = data.project;
       this.projectDescription = this.project.description;
       this.projectName = this.project.name;
+      this.projectEmployees = (this.project.employees as ProjectsEmployee[]).map(curr => curr.employee);
+      this.projectManager = [((this.project.manager as ProjectsEmployee).employee as Employee)];
     }
     this.getAllEmployee().then();
   }
@@ -76,6 +83,14 @@ export class ProjectDetailComponent implements OnInit {
     for (let i = 1; i < 100; i++) {
       this.employees.push(await this.employeeService.getEmployeeById(i));
     }
+  }
+
+  onEditProject(): void {
+    this.dialog.open(ProjectEditComponent, {data: {project: this.project}});
+  }
+
+  openProjectDialog(project: Project): void {
+    this.dialog.open(ProjectDetailComponent, { data: {project} });
   }
 
 }

@@ -1,0 +1,20 @@
+<form ngNativeValidate class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="{{nodeData.firstName}}" name="first" [(ngModel)]="firstName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="{{nodeData.lastName}}" name="last" [(ngModel)]="lastName" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input matInput placeholder="{{nodeData.companyName}}" name="companyName" [(ngModel)]="companyName" required />
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="editEmployee()" mat-dialog-close>
+        Edit Employee
+    </button>
+  </form>
