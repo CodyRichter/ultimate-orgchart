@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProjectService } from 'src/app/services/project.service';
 @Component({
@@ -7,7 +8,10 @@ import { ProjectService } from 'src/app/services/project.service';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
+
+
 export class FileUploadComponent implements OnInit {
+  loading: boolean = true;
 
   @ViewChild('fileInput')
   fileInput;
@@ -17,14 +21,16 @@ export class FileUploadComponent implements OnInit {
   file: File = null;
   fileMsg = 'No File Selected';
 
-  constructor(private readonly employeeService: EmployeeService, private readonly projectService: ProjectService,
-    private dialogRef: MatDialog, @Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(private readonly employeeService: EmployeeService, private readonly projectService: ProjectService, 
+    private snackBar: MatSnackBar, private dialogRef: MatDialog, @Inject(MAT_DIALOG_DATA) private data: any) {
       if(data.uploadProjectInsteadOfEmployee){ 
         this.uploadProject = data.uploadProjectInsteadOfEmployee;
       }
      }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loading = false;
+  }
 
   onClick(): void {
     this.file = null;
@@ -43,14 +49,23 @@ export class FileUploadComponent implements OnInit {
 
   async uploadFile(): Promise<void> {
     if (this.file !== null) {
+      this.loading = true;
+
       if (this.uploadProject) {
         await this.projectService.uploadJSON(this.file);
       } else {
         await this.employeeService.uploadJSON(this.file);
       }
       this.dialogRef.closeAll();
+      console.log(await this.employeeService.uploadJSON(this.file));
+      this.snackBar.open("JSON uploaded!", "OK", {
+        duration: 2000,
+      });
+      this.loading = false;
+
     }
 
   }
+
 
 }

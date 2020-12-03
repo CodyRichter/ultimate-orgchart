@@ -1,7 +1,9 @@
 <button mat-button color="primary" (click)="onClick()">
     <mat-icon>file_upload</mat-icon>
+    
     Choose File
 </button>
+
 <input type="file" style="display: none" #fileInput (change)="onFileSelected()" />
 <p *ngIf="!file; else fileName">{{ fileMsg }}</p>
 <ng-template #fileName>
@@ -10,3 +12,5 @@
 <button mat-raised-button color="primary" (click)="uploadFile()">
     Upload
 </button>
+<img *ngIf="loading" src="assets/icons/progress_spinner.gif" />
+<!-- <mat-progress-spinner *ngIf="loading"></mat-progress-spinner> -->
