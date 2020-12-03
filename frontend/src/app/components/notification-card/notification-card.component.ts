@@ -27,17 +27,17 @@ export class NotificationCardComponent implements OnInit {
 
   async approveRequest() {
     this.dismiss();
-    // console.log(await this.managerService.approveRequest((this.notification.managerRequest as ManagerRequest)._id));
+    console.log(await this.managerService.approveRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
   async rejectRequest() {
     this.dismiss();
-    // console.log(await this.managerService.rejectRequest((this.notification.managerRequest as ManagerRequest)._id));
+    console.log(await this.managerService.rejectRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
   async cancelRequest() {
     this.dismiss();
-    // console.log(await this.managerService.cancelRequest((this.notification.managerRequest as ManagerRequest)._id));
+    console.log(await this.managerService.cancelRequest((this.notification.managerRequest as ManagerRequest)._id));
   }
 
   async dismiss() {
