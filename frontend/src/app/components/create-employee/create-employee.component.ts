@@ -9,6 +9,7 @@ import { SearchService } from 'src/app/services/search.service';
 import { HttpClient } from '@angular/common/http';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {FileUploadComponent} from '../file-upload/file-upload.component';
 
 
 @Component({
@@ -151,6 +152,6 @@ export class CreateEmployeeComponent implements OnInit {
 
   openJSONUploadDialog(): void {
     this.dialog.closeAll();
-    this.dialog.open(JSONUploadDialog, {data: {}});
+    this.dialog.open(FileUploadComponent, {data: {}});
   }
 }
