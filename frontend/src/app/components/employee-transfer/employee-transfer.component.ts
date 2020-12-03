@@ -18,7 +18,7 @@ export class EmployeeTransferComponent implements OnInit {
   employees = [];
   managers = [];
   newTitle: string;
-  onNodeDialog: boolean;
+  onNodeDialog = false;
 
   constructor(private readonly employeeService: EmployeeService,
               private readonly managerService: ManagerService,
@@ -26,7 +26,7 @@ export class EmployeeTransferComponent implements OnInit {
               private dialogRef: MatDialog,
               private readonly snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) private data: any) {
-    if (data.employee) {
+    if (data && data.employee) {
       this.selectedEmployee = data.employee;
       this.onNodeDialog = true;
     }
