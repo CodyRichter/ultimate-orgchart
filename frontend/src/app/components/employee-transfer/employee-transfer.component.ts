@@ -4,6 +4,7 @@ import { ManagerService } from 'src/app/services/manager.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Employee } from 'src/app/models';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'employee-transfer',
@@ -18,10 +19,11 @@ export class EmployeeTransferComponent implements OnInit {
   managers = [];
   newTitle: string;
 
-  constructor(private readonly employeeService: EmployeeService, 
+  constructor(private readonly employeeService: EmployeeService,
               private readonly managerService: ManagerService,
               private readonly authService: AuthService,
-              private dialogRef: MatDialog) { }
+              private dialogRef: MatDialog,
+              private readonly snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -51,6 +53,12 @@ export class EmployeeTransferComponent implements OnInit {
     console.log(await this.managerService.createRequest(data));
 
     this.dialogRef.closeAll();
+
+    this.snackBar.open('Request has been sent to ' + this.selectedManager.firstName + ' ' + this.selectedManager.lastName,
+      'Done', {
+      horizontalPosition: 'end'
+    });
+
   }
 
 }

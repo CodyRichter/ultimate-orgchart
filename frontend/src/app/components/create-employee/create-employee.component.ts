@@ -8,6 +8,7 @@ import { JSONUploadDialog } from '../settings/settings.component';
 import { SearchService } from 'src/app/services/search.service';
 import { HttpClient } from '@angular/common/http';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -45,8 +46,9 @@ export class CreateEmployeeComponent implements OnInit {
   constructor(private readonly employeeService: EmployeeService,
               private readonly searchService: SearchService,
               private readonly httpClient: HttpClient,
-              private readonly authService: AuthService, 
-              public dialog: MatDialog) { 
+              private readonly authService: AuthService,
+              public dialog: MatDialog,
+              private readonly snackBar: MatSnackBar) {
               }
 
   async ngOnInit(): Promise<void> {
@@ -126,6 +128,10 @@ export class CreateEmployeeComponent implements OnInit {
     };
     console.log(newEmployee);
     console.log(await this.employeeService.createEmployee(newEmployee));
+    this.snackBar.open(this.firstName + ' ' + this.lastName + ' has been created.',
+      'Done', {
+        horizontalPosition: 'end'
+      });
   }
 
   changeIsManagerValue(event){

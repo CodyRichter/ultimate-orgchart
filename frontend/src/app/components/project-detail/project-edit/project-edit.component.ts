@@ -5,6 +5,7 @@ import { ProjectService } from '../../../services/project.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project-edit',
@@ -28,7 +29,8 @@ export class ProjectEditComponent implements OnInit {
               private readonly authService: AuthService,
               private readonly employeeService: EmployeeService,
               private dialogRef: MatDialog,
-              @Inject(MAT_DIALOG_DATA) private data) {
+              @Inject(MAT_DIALOG_DATA) private data,
+              private readonly snackBar: MatSnackBar) {
     if (data.project) {
       const project: Project = this.data.project;
       this.selectedProjectName = project.name;

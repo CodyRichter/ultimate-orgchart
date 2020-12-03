@@ -10,6 +10,7 @@ import { Project } from 'src/app/models';
 import { ProjectService } from 'src/app/services/project.service';
 import { ProjectsEmployee } from 'src/app/models';
 import { JSONUploadDialog } from '../settings/settings.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'create-project',
@@ -30,7 +31,8 @@ export class CreateProjectComponent implements OnInit {
               private readonly authService: AuthService,
               private readonly employeeService: EmployeeService,
               private dialogRef: MatDialog,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private readonly snackBar: MatSnackBar) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -69,6 +71,11 @@ export class CreateProjectComponent implements OnInit {
     console.log(await this.projectService.createProject(project));
 
     this.dialogRef.closeAll();
+
+    this.snackBar.open('Project has been created.',
+      'Done', {
+        horizontalPosition: 'end'
+      });
 
   }
 
