@@ -165,7 +165,7 @@ export class EmployeeService {
 
   // returns employee data by id
   async findEmployeeById(employeeId: number): Promise<Employee> {
-    return await this.employeeModel.findById(employeeId).populate('manages').populate({path: 'projects', populate: {path: 'project', populate: [{path:'manager', populate: {path: 'employee'}},{path:'employees', populate: {path: 'employee'}}]}}).populate('manager').exec();
+    return await this.employeeModel.findById(employeeId).populate('manages').populate('projects').populate('manager').exec();
   }
 
 

@@ -56,6 +56,7 @@ export class EmployeeService {
   pushNewRoot(root: {curNav: Employee, root: Employee, name: string, deletable: boolean}) {
     this.trees.push(root);
     this.curTreeIndex = this.trees.length - 1;
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
   }
 
   spliceCurrentTree() {

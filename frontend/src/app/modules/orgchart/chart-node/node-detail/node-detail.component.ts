@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee, Project } from 'src/app/models/index';
+import { Employee, Project, ProjectsEmployee } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
  import { MatMenuModule} from '@angular/material/menu';
 import { EmployeeService } from '../../../../services/employee.service';
@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartColorComponent } from '../../chart-color/chart-color.component';
 import { ProjectService } from 'src/app/services/project.service';
 import { EmployeeTransferComponent } from 'src/app/components/employee-transfer/employee-transfer.component';
+import { ProjectDetailComponent } from 'src/app/components/project-detail/project-detail.component';
 @Component({
   selector: 'chart-node-detail',
   templateUrl: './node-detail.component.html',
@@ -32,6 +33,27 @@ export class NodeDetailComponent implements OnInit {
 
   async fetchProjects(): Promise<void>{
     this.projects = await this.projectService.getProjectsByEmployeeId(this.nodeData._id);
+  }
+
+  onDetailsClick(project: Project): void {
+    this.dialog.open(ProjectDetailComponent, {
+        data: { project }
+    });
+  }
+
+  async onNavigateClick(project: Project): Promise<void> {
+    const projectManager = (project.manager as ProjectsEmployee).employee as Employee;
+    projectManager.manager = undefined;
+    projectManager.manages = (project.employees as ProjectsEmployee[]).map((projEmployee: ProjectsEmployee) => {
+      const employee = projEmployee.employee as Employee;
+      employee.manages = [];
+      return employee;
+    });
+
+    this.employeeService.pushNewRoot({root: projectManager, curNav: projectManager, 
+      name: 'Project Search: ' + project.name, deletable: true});
+
+    this.dialog.closeAll();
   }
 
   openEditNodeDialog(): void {

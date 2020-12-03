@@ -28,7 +28,7 @@ export class ProjectListComponent implements OnInit {
     if (data.nextUrl) {
       this.nextUrl = data.nextUrl;
     }
-
+    console.log(this.projectData);
     if (this.projectData) {
       this.projectData.forEach((element, index) => {this.seenProjects[element._id] = index; });
       console.log('mapping done');

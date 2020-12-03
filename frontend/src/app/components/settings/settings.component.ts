@@ -47,7 +47,7 @@ export class SettingsComponent implements OnInit {
 
   async openMyProjects(): Promise<void> {
     await this.authService.getProfile();
-    const projects = this.authService.profile.projects.map((projEmp: ProjectsEmployee) => projEmp.project);
+    const projects = await this.projectService.getProjectsByEmployeeId(this.authService.profile._id);
     this.dialog.open(ProjectListComponent, {
       data: { projectData: projects}
     });

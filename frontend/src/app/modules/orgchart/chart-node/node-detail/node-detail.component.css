@@ -12,6 +12,10 @@
     display: inline;
 }
 
+.spacer {
+    flex: 1 1 auto;
+}
+
 .details {
     overflow: hidden;
 }
@@ -28,10 +32,10 @@ div.inline {
     margin-right: 12px;
     color: grey;
 }
-
-.button {
+ 
+/* .button {
     width: 128px;
-}
+} */
 
 .actions {
     margin-top: 16px;
