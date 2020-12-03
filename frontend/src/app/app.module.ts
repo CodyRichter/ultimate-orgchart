@@ -20,7 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
+import { ChartsComponent, SettingsDialog, SearchDialog, HelpDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog, CreateEmployeeDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -44,6 +44,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
+import { HelpComponent } from './components/help/help.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -76,6 +77,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CreateProjectComponent,
     CreateEmployeeComponent,
     CreateEmployeeDialog,
+    HelpComponent,
+    HelpDialog,
     ProjectEditComponent
   ],
   imports: [

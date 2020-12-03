@@ -13,7 +13,7 @@
 <!--    <button mat-button (click)="openProjectDialog()">-->
 <!--        Project Detail-->
 <!--    </button>-->
-    <button mat-button matTooltip="Help" color="accent">
+    <button mat-button matTooltip="Help" (click)="openHelpDialog()" color="accent">
         <mat-icon>help</mat-icon>
     </button>
     <button mat-button matTooltip="Notifications"  color="accent" (click)="notifications.toggle()">

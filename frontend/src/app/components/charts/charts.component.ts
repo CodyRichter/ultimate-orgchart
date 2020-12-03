@@ -55,6 +55,10 @@ export class ChartsComponent implements OnInit {
     this.dialog.open(SettingsDialog);
   }
 
+  openHelpDialog(): void {
+    this.dialog.open(HelpDialog);
+  }
+
   async openDialog(): Promise<void> {
     const currentVal = (document.getElementById('mySearch') as HTMLInputElement).value;
     const result = await this.searchService.searchGeneral(currentVal);
@@ -80,6 +84,12 @@ export class ChartsComponent implements OnInit {
   templateUrl: 'settings-dialog.html',
 })
 export class SettingsDialog { }
+
+@Component({
+  selector: 'help-dialog',
+  templateUrl: 'help-dialog.html',
+})
+export class HelpDialog { }
 
 @Component({
   selector: 'search-dialog',
