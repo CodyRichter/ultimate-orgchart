@@ -1,0 +1,16 @@
+<mat-list>
+    <mat-list-item *ngFor="let project of projectData">
+        <div class="inline">
+            <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
+        </div>
+        <div style="font-size: medium; display: inline-block; margin-left:10px; margin-top: -2px;">
+            <strong>
+                {{project.name}}
+            </strong>
+        </div>
+        <span class="spacer"></span>
+        <button style="margin-left: 8px" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(project)">Details</button>
+    </mat-list-item>
+
+</mat-list>
+

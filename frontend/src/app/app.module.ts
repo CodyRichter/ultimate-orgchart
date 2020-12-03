@@ -34,13 +34,18 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {EditNodeDialogComponent} from './components/edit-node-dialog/edit-node-dialog.component';
+import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
+import {EditUserInfo} from './components/settings/settings.component';
 import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatBadgeModule } from '@angular/material/badge';
 import { ProjectEditComponent } from './components/project-detail/project-edit/project-edit.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -63,6 +68,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CreateProjectComponent,
     ProjectCreateDialog,
     ProjectListComponent,
+    EditNodeDialogComponent,
+    EditNodeDialog,
+    EditUserComponent,
+    EditUserInfo,
+    CreateProjectComponent,
     CreateEmployeeComponent,
     CreateEmployeeDialog,
     ProjectEditComponent
@@ -93,6 +103,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatBadgeModule,
     MatDividerModule,
+    MatTooltipModule,
     MatGridListModule,
     MatSnackBarModule,
     RouterModule.forRoot([
@@ -125,7 +136,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    ProjectDetailComponent
   ],
   bootstrap: [AppComponent]
 })

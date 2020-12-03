@@ -5,8 +5,8 @@
                 General Settings
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <button mat-button>
-            <mat-icon>person</mat-icon>Edit Personal Info
+        <button mat-button (click)="onNodeClick()">
+            <mat-icon>person</mat-icon>Edit User Info
         </button>
         <br>
         <button mat-button (click)="downloadEmployeeJSON()">

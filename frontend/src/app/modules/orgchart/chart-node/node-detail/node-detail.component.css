@@ -4,7 +4,6 @@
     left: -10px;
     height: 15px;
     width: 15px;
-    background-color: #0093FF;
     border-radius: 50%;
     display: inline-block;
 }
@@ -35,10 +34,32 @@ div.inline {
     margin-left: 10px;
 }
 
+h3{
+    padding-top:20px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    width: 150px;
+}
+
+.menu-btn{
+    margin-left:330px;
+}
+
+.node-detail-dialog{
+    min-height:220px;
+    width: 350px;
+}
+
 ::ng-deep .mat-snack-bar-container{
     color: #000000 !important;
     background-color: #FFFFFF !important;
 }
+
 ::ng-deep .mat-simple-snackbar-action {
     color: #509E2F;
 }

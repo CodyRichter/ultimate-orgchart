@@ -18,12 +18,14 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ChartColorComponent } from './chart-color/chart-color.component';
 import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { MatMenuModule } from '@angular/material/menu';
+import { EmployeeProjectListComponent } from './chart-node/node-detail/employee-project-list/employee-project-list.component';
 @NgModule({
   declarations: [
     ChartContainerComponent,
@@ -34,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NodeDetailComponent,
     StackListComponent,
     ChartColorComponent,
-    TransferRequestComponent
+    TransferRequestComponent,
+    EmployeeProjectListComponent
   ],
   exports: [
     ChartContainerComponent,
@@ -59,7 +62,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatBadgeModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [
     ChartColorComponent
