@@ -9,7 +9,7 @@
 <ng-template #fileName class="center">
   <p class="file-name">{{ file?.name }}</p>
 </ng-template>
-<div *ngIf="!loading" class="center">
+<div *ngIf="loading" class="center">
 <!--    <img src="assets/icons/progress_spinner.gif" />-->
     <mat-spinner></mat-spinner>
 </div>
