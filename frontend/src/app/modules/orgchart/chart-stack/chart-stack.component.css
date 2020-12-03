@@ -1,3 +1,11 @@
+.mat-badge-content {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: black;
+    color: white;
+  }
+
 .oc-stack::before {
     content: "";
     box-sizing: border-box;
@@ -9,6 +17,10 @@
     border-style: solid;
     border-width: 0 2px 0 0;
     z-index: -1;
+}
+
+.highlight {
+    border: 5px solid green;
 }
 
 .card0 {

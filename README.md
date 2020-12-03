@@ -45,9 +45,9 @@ In order to run the database using Docker:
       rs.initiate({
         _id : 'rs0',
         members: [
-          { _id : 0, host : "192.168.0.38:27011" },
-          { _id : 1, host : "192.168.0.38:27012" },
-          { _id : 2, host : "192.168.0.38:27013" }
+          { _id : 0, host : "192.168.1.90:27011" },
+          { _id : 1, host : "192.168.1.90:27012" },
+          { _id : 2, host : "192.168.1.90:27013" }
         ]
       })
 

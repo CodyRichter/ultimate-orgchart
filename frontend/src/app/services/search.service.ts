@@ -13,6 +13,10 @@ export class SearchService {
     return await this.httpClient.get(environment.SERVER_URL + `search/employee/?query=${query}`).toPromise();
   }
 
+  async searchManagers(query: any): Promise<any>{
+    return await this.httpClient.get(environment.SERVER_URL + `search/employee/?query=${query}&isManager=true`).toPromise();
+  }
+
   async searchProject(query: any): Promise<any>{
     return await this.httpClient.get(environment.SERVER_URL + `search/project/?query=${query}`).toPromise();
   }

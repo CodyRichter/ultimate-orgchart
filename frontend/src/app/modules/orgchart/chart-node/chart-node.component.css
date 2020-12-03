@@ -6,6 +6,10 @@
     0 3px 14px 2px #0000001f;
 }
 
+.highlight {
+    border: 5px solid green;
+}
+
 .oc-group > :host::before {
     content: "";
     box-sizing: border-box;

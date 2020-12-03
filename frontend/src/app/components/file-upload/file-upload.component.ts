@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { MatDialog } from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
-
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProjectService } from 'src/app/services/project.service';
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
@@ -17,10 +16,17 @@ export class FileUploadComponent implements OnInit {
   @ViewChild('fileInput')
   fileInput;
 
+  uploadProject = false;
+
   file: File = null;
   fileMsg = 'No File Selected';
 
-  constructor(private readonly employeeService: EmployeeService, private dialogRef: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private readonly employeeService: EmployeeService, private readonly projectService: ProjectService, 
+    private snackBar: MatSnackBar, private dialogRef: MatDialog, @Inject(MAT_DIALOG_DATA) private data: any) {
+      if(data.uploadProjectInsteadOfEmployee){ 
+        this.uploadProject = data.uploadProjectInsteadOfEmployee;
+      }
+     }
 
   ngOnInit() {
     this.loading = false;
@@ -42,9 +48,14 @@ export class FileUploadComponent implements OnInit {
   }
 
   async uploadFile(): Promise<void> {
-    if (this.file != null) {
+    if (this.file !== null) {
       this.loading = true;
-      console.log(await this.employeeService.uploadJSON(this.file));
+
+      if (this.uploadProject) {
+        await this.projectService.uploadJSON(this.file);
+      } else {
+        await this.employeeService.uploadJSON(this.file);
+      }
       this.dialogRef.closeAll();
       console.log(await this.employeeService.uploadJSON(this.file));
       this.snackBar.open("JSON uploaded!", "OK", {

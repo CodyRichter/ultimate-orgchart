@@ -11,19 +11,20 @@ export class TokenInterceptor implements HttpInterceptor {
 
     constructor(public authService: AuthService, private readonly httpClient: HttpClient) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (request.url.indexOf('refresh') !== -1 || request.url.indexOf('sigin') !== -1) {
+        // console.log(request.url);
+        const accessExpired = this.authService.isAccessTokenExpired();
+        const refreshExpired = this.authService.isRefreshTokenExpired();
+
+        if (request.url.indexOf('refresh') !== -1 || request.url.indexOf('signin') !== -1) {
           console.log('getting new token');
           return next.handle(request);
         }
 
-        const accessExpired = this.authService.isAccessTokenExpired();
-        const refreshExpired = this.authService.isRefreshTokenExpired();
-
-        if (accessExpired && refreshExpired) {
+        else if (accessExpired && refreshExpired) {
           console.log('both expired - log out');
           return next.handle(request);
         }
-        if (accessExpired && !refreshExpired) {
+        else if (accessExpired && !refreshExpired) {
           console.log('access token expired');
           if (!this.refreshTokenInProgress) {
                 this.refreshTokenInProgress = true;
@@ -36,9 +37,9 @@ export class TokenInterceptor implements HttpInterceptor {
                     switchMap((authResponse: any) => {
                       console.log(authResponse);
                         this.authService.saveAccessToken(authResponse);
-                        this.refreshTokenInProgress = false;
                         this.refreshTokenSubject.next(authResponse.refreshToken);
-                        return next.handle(this.injectToken(request, authResponse.refreshToken));
+                        this.refreshTokenInProgress = false;
+                        return next.handle(this.injectToken(request, authResponse.accessToken));
                     }),
                 );
             } else {
@@ -53,7 +54,7 @@ export class TokenInterceptor implements HttpInterceptor {
             }
         }
 
-        if (!accessExpired) {
+        else if (!accessExpired) {
              console.log('not expired');
             return next.handle(this.injectToken(request, this.authService.getAuthToken()));
         }

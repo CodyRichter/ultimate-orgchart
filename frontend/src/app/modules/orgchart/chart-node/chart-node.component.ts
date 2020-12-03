@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { Employee } from 'src/app/models/index';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeDetailComponent } from './node-detail/node-detail.component';
 import { ChartColorComponent } from '../chart-color/chart-color.component';
+import { MatCard } from '@angular/material/card';
+import { MatInput } from '@angular/material/input';
 
 
 @Component({
@@ -20,6 +22,7 @@ export class ChartNodeComponent implements OnInit {
               private readonly color: ChartColorComponent) { }
 
   ngOnInit(): void {
+
   }
 
   onNodeClick(): void {
