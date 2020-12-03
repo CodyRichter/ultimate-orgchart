@@ -233,13 +233,29 @@ export class EmployeeService {
       return await this.employeeModel.find(query).populate('manages').populate('manager').populate('projects').exec();
   }
 
-  async generalSearch(query: string, skip = 0, limit = 10): Promise<Employee[]>{
+  async generalSearch(query: string, skip = 0, limit = 10, isAdmin?: string, isManager?: string): Promise<Employee[]>{
     let queri = {}
-    queri = { $or: [{ firstName: { $regex: '.*' + query + '.*', $options: 'i' } }, 
+    const and = []
+    if (isAdmin === 'true') {
+      and.push({isAdmin: true});
+    } else if (isAdmin === 'false') {
+      and.push({isAdmin: false});
+    }
+
+    if (isManager === 'true') {
+      and.push({isManager: true});
+    } else if (isManager === 'false') {
+      and.push({isManager: false});
+    }
+    const queriOr = { $or: [{ firstName: { $regex: '.*' + query + '.*', $options: 'i' } }, 
               { lastName: { $regex: '.*' + query + '.*', $options: 'i' } },
               { positionTitle: { $regex: '.*' + query + '.*', $options: 'i' } },
               { email: { $regex: '.*' + query + '.*', $options: 'i' } },
             ] }
+      
+    and.push(queriOr);
+
+    queri  = {$and: and};
 
     return await this.employeeModel.find(queri).populate('manages').populate('manager').populate('projects').skip(skip).limit(limit).exec();
   }

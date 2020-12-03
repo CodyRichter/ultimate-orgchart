@@ -38,10 +38,18 @@
     <br>
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Manager Name</mat-label>
-        <mat-select [(ngModel)]="selectedManager" name="blah2">
-            <mat-option *ngFor="let manager of managers" [value]="manager">
-                {{manager.firstName}} {{manager.lastName}}
-            </mat-option>
+        <mat-select [(ngModel)]="selectedManager" name="blah2" class="select">
+            <div class="search-bar">
+                <mat-form-field appearance = "legacy" class = "example-full-width">
+                <input matInput type = "search" id = "addEmployeeSearch" placeholder="Search" (keydown.enter) = search()>
+                <mat-icon matSuffix>search</mat-icon> 
+                </mat-form-field>
+            </div>
+            <cdk-virtual-scroll-viewport itemSize="5" class='example-viewport' (scrolledIndexChange)="nextEmployee($event)">
+                <mat-option *cdkVirtualFor="let manager of managers; trackBy: trackByIdx" [value]="manager">
+                    {{manager.firstName}} {{manager.lastName}}
+                </mat-option>
+            </cdk-virtual-scroll-viewport>
         </mat-select>
     </mat-form-field>
     

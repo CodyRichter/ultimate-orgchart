@@ -81,6 +81,8 @@ export class CreateProjectComponent implements OnInit {
 
   openJSONUploadDialog(): void {
     this.dialog.closeAll();
-    this.dialog.open(JSONUploadDialog);
+    this.dialog.open(JSONUploadDialog, {
+      data: {uploadProjectInsteadOfEmployee: true}
+    });
   }
 }

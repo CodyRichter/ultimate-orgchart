@@ -63,6 +63,15 @@ export class EmployeeService {
     this.curTreeIndex = this.trees.length - 1;
   }
 
+  spliceCurrentTree() {
+    this.trees.splice(this.curTreeIndex, 1);
+    this.curTreeIndex -= 1;
+    if (this.curTreeIndex < 0) {
+      this.curTreeIndex = 0;
+    }
+    this.curSubtree = this.trees[this.curTreeIndex].curNav;
+  }
+
   async goDownInChart(manager: Employee, newRoot: boolean  = false): Promise<Employee> {
     console.log('go down:', manager);
     manager.manages = await this.getManagersEmployees(manager._id, 1);
