@@ -81,7 +81,7 @@ export class ProjectService {
  }
 
  async deleteProjectEmployeeById(projectId: number, projectEmployeeId: number): Promise<void> {
-    await this.httpClient.patch(environment.SERVER_URL + 'project/removeEmployee' + projectId, {
+    await this.httpClient.patch(environment.SERVER_URL + 'project/removeEmployee/' + projectId, {
       _id: projectEmployeeId
     });
  }
