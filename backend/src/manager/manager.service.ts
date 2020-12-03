@@ -41,7 +41,7 @@ export class ManagerService {
             }
             if (createdRequest.newPosition == null)
                 createdRequest.newPosition = employee.positionTitle;
-            if (fromManager._id === toManager._id || user._id === toManager._id) {
+            if (fromManager._id === toManager._id) {
                 createdRequest.status = RequestStatus.Approved;
                 employee.positionTitle = createdRequest.newPosition;
                 employee.save();
