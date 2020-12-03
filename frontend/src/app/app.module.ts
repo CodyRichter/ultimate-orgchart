@@ -20,7 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule} from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ChartsComponent, SettingsDialog, SearchDialog } from './components/charts/charts.component';
+import { ChartsComponent, SettingsDialog, SearchDialog, HelpDialog } from './components/charts/charts.component';
 import { SettingsComponent, JSONUploadDialog, EmployeeTransferDialog, ProjectCreateDialog, CreateEmployeeDialog } from './components/settings/settings.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -40,6 +40,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
+import { HelpComponent } from './components/help/help.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,9 @@ import {MatBadgeModule} from '@angular/material/badge';
     ProjectCreateDialog,
     ProjectListComponent,
     CreateEmployeeComponent,
-    CreateEmployeeDialog
+    CreateEmployeeDialog,
+    HelpComponent,
+    HelpDialog
   ],
   imports: [
     BrowserModule,

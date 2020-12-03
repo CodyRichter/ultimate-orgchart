@@ -1,0 +1,36 @@
+.help-container {
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 1px;
+}
+
+img {
+    float: left;
+    width: 250px;
+}
+
+.description {
+    font-size: 17px;
+    margin-top: 10px;
+    margin-bottom: 1px;
+    text-align: center;
+}
+
+.contact-wrapper {
+    margin-left: 250px;
+    background: #509e2f;
+    height: 250px;
+    color: white;
+}
+
+.contact-info {
+    margin-left: 10px;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 6px;
+}
