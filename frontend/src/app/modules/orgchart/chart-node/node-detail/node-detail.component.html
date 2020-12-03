@@ -52,12 +52,8 @@
             <div class="inline">
                 <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
             </div>
-            <div style="font-size: medium; display: inline-block; margin-left:10px;">
-                <strong>
-                    {{project.name}}
-                <br>
-                    {{project.manager.employee.firstName}} {{project.manager.employee.lastName}}                
-                </strong>
+            <div style="font-size: medium; display: inline-block; margin-left:10px; margin-top: -2px">
+                <strong>{{project.name}}</strong>
             </div>
             <span class="spacer"></span>
             <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" mat-stroked-button color="primary" mat-dialog-close (click)="onNavigateClick(project)"><mat-icon>account_tree</mat-icon></button>
