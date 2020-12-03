@@ -25,6 +25,9 @@ export class ProjectEditComponent implements OnInit {
   projectId: number;
   project: Project;
 
+  oldAssignees: number[];
+  oldProjectEmployeeId: number[];
+
   constructor(private readonly projectService: ProjectService,
               private readonly authService: AuthService,
               private readonly employeeService: EmployeeService,
@@ -39,6 +42,8 @@ export class ProjectEditComponent implements OnInit {
       this.assignees = ((project.employees as ProjectsEmployee[]).map(curr => curr.employee) as Employee[]);
       this.projectId = project._id;
       this.project = project;
+      this.oldAssignees = project.employees.map(curr => ((curr as ProjectsEmployee).employee as Employee)._id);
+      this.oldProjectEmployeeId = project.employees.map(curr => (curr as ProjectsEmployee)._id);
     }
     this.getAllEmployee().then();
   }
@@ -85,6 +90,38 @@ export class ProjectEditComponent implements OnInit {
     this.project.name = this.selectedProjectName;
     this.project.description = this.selectedProjectDescription;
     await this.projectService.updateProjectById(this.projectId, this.project);
+
+    const newAssignees: number[] = this.assignees
+      .filter(curr => !this.oldAssignees.includes((curr as Employee)._id))
+      .map(curr => (curr as Employee)._id);
+
+    const removeAssignees: number[] = [];
+
+    for (let i = 0; i < this.oldAssignees.length; i++) {
+      let toRemove = true;
+      for (const assignee of this.assignees) {
+        if ((assignee as Employee)._id === this.oldAssignees[i]) {
+          toRemove = false;
+          break;
+        }
+      }
+      if (toRemove) {
+        removeAssignees.push(this.oldProjectEmployeeId[i]);
+      }
+    }
+
+    for (const na of newAssignees) {
+      await this.projectService.addProjectEmployeeById(this.projectId, na);
+    }
+
+    for (const ra of removeAssignees) {
+      await this.projectService.deleteProjectEmployeeById(this.projectId, ra);
+    }
+
+    console.log('hej hej');
+    console.log(newAssignees);
+    console.log(removeAssignees);
+
   }
 
   async getAllEmployee(): Promise<void> {
