@@ -89,4 +89,8 @@ export class ProjectDetailComponent implements OnInit {
     this.dialog.open(ProjectEditComponent, {data: {project: this.project}});
   }
 
+  openProjectDialog(project: Project): void {
+    this.dialog.open(ProjectDetailComponent, { data: {project} });
+  }
+
 }

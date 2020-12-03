@@ -12,10 +12,9 @@
                 </strong>
             </div>
             <span class="spacer"></span>
-            <button style="margin-left: 8px" *ngIf="node.manages.length > 0 || !node.manager" mat-stroked-button color="primary" mat-dialog-close (click)="onNavigateClick(node)">Navigate</button>
-            <button style="margin-left: 8px" *ngIf="node.manages.length === 0 && find && node.manager" mat-stroked-button color="primary" mat-dialog-close (click)="navigateToManager(node)">Find</button>
-            <button style="margin-left: 8px" *ngIf="details" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)">Details</button>
-        
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length > 0" mat-stroked-button  mat-dialog-close (click)="onNavigateClick(node)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length === 0 && find" mat-stroked-button  mat-dialog-close (click)="navigateToManager(node)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Details" style="margin-left: 8px" *ngIf="details" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)"><mat-icon>perm_identity</mat-icon></button>
         </mat-list-item>
     </mat-list>
 

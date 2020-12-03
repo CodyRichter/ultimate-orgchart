@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { Employee, userProfile } from 'src/app/models/index';
+import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/chart-node/node-detail/node-detail.component';
 
 @Component({
   selector: 'settings',
@@ -10,6 +12,11 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+
+  @Input() nodeData: Employee;
+  @Input() profileData: userProfile;
+
+  @Output() nodeClick = new EventEmitter<any>();
 
   constructor(public dialog: MatDialog,
               private readonly employeeService: EmployeeService,
@@ -19,7 +26,12 @@ export class SettingsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.authService.getProfile();
   }
-
+  
+  onNodeClick(): void {
+    this.dialog.open(EditUserInfo, {
+        data: { profileData: this.profileData }
+    });
+  }
   openJSONUploadDialog(): void {
     this.dialog.open(JSONUploadDialog);
   }
@@ -68,3 +80,9 @@ export class CreateEmployeeDialog {}
   templateUrl: 'project-create-dialog.html',
 })
 export class ProjectCreateDialog {}
+
+@Component({
+  selector: 'edit-user-info',
+  templateUrl: 'edit-user-info.html',
+})
+export class EditUserInfo {}
