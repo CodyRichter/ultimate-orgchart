@@ -44,6 +44,7 @@ export class FileUploadComponent implements OnInit {
   async uploadFile(): Promise<void> {
     if (this.file != null) {
       this.loading = true;
+      console.log(await this.employeeService.uploadJSON(this.file));
       this.dialogRef.closeAll();
       console.log(await this.employeeService.uploadJSON(this.file));
       this.snackBar.open("JSON uploaded!", "OK", {

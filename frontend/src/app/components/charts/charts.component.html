@@ -37,7 +37,7 @@
 </div>
 
 <mat-drawer-container>
-    <section id="chart-container" *ngIf="employeeService.curSubtree">
+    <section id="chart-container" *ngIf="employeeService.curSubtree">  
         <organization-chart chartClass="myChart" [datasource]="employeeService.curSubtree" class="orgchart">
         </organization-chart>
     </section>

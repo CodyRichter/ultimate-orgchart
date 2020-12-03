@@ -5,7 +5,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
 import {ConfigModule} from '@nestjs/config';
-import { EmployeeAuth } from './auth.model';
+import { CreatedAdmin, EmployeeAuth } from './auth.model';
 import {JwtStrategy} from './strategies/jwt-auth.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { EmployeeModule } from 'src/employee/employee.module';
@@ -14,7 +14,7 @@ import { Employee } from 'src/employee/employee.model';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypegooseModule.forFeature([EmployeeAuth,Employee]),
+    TypegooseModule.forFeature([EmployeeAuth,Employee,CreatedAdmin]),
     PassportModule,
     EmployeeModule,
     JwtModule.register(
