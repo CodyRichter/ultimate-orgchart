@@ -44,6 +44,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ProjectEditComponent } from './components/project-detail/project-edit/project-edit.component';
@@ -105,6 +106,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDividerModule,
     MatTooltipModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
     MatSnackBarModule,
     RouterModule.forRoot([
       {
