@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormControl } from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-node-dialog',
@@ -23,7 +24,10 @@ export class EditNodeDialogComponent implements OnInit {
   email:string;
   selectedEmployeeFirstName: any;
   controller: FormControl;
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, private readonly employeeService: EmployeeService, private readonly authService: AuthService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService,
+              private readonly snackBar: MatSnackBar) {
     this.nodeData = data.nodeData;
     this.lastName = this.nodeData.lastName;
     this.companyName = this.nodeData.companyName;
@@ -58,6 +62,11 @@ export class EditNodeDialogComponent implements OnInit {
       highlight: this.nodeData.highlight
       };
     await this.employeeService.updateEmployee(editedEmp);
+
+    this.snackBar.open('Employee info has been updated.',
+      'Done', {
+        horizontalPosition: 'end'
+      });
     }
 }
 

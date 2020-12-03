@@ -3,6 +3,7 @@ import { Employee } from 'src/app/models/index';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-user',
@@ -25,7 +26,10 @@ export class EditUserComponent implements OnInit {
   profileUser:any;
   
 
-  constructor(private readonly employeeService: EmployeeService, private readonly authService: AuthService, @Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly authService: AuthService,
+              @Inject(MAT_DIALOG_DATA) private data: any,
+              private readonly snackBar: MatSnackBar) {
     this.getProfileDetails();
     // this.lastName = this.profileUser.lastName;
     // this.email = this.profileUser.email;
@@ -68,7 +72,12 @@ export class EditUserComponent implements OnInit {
     // frontend only feature
       highlight: this.profileUser.highlight
       };
-      
+
       await this.employeeService.updateEmployee(editedUser);
-    }
+
+      this.snackBar.open('Your information has been updated.',
+        'Done', {
+          horizontalPosition: 'end'
+        });
+      }
 }
