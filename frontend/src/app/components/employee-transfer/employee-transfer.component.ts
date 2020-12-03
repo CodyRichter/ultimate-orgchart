@@ -47,8 +47,8 @@ export class EmployeeTransferComponent implements OnInit {
       previousPosition: this.selectedEmployee.positionTitle,
       newPosition: this.newTitle
     };
-    // console.log(data);
-    // console.log(await this.managerService.createRequest(data));
+    console.log(data);
+    console.log(await this.managerService.createRequest(data));
 
     this.dialogRef.closeAll();
   }
