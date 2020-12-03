@@ -90,7 +90,7 @@ export class ProjectEditComponent implements OnInit {
     this.project.name = this.selectedProjectName;
     this.project.description = this.selectedProjectDescription;
     await this.projectService.updateProjectById(this.projectId, this.project);
-
+    console.log('updatedName');
     const newAssignees: number[] = this.assignees
       .filter(curr => !this.oldAssignees.includes((curr as Employee)._id))
       .map(curr => (curr as Employee)._id);
