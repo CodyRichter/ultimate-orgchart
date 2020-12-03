@@ -52,7 +52,9 @@ export class NodeDetailComponent implements OnInit {
   }
 
   async onTransferEmployee(): Promise<void> {
-    this.dialog.open(EmployeeTransferComponent);
+    this.dialog.open(EmployeeTransferComponent, {data: {
+      employee: this.nodeData
+    }});
   }
 
 }

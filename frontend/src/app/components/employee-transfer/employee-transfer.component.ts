@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Employee } from 'src/app/models';
-import { MatDialog } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -18,12 +18,19 @@ export class EmployeeTransferComponent implements OnInit {
   employees = [];
   managers = [];
   newTitle: string;
+  onNodeDialog: boolean;
 
   constructor(private readonly employeeService: EmployeeService,
               private readonly managerService: ManagerService,
               private readonly authService: AuthService,
               private dialogRef: MatDialog,
-              private readonly snackBar: MatSnackBar) { }
+              private readonly snackBar: MatSnackBar,
+              @Inject(MAT_DIALOG_DATA) private data: any) {
+    if (data.employee) {
+      this.selectedEmployee = data.employee;
+      this.onNodeDialog = true;
+    }
+  }
 
   ngOnInit(): void {
     this.fetchEmployees();
