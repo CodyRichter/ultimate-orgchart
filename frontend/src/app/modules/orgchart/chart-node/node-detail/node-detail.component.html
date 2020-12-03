@@ -32,7 +32,7 @@
         </div>
     </div>
 </mat-dialog-content>
-<mat-dialog-content>
+<mat-dialog-content class="details">
     <div>
         <mat-icon class="icon">email</mat-icon>
         <span>{{nodeData.email}}</span>
@@ -41,9 +41,14 @@
         <mat-icon class="icon">person</mat-icon>
         <span>Employee Id: {{nodeData._id}}</span>
     </div>
+    <div>
+        <mat-icon class="icon">business</mat-icon>
+        <span>Company: {{nodeData.companyName}}</span>
+    </div>
    <div *ngIf="projects.length !== 0">
     <h3><strong>Projects</strong></h3>
-    <app-employee-project-list [projectData]="projects"></app-employee-project-list>
+    <app-project-list [projectData]="projects"></app-project-list>
+    <!-- <app-employee-project-list [projectData]="projects"></app-employee-project-list> -->
     </div>
     <!-- <div>
        Make ng-if here for nodeData.projects length

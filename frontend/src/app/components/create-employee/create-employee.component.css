@@ -3,11 +3,12 @@
 }
 
 .example-viewport {
-    height: 150px;
+    height: 175px;
     width: 100%;
   }
 
 .search-bar {
+    margin-top: 10px;
     margin-left: 5%;
     width: 90%;
 }

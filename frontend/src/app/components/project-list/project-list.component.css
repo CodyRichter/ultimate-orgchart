@@ -3,6 +3,7 @@
 }
 
 .example-viewport {
-    height: 400px;
-    width: 600px;
+    height: 350px;
+    width: 100%;
+    min-width: 500px;
   }

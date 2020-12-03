@@ -55,7 +55,7 @@ export class CreateEmployeeComponent implements OnInit {
     if (this.authService.profile.isAdmin) {
       this.isAdminLoggedIn = true;
     }
-    this.search('.');
+    await this.search('.');
     this.isAdmin = false;
     this.isManager = false;
     this.originalCompanyID = (await this.authService.getProfile()).companyId;

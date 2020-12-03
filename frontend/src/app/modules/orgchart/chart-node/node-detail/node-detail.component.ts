@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmployeeService } from '../../../../services/employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartColorComponent } from '../../chart-color/chart-color.component';
-import { TransferRequestComponent } from '../transfer-request/transfer-request.component';
 import { ProjectService } from 'src/app/services/project.service';
 import { EmployeeTransferComponent } from 'src/app/components/employee-transfer/employee-transfer.component';
 @Component({

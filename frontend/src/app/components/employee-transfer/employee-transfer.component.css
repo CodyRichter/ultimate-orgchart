@@ -5,3 +5,14 @@
 ::ng-deep .mat-simple-snackbar-action {
     color: #509E2F;
 }
+
+.example-viewport {
+    height: 175px;
+    width: 100%;
+  }
+
+.search-bar {
+    margin-top: 10px;
+    margin-left: 5%;
+    width: 90%;
+}

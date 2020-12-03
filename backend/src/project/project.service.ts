@@ -53,8 +53,10 @@ export class ProjectService {
         //get the employee from db
 
         const notifications: DocumentType<NotificationDoc>[] =  [];
-        const savedProjectsEmployees = await Promise.all(newProjectEmployees.map(
-            async (projEmployee) => {
+        const savedProjectsEmployees = [];
+        // await Promise.all(newProjectEmployees.map(
+        //     async (projEmployee) => {
+        for (const projEmployee of newProjectEmployees) {
                 const employee = await this.employeeModel.findById(projEmployee.employee).session(session).exec();
                 if(employee===null||employee===undefined)
                 {
@@ -64,15 +66,14 @@ export class ProjectService {
                 projEmployee.project = project._id;
                 const savedProjEmployee = await this.projectsEmployeeModel.create([projEmployee],{session:session});
                 employee.projects.push(savedProjEmployee[0]._id);
-                employee.save();
+                await employee.save();
                 const description=`New project ${project.name} was created and ${employee.firstName} ${employee.lastName} was added as an employee`;
                 notifications.push(new this.notificationModel({employeeId:employee._id,title: 'Project Created',description:description}));
                 if (employee.manager) {
                     notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Project Created',description:description}));
                 }
-                return savedProjEmployee[0];
+                savedProjectsEmployees.push(savedProjEmployee[0]);
             }
-        ));
         
         //create the projectEmployee document for manager
 
@@ -117,9 +118,9 @@ export class ProjectService {
         if (manager.manager) {
             notifications.push(new this.notificationModel({employeeId:manager.manager,title:'Project Created',description:description}));
         }
-        await Promise.all(notifications.map(async notification => {
+        for (const notification of notifications){
             await this.notificationModel.create([notification],{session:session});
-        }));
+        }
 
         // project.manager.employee = manager;
         // project.employees = project.employees.map(
@@ -147,16 +148,16 @@ export class ProjectService {
 
     //create multiple projects
     async createProjects(newProjects: Project[]): Promise<Project[]> {
-        return await Promise.all(newProjects.map(
-            async (newProject) => {
-                return await this.createProject(newProject);
+        const returnProjects = [];
+        for (const newProject of newProjects) {
+                returnProjects.push(await this.createProject(newProject));
             }
-        ))
+        return returnProjects;
     }
 
     
     async getProject(projtectId: number) {
-        const project= await this.projectModel.findById(projtectId).populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
+        const project= await this.projectModel.findById(projtectId).populate({path:'manager', populate: {path: 'employee', populate: {path: 'projects'}}}).populate({path:'employees', populate: {path: 'employee',  populate: {path: 'projects'}}}).exec();
         if(project===null||project===undefined)
         {
             throw new NotFoundException("projet does not exist");
@@ -166,7 +167,7 @@ export class ProjectService {
     }
 
     async getAllProjects() {
-        return await this.projectModel.find().populate({path:'manager', populate: {path: 'employee'}}).populate({path:'employees', populate: {path: 'employee'}}).exec();
+        return await this.projectModel.find().populate({path:'manager', populate: {path: 'employee', populate: {path: 'projects'}}}).populate({path:'employees', populate: {path: 'employee',  populate: {path: 'projects'}}}).exec();
     }
 
     async deleteProject(projectId: number): Promise<Project> {
@@ -191,7 +192,7 @@ export class ProjectService {
             const notifications: DocumentType<NotificationDoc>[] =  [];
 
             //delete the  project employees that relate to this project
-            await Promise.all(deletedProject.employees.map(async (employee) => {
+            for (const employee of deletedProject.employees) {
             //delete each related projectsEmployee
             const updatedProjectEmployees = await this.projectsEmployeeModel.findById(employee).session(session).exec();
         
@@ -208,7 +209,7 @@ export class ProjectService {
             }
             
 
-        }));
+        }
 
         //delete project and manager 
         await deletedProject.remove();
@@ -222,10 +223,9 @@ export class ProjectService {
         if (managerEmployee.manager) {
             notifications.push(new this.notificationModel({employeeId:managerEmployee.manager,title:'Project Deleted',description:description}));
         }
-
-        await Promise.all(notifications.map(async notification => {
+        for (const notification of notifications) {
             await this.notificationModel.create([notification],{session:session});
-        }));
+        }
 
         await session.commitTransaction();
         return deletedProject;
@@ -240,16 +240,14 @@ export class ProjectService {
     }
 
     //update the project name or description
-    async updateProjectDetail(projectId: number, update: any): Promise<Project> {
+    async updateProjectDetail(projectId: number, update: Project): Promise<Project> {
 
-        if (update.hasOwnProperty('name') | update.hasOwnProperty('description')) {
             //update the project Model
-            return await this.projectModel.findByIdAndUpdate(projectId, update, { new: true }).exec();
-        }
-        else {
-            return null;
-        }
-
+            const project = await this.projectModel.findById(projectId).exec();
+            project.name = update.name;
+            project.description = update.description;
+            await project.save();
+            return project
     }
 
     //add project employee
@@ -264,8 +262,7 @@ export class ProjectService {
         //check if the employee existed 
         const project = await this.projectModel.findById(projectId).session(session).exec();
         const notifications: DocumentType<NotificationDoc>[] =  [];
-
-        await Promise.all(projectEmployees.map(async (projectEmployee) => {
+        for (const projectEmployee of projectEmployees) {
             //find the employee
             const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).session(session).exec();
             
@@ -295,12 +292,12 @@ export class ProjectService {
                 notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Employee Added to Project',description:description}));
             }
             
-        }));
+        }
 
         await project.save();
-         await Promise.all(notifications.map(async notification => {
+        for (const notification of notifications) {
             await this.notificationModel.create([notification],{session:session});
-        }));
+        }
 
         await session.commitTransaction();
         return project;
@@ -316,6 +313,90 @@ export class ProjectService {
         }
     }
 
+    async changeManager(projectId: number, projectEmployee: ProjectsEmployee): Promise<Project> {
+        const session=await this.projectModel.db.startSession();
+
+        session.startTransaction();
+
+        try{
+        //check if the employee existed 
+        const project = await this.projectModel.findById(projectId).session(session).exec();
+        const notifications: DocumentType<NotificationDoc>[] =  [];
+        
+            //find the manager
+            const curManagerProj =await this.projectsEmployeeModel.findById(project.manager).session(session).exec();
+            const curManager = await this.employeeModel.findById(curManagerProj.employee).session(session).exec();
+
+            //if not exist throw error
+            if (!curManagerProj || !curManager) {
+                throw new NotFoundException('Current Manager not found on Project');
+            }
+
+            //if exist
+            curManager.projects=curManager.projects.filter(projEmp=>projEmp !== curManagerProj._id);
+            project.employees=project.employees.filter(projEmp=>projEmp!==curManagerProj._id);
+            project.manager = undefined;
+            await curManagerProj.remove();
+
+            //save the change
+            await curManager.save();
+
+            // new manager
+            const employee = await this.employeeModel.findById((projectEmployee as ProjectsEmployee).employee).session(session).exec();
+            
+            //if not exist throw error
+            if (employee === null) {
+                throw new NotFoundException('Employee not found');
+            }
+
+            //if exist
+            //create the project employee then save to database
+            const projEmployee = new this.projectsEmployeeModel({ employee: employee, role: projectEmployee.role, project: project });
+            const savedProjEmployees = await this.projectsEmployeeModel.create([projEmployee],{session:session});
+            const savedProjEmployee = savedProjEmployees[0];
+            //push projEmployee to the project schema
+            project.manager = savedProjEmployee;
+
+            //update the employee schema 
+            employee.projects.push(savedProjEmployee);
+
+
+            //save the change
+            await employee.save();
+
+            const description=` ${curManager.firstName} ${curManager.lastName} was removed as the manager from project ${project.name} and was replaced with ${employee.firstName} ${employee.lastName}`;
+            notifications.push(new this.notificationModel({employeeId:employee._id,title: 'Project Manager Change',description:description}));
+            if (employee.manager) {
+                notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Project Manager Change',description:description}));
+            }
+
+            notifications.push(new this.notificationModel({employeeId:curManager._id,title: 'Project Manager Change',description:description}));
+            if (employee.manager) {
+                notifications.push(new this.notificationModel({employeeId:curManager.manager,title: 'Project Manager Change',description:description}));
+            }
+           
+    
+        await project.save();
+
+        for (const notification of notifications) {
+            await this.notificationModel.create([notification],{session:session});
+        }
+        await session.commitTransaction();
+        return project;
+
+        }catch(error)
+        {
+            await session.abortTransaction();
+            
+            throw error;
+        }finally{
+             session.endSession();
+        }
+
+        
+        return null;
+    }
+
     //delete project employee
 
     async deleteProjectEmployee(projectId:number,projectEmployees:ProjectsEmployee[]):Promise<Project>
@@ -328,8 +409,7 @@ export class ProjectService {
         //check if the employee existed 
         const project = await this.projectModel.findById(projectId).session(session).exec();
         const notifications: DocumentType<NotificationDoc>[] =  [];
-
-        await Promise.all(projectEmployees.map(async (projectEmployee) => {
+        for (const projectEmployee of projectEmployees) {
             //find the employee
             const projEmployee=await this.projectsEmployeeModel.findById(projectEmployee._id).session(session).exec();
             const employee = await this.employeeModel.findById(projEmployee.employee).session(session).exec();
@@ -353,12 +433,12 @@ export class ProjectService {
                 notifications.push(new this.notificationModel({employeeId:employee.manager,title: 'Employee Removed from Project',description:description}));
             }
            
-        }));
-        project.save();
+        }
+        await project.save();
 
-        await Promise.all(notifications.map(async notification => {
+        for (const notification of notifications) {
             await this.notificationModel.create([notification],{session:session});
-        }));
+        }
         await session.commitTransaction();
         return project;
 

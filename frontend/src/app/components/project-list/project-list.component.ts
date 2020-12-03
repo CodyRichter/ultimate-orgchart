@@ -33,6 +33,7 @@ export class ProjectListComponent implements OnInit {
       this.projectData.forEach((element, index) => {this.seenProjects[element._id] = index; });
       console.log('mapping done');
     }
+    console.log(this.projectData);
   }
 
   async nextProject(event: any): Promise <void > {

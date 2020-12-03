@@ -34,7 +34,7 @@ export class ProjectController {
   // Posts a JSON to the backend to be uploaded into the db
   // Guard admin
   @Post('uploadJSON')
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.MANAGER)
   @UseInterceptors(FileInterceptor('file', {
     storage: multer.memoryStorage()
   }))
@@ -92,6 +92,14 @@ export class ProjectController {
       async addEmployee(@Param('projectId') projectId: number, @Body() employee: ProjectsEmployee[]):Promise<Project>
       {
           return await this.projectService.addProjectEmployee(projectId,employee);
+      }
+
+      //add employee to the project
+      @Patch('changeManager/:projectId')
+      @Roles(Role.ADMIN,Role.MANAGER)
+      async changeManage(@Param('projectId') projectId: number, @Body() employee: ProjectsEmployee):Promise<Project>
+      {
+          return await this.projectService.changeManager(projectId,employee);
       }
 
     //  //delete employee from the project

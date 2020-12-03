@@ -21,13 +21,14 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ChartColorComponent } from './chart-color/chart-color.component';
-import { TransferRequestComponent } from './chart-node/transfer-request/transfer-request.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
-import { EmployeeProjectListComponent } from './chart-node/node-detail/employee-project-list/employee-project-list.component';
+import { AppModule } from 'src/app/app.module';
+import { ProjectListComponent } from 'src/app/components/project-list/project-list.component';
 @NgModule({
   declarations: [
+    ProjectListComponent,
     ChartContainerComponent,
     ChartNodeComponent,
     ChartStackComponent,
@@ -36,13 +37,12 @@ import { EmployeeProjectListComponent } from './chart-node/node-detail/employee-
     NodeDetailComponent,
     StackListComponent,
     ChartColorComponent,
-    TransferRequestComponent,
-    EmployeeProjectListComponent
   ],
   exports: [
     ChartContainerComponent,
     ChartNodeComponent,
     StackListComponent,
+    ProjectListComponent,
     ScrollingModule,
     MatBadgeModule
 

@@ -90,34 +90,34 @@ export class AuthService {
   }
 
   //change pwd
-  async changePwd(employeeAuth: EmployeeAuth, passWordInfo: any): Promise<boolean> {
-    //find the employee from database
-    //we don't need to validate their validation because there will be a guard in controller
-    try {
-      const savedemployeeAuth = await this.employeeAuthModel.findOne({ employeeAuth }).exec();
+  // async changePwd(employeeAuth: EmployeeAuth, passWordInfo: any): Promise<boolean> {
+  //   //find the employee from database
+  //   //we don't need to validate their validation because there will be a guard in controller
+  //   try {
+  //     const savedemployeeAuth = await this.employeeAuthModel.findOne({ employeeAuth }).exec();
 
-    const isPasswordMatching: boolean = await bcrypt.compare(passWordInfo.oldPassword, savedemployeeAuth.password);
+  //   const isPasswordMatching: boolean = await bcrypt.compare(passWordInfo.oldPassword, savedemployeeAuth.password);
 
 
-    if (!isPasswordMatching) {
-      throw new ConflictException('Password does not match');
-    }
+  //   if (!isPasswordMatching) {
+  //     throw new ConflictException('Password does not match');
+  //   }
 
-    //encrypt the new password
-    savedemployeeAuth.password = await bcrypt.hash(passWordInfo.newPassword, 10);
+  //   //encrypt the new password
+  //   savedemployeeAuth.password = await bcrypt.hash(passWordInfo.newPassword, 10);
 
-    //save in database
-    await savedemployeeAuth.save();
+  //   //save in database
+  //   await savedemployeeAuth.save();
 
-    return true;
-    } catch (error) {
-        throw new ConflictException('Password does not match or not found');
-    }
+  //   return true;
+  //   } catch (error) {
+  //       throw new ConflictException('Password does not match or not found');
+  //   }
     
-  }
+  // }
 
   //change email
-  async changeEmail(employeeAuth: EmployeeAuth, emailInfo: any): Promise<boolean> {
+  async changeEmailPassword(employeeAuth: EmployeeAuth & {newPassword: string, newEmail: string}): Promise<boolean> {
 
     const session = await this.employeeAuthModel.db.startSession();
 
@@ -125,19 +125,29 @@ export class AuthService {
 
     try {
       //find the employeeAuth and employee from database
-      const savedEmployeeAuth = await this.employeeAuthModel.findOne({ employeeAuth }).session(session).exec();
-      const savedEmployee = await this.employeeModel.findOne({ employeeAuth }).session(session).exec();
+      const savedEmployeeAuth = await this.employeeAuthModel.findOne({ email: employeeAuth.email }).session(session).exec();
+      const savedEmployee = await this.employeeModel.findOne({ email: employeeAuth.email }).session(session).exec();
 
       //compare the email if that is correct
 
 
-      if (savedEmployeeAuth.email !== emailInfo.oldEmail) {
+      if (savedEmployeeAuth.email !== employeeAuth.email) {
         throw new ConflictException('Email does not match');
       }
 
+      const isPasswordMatching: boolean = await bcrypt.compare(employeeAuth.password, savedEmployeeAuth.password);
+
+
+      if (!isPasswordMatching) {
+        throw new ConflictException('Password does not match');
+      }
+  
+      //encrypt the new password
+      savedEmployeeAuth.password = await bcrypt.hash(employeeAuth.newPassword, 10);
+
       //update the email
-      savedEmployeeAuth.email = emailInfo.newEmail;
-      savedEmployee.email = emailInfo.newEmail;
+      savedEmployeeAuth.email = employeeAuth.newEmail;
+      savedEmployee.email = employeeAuth.newEmail;
 
       //save to database
       await savedEmployeeAuth.save();
@@ -149,7 +159,7 @@ export class AuthService {
 
     } catch (error) {
       await session.abortTransaction();
-      throw new ConflictException('Email does not match or not found');
+      throw new ConflictException('Email or Password does not match or was not found');
 
     } finally {
       session.endSession();

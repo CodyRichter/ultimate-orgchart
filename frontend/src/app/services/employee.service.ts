@@ -27,8 +27,11 @@ export class EmployeeService {
   }
 
   async initializeChart(): Promise<Employee> {
+    this.trees = [];
+    this.curSubtree = undefined;
+    this.curTreeIndex = undefined;
     const temp = await this.getManagersEmployees(undefined, 2) as Employee[];
-    temp.forEach(emp => this.trees.push({root: emp, curNav: emp, deletable: false, 
+    temp.forEach(emp => this.trees.push({root: emp, curNav: emp, deletable: false,
       name: 'Tree root: ' + emp.firstName + ' ' + emp.lastName}));
     this.curTreeIndex = 0;
     this.curSubtree = this.trees[this.curTreeIndex].curNav;

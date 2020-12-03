@@ -39,6 +39,7 @@ export class ProjectDetailComponent implements OnInit {
       this.project = data.project;
       this.projectDescription = this.project.description;
       this.projectName = this.project.name;
+      console.log(this.project);
       this.projectEmployees = (this.project.employees as ProjectsEmployee[]).map(curr => curr.employee);
       this.projectManager = [((this.project.manager as ProjectsEmployee).employee as Employee)];
     }

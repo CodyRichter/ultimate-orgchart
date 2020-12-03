@@ -44,7 +44,7 @@ export class ManagerService {
             if (fromManager._id === toManager._id) {
                 createdRequest.status = RequestStatus.Approved;
                 employee.positionTitle = createdRequest.newPosition;
-                employee.save();
+                await employee.save();
             } else {
                 createdRequest.status = RequestStatus.Pending;
             }
@@ -153,7 +153,7 @@ export class ManagerService {
             employee.manager = toManager._id;
             employee.positionTitle = pendingRequest.newPosition;
             toManager.manages.push(employee);
-            fromManager.manages = fromManager.manages.filter((emp: Employee) => emp._id !== employee._id)
+            fromManager.manages = fromManager.manages.filter((emp: number) => emp !== employee._id)
 
             await fromManager.save();
             await toManager.save()

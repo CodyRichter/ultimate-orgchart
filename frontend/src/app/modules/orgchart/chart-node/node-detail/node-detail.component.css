@@ -12,6 +12,10 @@
     display: inline;
 }
 
+.details {
+    overflow: hidden;
+}
+
 div.inline {
     float:left;
 }
