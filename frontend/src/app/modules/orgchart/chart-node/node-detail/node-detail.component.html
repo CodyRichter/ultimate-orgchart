@@ -32,7 +32,7 @@
         </div>
     </div>
 </mat-dialog-content>
-<mat-dialog-content>
+<mat-dialog-content class="details">
     <div>
         <mat-icon class="icon">email</mat-icon>
         <span>{{nodeData.email}}</span>
@@ -41,9 +41,27 @@
         <mat-icon class="icon">person</mat-icon>
         <span>Employee Id: {{nodeData._id}}</span>
     </div>
+    <div>
+        <mat-icon class="icon">business</mat-icon>
+        <span>Company: {{nodeData.companyName}}</span>
+    </div>
    <div *ngIf="projects.length !== 0">
     <h3><strong>Projects</strong></h3>
-    <app-employee-project-list [projectData]="projects"></app-employee-project-list>
+    <mat-list >
+        <mat-list-item *ngFor="let project of projects">
+            <div class="inline">
+                <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
+            </div>
+            <div style="font-size: medium; display: inline-block; margin-left:10px; margin-top: -2px">
+                <strong>{{project.name}}</strong>
+            </div>
+            <span class="spacer"></span>
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" mat-stroked-button color="primary" mat-dialog-close (click)="onNavigateClick(project)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Details" style="margin-left: 8px" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(project)"><mat-icon>list</mat-icon></button>
+        </mat-list-item>
+           
+    </mat-list>
+    <!-- <app-employee-project-list [projectData]="projects"></app-employee-project-list> -->
     </div>
     <!-- <div>
        Make ng-if here for nodeData.projects length

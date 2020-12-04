@@ -1,8 +1,22 @@
 .project-container {
-    width: 600px;
+    width: 500px;
     height: 500px;
     overflow: hidden;
 }
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.example-viewport {
+    height: 150px;
+    width: 100%;
+    min-width: 500px;
+  }
+  
+  .example-item {
+    height: 50px;
+  }
 
 .project-detail {
     overflow-y: scroll;

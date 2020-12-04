@@ -7,11 +7,11 @@
 </div>
 <div *ngIf="datasource.manages.length > 0" class="oc-groups">
     <ng-container *ngFor="let node of datasource.manages" >
-        <div *ngIf="node.manages.length> 0" class="oc-group">
+        <div *ngIf="node.manages.length> 0 || !someManages" class="oc-group">
             <chart-manager  [datasource]="node"></chart-manager>
         </div>
     </ng-container>
-    <div *ngIf="datasource.manages.filter(filterEmployees).length > 0" class="oc-group">
+    <div *ngIf="someManages && datasource.manages.filter(filterEmployees).length > 0" class="oc-group">
         <chart-manager [ignore]="true" [datasource]="datasource"></chart-manager>
     </div>
 </div>

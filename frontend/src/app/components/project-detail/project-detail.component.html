@@ -42,9 +42,51 @@
         </div>
 
         <h3><strong>Manager</strong></h3>
-        <app-stack-list [stackData]="projectManager"></app-stack-list>
+    <mat-list >
+        <mat-list-item *ngFor="let node of projectManager; trackBy: trackByIdx" class='example-item'>
+            <div class="inline">
+                <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
+            </div>
+            <div style="font-size: medium; display: inline-block; margin-left:10px;">
+                <strong>
+                    {{node.firstName}} {{node.lastName}}
+                <br>
+                    {{node.positionTitle}}
+                </strong>
+            </div>
+            <span class="spacer"></span>
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length > 0" mat-stroked-button  mat-dialog-close (click)="onNavigateClick(node)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length === 0 && find" mat-stroked-button  mat-dialog-close (click)="navigateToManager(node)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Details" style="margin-left: 8px"  mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)"><mat-icon>perm_identity</mat-icon></button>
+        </mat-list-item>
+    </mat-list>
+
+<mat-label *ngIf="projectManager.length === 0"> 
+    There are no Employees in this list
+</mat-label>
+
 
         <h3><strong>Assignees</strong></h3>
-        <app-stack-list [stackData]="projectEmployees"></app-stack-list>
-    </mat-dialog-content>
+        <mat-list >
+            <mat-list-item *ngFor="let node of projectEmployees; trackBy: trackByIdx" class='example-item'>
+                <div class="inline">
+                    <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
+                </div>
+                <div style="font-size: medium; display: inline-block; margin-left:10px;">
+                    <strong>
+                        {{node.firstName}} {{node.lastName}}
+                    <br>
+                        {{node.positionTitle}}
+                    </strong>
+                </div>
+                <span class="spacer"></span>
+                <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length > 0" mat-stroked-button  mat-dialog-close (click)="onNavigateClick(node)"><mat-icon>account_tree</mat-icon></button>
+                <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" *ngIf="node.manages.length === 0 && find" mat-stroked-button  mat-dialog-close (click)="navigateToManager(node)"><mat-icon>account_tree</mat-icon></button>
+                <button matTooltip="Details" style="margin-left: 8px"  mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(node)"><mat-icon>perm_identity</mat-icon></button>
+            </mat-list-item>
+        </mat-list>
+    
+    <mat-label *ngIf="projectManager.length === 0"> 
+        There are no Employees in this list
+    </mat-label>    </mat-dialog-content>
 </div>

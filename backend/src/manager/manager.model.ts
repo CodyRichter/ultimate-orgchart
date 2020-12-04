@@ -10,13 +10,13 @@ export class ManagerRequest extends TimeStamps {
         @prop()
         _id: number;
 
-        @prop({ require: true, autopopulate: true, ref: Employee, type: Number })
+        @prop({ require: true, ref: Employee, type: Number })
         employee: Ref<Employee, number>;
 
-        @prop({ require: true, autopopulate: true, ref: Employee, type: Number })
+        @prop({ require: true, ref: Employee, type: Number })
         fromManager: Ref<Employee, number>;
 
-        @prop({ require: true, autopopulate: true, ref: Employee, type: Number  })
+        @prop({ require: true, ref: Employee, type: Number  })
         toManager: Ref<Employee, number>;
 
         @prop({ required: true })

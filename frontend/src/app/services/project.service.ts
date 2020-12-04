@@ -73,6 +73,19 @@ export class ProjectService {
     );
  }
 
+ async addProjectEmployeeById(projectId: number, employeeId: number): Promise<void> {
+    await this.httpClient.patch(environment.SERVER_URL + 'project/addEmployee/' + projectId, {
+      employee: employeeId,
+      role: 'role TBD'
+    });
+ }
+
+ async deleteProjectEmployeeById(projectId: number, projectEmployeeId: number): Promise<void> {
+    await this.httpClient.patch(environment.SERVER_URL + 'project/removeEmployee/' + projectId, {
+      _id: projectEmployeeId
+    });
+ }
+
 }
 
 

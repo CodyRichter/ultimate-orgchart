@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ProjectService } from 'src/app/services/project.service';
-import { Employee, userProfile } from 'src/app/models/index';
+import { Employee, ProjectsEmployee, userProfile } from 'src/app/models/index';
 import { EditNodeDialog, NodeDetailComponent } from 'src/app/modules/orgchart/chart-node/node-detail/node-detail.component';
+import { StackListComponent } from 'src/app/modules/orgchart/chart-stack/stack-list/stack-list.component';
+import { ProjectListComponent } from '../project-list/project-list.component';
 
 @Component({
   selector: 'settings',
@@ -36,8 +38,25 @@ export class SettingsComponent implements OnInit {
     this.dialog.open(JSONUploadDialog);
   }
 
+  async openMyEmployees(): Promise<void> {
+    await this.authService.getProfile();
+    this.dialog.open(StackListComponent, {
+      data: { stackData: this.authService.profile.manages }
+    });
+  }
+
+  async openMyProjects(): Promise<void> {
+    await this.authService.getProfile();
+    const projects = await this.projectService.getProjectsByEmployeeId(this.authService.profile._id);
+    this.dialog.open(ProjectListComponent, {
+      data: { projectData: projects}
+    });
+  }
+
   openEmployeeTransferDialog(): void {
-    this.dialog.open(EmployeeTransferDialog);
+    this.dialog.open(EmployeeTransferDialog, {data: {
+      employee: undefined
+    }});
   }
 
   openCreateEmployeeDialog(): void {

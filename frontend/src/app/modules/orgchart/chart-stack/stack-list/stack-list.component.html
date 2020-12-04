@@ -1,5 +1,5 @@
-<cdk-virtual-scroll-viewport itemSize="5" class='example-viewport' (scrolledIndexChange)="nextEmployee($event)">
-    <mat-list>
+<cdk-virtual-scroll-viewport  *ngIf="stackData.length > 0" itemSize="5" class='example-viewport' (scrolledIndexChange)="nextEmployee($event)">
+    <mat-list >
         <mat-list-item *cdkVirtualFor="let node of stackData; trackBy: trackByIdx" class='example-item'>
             <div class="inline">
                 <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
@@ -18,4 +18,8 @@
         </mat-list-item>
     </mat-list>
 
+
 </cdk-virtual-scroll-viewport>
+<mat-label *ngIf="stackData.length === 0"> 
+    There are no Employees in this list
+</mat-label>

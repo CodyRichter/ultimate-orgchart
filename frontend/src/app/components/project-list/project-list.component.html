@@ -1,5 +1,5 @@
-<cdk-virtual-scroll-viewport itemSize="5" class='example-viewport' (scrolledIndexChange)="nextProject($event)">
-    <mat-list>
+<cdk-virtual-scroll-viewport *ngIf="projectData.length > 0" itemSize="5" class='example-viewport' (scrolledIndexChange)="nextProject($event)">
+    <mat-list >
         <mat-list-item *cdkVirtualFor="let project of projectData">
             <div class="inline">
                 <img src="assets/icons/default-avatar.png" alt="" style="width: 40px">
@@ -12,9 +12,13 @@
                 </strong>
             </div>
             <span class="spacer"></span>
-            <button style="margin-left: 8px" mat-stroked-button color="primary" mat-dialog-close (click)="onNavigateClick(project)">Navigate</button>
-            <button style="margin-left: 8px" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(project)">Details</button>
+            <button matTooltip="Navigate" style="margin-left: 8px; color:#5F6266" mat-stroked-button color="primary" mat-dialog-close (click)="onNavigateClick(project)"><mat-icon>account_tree</mat-icon></button>
+            <button matTooltip="Details" style="margin-left: 8px" mat-stroked-button class="button" color="primary" mat-dialog-close (click)="onDetailsClick(project)"><mat-icon>list</mat-icon></button>
         </mat-list-item>
            
     </mat-list>
+
 </cdk-virtual-scroll-viewport>
+<mat-label *ngIf="projectData.length === 0"> 
+    There are no Projects in this list
+</mat-label>

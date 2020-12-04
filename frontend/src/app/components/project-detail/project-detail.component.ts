@@ -7,6 +7,7 @@ import { ProjectService } from '../../services/project.service';
 import { FormControl } from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
 import {ProjectEditComponent} from './project-edit/project-edit.component';
+import { NodeDetailComponent } from 'src/app/modules/orgchart/chart-node/node-detail/node-detail.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -23,7 +24,7 @@ export class ProjectDetailComponent implements OnInit {
   editProjectName = false;
   projectName: string;
 
-  projectEmployees: any;
+  projectEmployees: Employee[];
 
   formControl = new FormControl();
   assignees: any;
@@ -39,13 +40,37 @@ export class ProjectDetailComponent implements OnInit {
       this.project = data.project;
       this.projectDescription = this.project.description;
       this.projectName = this.project.name;
-      this.projectEmployees = (this.project.employees as ProjectsEmployee[]).map(curr => curr.employee);
+      console.log(this.project);
+      this.projectEmployees = (this.project.employees as ProjectsEmployee[]).map(curr => curr.employee as Employee);
+      console.log(this.projectEmployees);
       this.projectManager = [((this.project.manager as ProjectsEmployee).employee as Employee)];
     }
     this.getAllEmployee().then();
   }
 
   ngOnInit(): void {
+  }
+
+
+  onDetailsClick(node: Employee): void {
+    this.dialog.open(NodeDetailComponent, {
+        data: { nodeData: node }
+    });
+  }
+
+  async onNavigateClick(node: Employee): Promise<void> {
+    await this.employeeService.goDownInChart(node, true);
+    this.dialog.closeAll();
+  }
+
+  async navigateToManager(node: Employee): Promise<void> {
+    await this.employeeService.goUpInChart(node, true);
+    this.dialog.closeAll();
+  }
+
+  trackByIdx(i) {
+    console.log(i);
+    return i;
   }
 
   getManagerName(): string {

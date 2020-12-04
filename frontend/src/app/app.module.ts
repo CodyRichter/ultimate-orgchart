@@ -33,7 +33,6 @@ import { NotificationCardComponent } from './components/notification-card/notifi
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ProjectListComponent } from './components/project-list/project-list.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {EditNodeDialogComponent} from './components/edit-node-dialog/edit-node-dialog.component';
 import {EditNodeDialog} from './modules/orgchart/chart-node/node-detail/node-detail.component';
@@ -69,7 +68,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ProjectDetailComponent,
     CreateProjectComponent,
     ProjectCreateDialog,
-    ProjectListComponent,
     EditNodeDialogComponent,
     EditNodeDialog,
     EditUserComponent,

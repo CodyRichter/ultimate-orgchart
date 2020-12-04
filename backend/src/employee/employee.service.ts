@@ -72,64 +72,63 @@ export class EmployeeService {
 
     session.startTransaction();
 
-    try {
-      // return await Promise.all(newEmployees.map(async emp => {
-      //   return await this.createEmployee(emp)
-      // }))
-     
+      try {
+        // return await Promise.all(newEmployees.map(async emp => {
+        //   return await this.createEmployee(emp)
+        // }))
       
-      const updatedEmployees = await Promise.all(newEmployees.map(
-        async (employee) => {
-          return { ...employee, manager: (!employee.manager && employee.managerId ? employee.managerId : employee.manager), _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password, 10) };
-          // const createdEmployee = new this.employeeModel(newEmployee);
-          // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
-          // await this.employeeAuthModel.create(createdEmployeeAuth)
-          // await this.employeeModel.create(createdEmployee);
-          // return createdEmployee;
-        }));
-      await this.employeeAuthModel.create(updatedEmployees,{session:session});
-      const savedEmployees = await this.employeeModel.create(updatedEmployees,{session:session});
-      const allEmployees = await this.employeeModel.find().session(session).exec();
+        
+        const updatedEmployees = await Promise.all(newEmployees.map(
+          async (employee) => {
+            return { ...employee, manager: (!employee.manager && employee.managerId ? employee.managerId : employee.manager), _id: (!employee._id && employee.employeeId ? employee.employeeId : employee._id), password: await bcrypt.hash(employee.password, 10) };
+            // const createdEmployee = new this.employeeModel(newEmployee);
+            // const createdEmployeeAuth = new this.employeeAuthModel(newEmployee);
+            // await this.employeeAuthModel.create(createdEmployeeAuth)
+            // await this.employeeModel.create(createdEmployee);
+            // return createdEmployee;
+          }));
+        await this.employeeAuthModel.create(updatedEmployees,{session:session});
+        const savedEmployees = await this.employeeModel.create(updatedEmployees,{session:session});
+        const allEmployees = await this.employeeModel.find().session(session).exec();
 
-      // console.log(savedEmployees);
-      // console.log(allEmployees);
+        // console.log(savedEmployees);
+        // console.log(allEmployees);
 
-      await Promise.all(savedEmployees.map(emp1 => {
-        if (emp1.manager) {
-          const index = allEmployees.findIndex(emp2 => emp2._id === emp1.manager);
-          if (index) {
-            allEmployees[index].manages.push(emp1);
-          } else {
-            throw new NotFoundException(`Manager not found for employee ${emp1.firstName} ${emp1.lastName}`);
+        await Promise.all(savedEmployees.map(async emp1 => {
+          if (emp1.manager) {
+            const index = allEmployees.findIndex(emp2 => emp2._id === emp1.manager);
+            if (index) {
+              allEmployees[index].manages.push(emp1);
+            } else {
+              throw new NotFoundException(`Manager not found for employee ${emp1.firstName} ${emp1.lastName}`);
+            }
           }
+          return emp1;
+        }));
+
+        // console.log('here');
+
+        // console.log(allEmployees);
+        
+        await Promise.all(allEmployees.map(async emp => {
+          // console.log(emp.manages);
+          // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
+          await emp.save();
+        }));
+
+        await session.commitTransaction();
+        session.endSession();
+        return savedEmployees;
+      } catch (error) {
+
+        await session.abortTransaction();      
+
+        if (error.code === 11000) {
+          throw new ConflictException("An Employee in the specified data already exists");
         }
-      }));
-
-      // console.log('here');
-
-      // console.log(allEmployees);
-      
-      await Promise.all(allEmployees.map(async emp => {
-        // console.log(emp.manages);
-        // using the findByIdAndUpdate command throws an error when trying to save a reference - use .save instead.
-        await emp.save();
-      }));
-
-      await session.commitTransaction();
-      return savedEmployees;
-    } catch (error) {
-
-      session.abortTransaction();
-
-      if (error.code === 11000) {
-        throw new ConflictException("An Employee in the specified data already exists");
+        session.endSession();
+        throw error;
       }
-
-      throw error;
-    }finally{
-
-      session.endSession();
-    }
   }
 
   async findAllEmployees(): Promise<Employee[]> {
@@ -199,11 +198,21 @@ export class EmployeeService {
     // const returnDoc = await this.employeeModel.findByIdAndDelete(employeeId).exec();
     if (employee) {
       const manager = await this.employeeModel.findById(employee.manager).session(session).exec();
+
+      await Promise.all(employee.manages.map(async (emp: number) => {
+        const subEmp = await this.employeeModel.findById(emp).session(session).exec();
+        subEmp.manager = manager;
+        await subEmp.save();
+        if (manager) {
+          manager.manages.push(subEmp._id);
+        }
+      }));
+
       if (manager) {
         manager.manages = manager.manages.filter((emp: number) => emp !== employee._id);
         await manager.save();
       }
-      employee.deleteOne();
+      await employee.deleteOne();
       await this.employeeAuthModel.findByIdAndDelete(employeeId).session(session).exec();
     } else {
       throw new NotFoundException('Employee not found')

@@ -56,6 +56,13 @@ export class AuthController
     {
             return this.authService.refreshToken(user);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('changeCredentials')
+    async changeCredentials(@User()user:Employee, @Body() employeeAuth: EmployeeAuth & {newEmail: string, newPassword: string})
+    {
+            return this.authService.changeEmailPassword(employeeAuth);
+    }
 }
 
 

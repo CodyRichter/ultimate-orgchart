@@ -2,9 +2,21 @@
     <mat-form-field appearance="fill">
         <mat-label>Employee</mat-label>
         <mat-select [(ngModel)]="selectedEmployee" required>
-            <mat-option *ngFor="let employee of employees" [value]="employee">
+            <div class="search-bar">
+                <mat-form-field appearance = "legacy" class = "example-full-width">
+                <input matInput type = "search" id = "transferEmployeeSearch" placeholder="Search" (input) ="searchEmployee()">
+                <mat-icon matSuffix>search</mat-icon> 
+                </mat-form-field>
+            </div>
+            <cdk-virtual-scroll-viewport #transferEmployeeScroll itemSize="5" class='example-viewport' (scrolledIndexChange)="nextEmployee($event)">
+                <mat-option *cdkVirtualFor="let employee of employees; trackBy: trackByIdxEmployee" [value]="employee">
+                    {{employee.firstName}} {{employee.lastName}}
+                </mat-option>
+            </cdk-virtual-scroll-viewport>
+            
+            <!-- <mat-option *ngFor="let employee of employees" [value]="employee">
                 {{employee.firstName}}, {{employee.lastName}}
-            </mat-option>
+            </mat-option> -->
         </mat-select>
     </mat-form-field>
 </p>
@@ -12,9 +24,20 @@
     <mat-form-field appearance="fill">
         <mat-label>Destination manager</mat-label>
         <mat-select [(ngModel)]="selectedManager" required>
-            <mat-option *ngFor="let manager of managers" [value]="manager">
+            <div class="search-bar">
+                <mat-form-field appearance = "legacy" class = "example-full-width">
+                <input matInput type = "search" id = "transferManagerSearch" placeholder="Search" (input) ="searchManager()">
+                <mat-icon matSuffix>search</mat-icon> 
+                </mat-form-field>
+            </div>
+            <cdk-virtual-scroll-viewport #transferManagerScroll itemSize="5" class='example-viewport' (scrolledIndexChange)="nextManagers($event)">
+                <mat-option *cdkVirtualFor="let manager of managers; trackBy: trackByIdxManager" [value]="manager">
+                    {{manager.firstName}} {{manager.lastName}}
+                </mat-option>
+            </cdk-virtual-scroll-viewport>
+            <!-- <mat-option *ngFor="let manager of managers" [value]="manager">
                 {{manager.firstName}}, {{manager.lastName}}
-            </mat-option>
+            </mat-option> -->
         </mat-select>
     </mat-form-field>
 </p>
